@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import 'set_timer_view.dart';
+import '../set_timer_view.dart';
 
 final pageProvider = StateProvider<List<Page>>((ref) {
   var setTimerPage = const MaterialPage(

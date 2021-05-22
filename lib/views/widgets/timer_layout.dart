@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/constants.dart';
-import 'package:regatta_timer/views/page_provider.dart';
+import 'package:regatta_timer/views/providers/page_provider.dart';
 
-import '_providers.dart';
+import '../providers/_providers.dart';
 
 class TimerLayout extends HookWidget {
   final String title;
