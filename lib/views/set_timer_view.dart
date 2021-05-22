@@ -5,7 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'providers/_providers.dart';
 import '_views.dart';
-import 'providers/page_provider.dart';
 import 'package:regatta_timer/constants.dart';
 
 import 'widgets/_widgets.dart';
@@ -17,16 +16,16 @@ class SetTimerView extends HookWidget {
   Widget build(BuildContext context) {
     final isWatch = useProvider(isWatchProvider);
 
-    return TimerLayout(
+    return const TimerLayout(
         title: 'Start Timer',
-        body: const _TimerSelector(),
+        body: _TimerSelector(),
         button: TimerButton(
           text: 'Start Timer',
-          isWatch: isWatch,
+          textColor: Colors.green,
           onPressed: _onStartButtonPressed,
-          key: const Key('StartTimerButton'),
+          key: Key('StartTimerButton'),
         ),
-        key: const Key('StartTimerLayout'));
+        key: Key('StartTimerLayout'));
   }
 }
 

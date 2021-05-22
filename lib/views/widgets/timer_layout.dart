@@ -37,10 +37,11 @@ class TimerLayout extends HookWidget {
           Expanded(
             flex: 2,
             child: Container(
-                decoration:
-                    BoxDecoration(color: Colors.black12.withOpacity(0.05)),
-                width: double.infinity,
-                child: button),
+              decoration:
+                  BoxDecoration(color: Colors.black12.withOpacity(0.05)),
+              width: double.infinity,
+              child: button,
+            ),
           )
         ],
       ),
@@ -78,40 +79,74 @@ class _LayoutHeader extends HookWidget {
 
 class TimerButton extends HookWidget {
   final String text;
+  final Color? textColor;
   final void Function(PageNotifier, List<Page>) onPressed;
 
   const TimerButton({
     required this.text,
+    this.textColor,
     required this.onPressed,
-    required this.isWatch,
     required Key key,
   }) : super(key: key);
 
-  final bool isWatch;
-
   @override
   Widget build(BuildContext context) {
-    var pages = useProvider(pageNotifierProvider);
-    var pagesNotifier = useProvider(pageNotifierProvider.notifier);
+    final isWatch = useProvider(isWatchProvider);
+    final pages = useProvider(pageNotifierProvider);
+    final pagesNotifier = useProvider(pageNotifierProvider.notifier);
 
     return TextButton(
-      onPressed: () => onPressed(pagesNotifier, pages),
       child: Column(
         children: [
           const Spacer(),
           Text(
-            'Start',
+            text,
             style: TextStyle(
-              color: Colors.green,
+              color: textColor ?? Theme.of(context).primaryColor,
               fontWeight: FontWeight.bold,
               fontSize: isWatch ? TextSize.watch : TextSize.other,
             ),
           ),
           const Spacer(
-            flex: 2,
+            flex: 3,
           ),
         ],
       ),
+      onPressed: () => onPressed(pagesNotifier, pages),
+    );
+  }
+}
+
+// Work in Progress
+
+class _ButtonsLayout extends HookWidget {
+  final TextButton primaryButton;
+  final TextButton? secondaryButton;
+  const _ButtonsLayout(
+      {required this.primaryButton, this.secondaryButton, required Key key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        TextButton(
+          onPressed: primaryButton.onPressed,
+          child: Column(
+            children: const [
+              Spacer(),
+              Text('text'),
+              Spacer(
+                flex: 2,
+              ),
+            ],
+          ),
+        ),
+        TextButton(
+          onPressed: () {},
+          child: Container(),
+        )
+      ],
     );
   }
 }
