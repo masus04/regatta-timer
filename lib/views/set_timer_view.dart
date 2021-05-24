@@ -14,22 +14,27 @@ class SetTimerView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isWatch = useProvider(isWatchProvider);
+    final timerNotifier = useProvider(syncedTimerNotifier.notifier);
 
-    return const TimerLayout(
+    return TimerLayout(
         title: 'Start Timer',
-        body: _TimerSelector(),
+        body: const _TimerSelector(),
         button: TimerButton(
-          text: 'Start Timer',
+          text: 'Start',
           textColor: Colors.green,
-          onPressed: _onStartButtonPressed,
-          key: Key('StartTimerButton'),
+          onPressed: (PageNotifier pageNotifier, List<Page> pages) => _onStartButtonPressed(pageNotifier, pages, timerNotifier),
+          key: const Key('StartTimerButton'),
         ),
-        key: Key('StartTimerLayout'));
+        key: const Key('StartTimerLayout'));
   }
 }
 
-_onStartButtonPressed(PageNotifier pageNotifier, List<Page> pages) {
+_onStartButtonPressed(PageNotifier pageNotifier, List<Page> pages, SyncedTimerNotifier timerNotifier) {
+
+  // Reset Timer
+  // timerNotifier.sta
+
+  // Navigate to Timer View
   pageNotifier.add(
     MaterialPage(
       child: const TimerView(
@@ -53,7 +58,7 @@ class _TimerSelector extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final isWatch = useProvider(isWatchProvider);
-    final selectedTimer = useProvider(selectedTimerProvider);
+    final selectedTimer = useProvider(selectedStartTimeProvider);
 
     return DropdownButtonHideUnderline(
       child: DropdownButton<int>(

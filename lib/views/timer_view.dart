@@ -13,44 +13,73 @@ class TimerView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     var pagesNotifier = useProvider(pageNotifierProvider.notifier);
+    var pages = useProvider(pageNotifierProvider);
+    final timeNotifier = useProvider(syncedTimerNotifier.notifier);
 
-    return const TimerLayout(
+    return TimerLayout(
       title: 'Racing',
-      body: _RaceTimer(
+      body: const _RaceTimer(
         key: Key('RaceTimer'),
       ),
       button: TimerButton(
         text: 'Sync',
-        onPressed: _onTimerStopped,
-        key: Key('StopButton'),
+        onPressed: (PageNotifier pageNotifier, List<Page> pages){
+          timeNotifier.sync();
+        },
+        key: const Key('StopButton'),
+        secondaryButton: TextButton(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all(Colors.red),
+          ),
+          child: const Text(
+            'Reset',
+            style: TextStyle(color: Colors.white),
+          ),
+          onPressed: () => pagesNotifier.removeLast(),
+        ),
       ),
-      key: Key('TimerViewLayout'),
+      key: const Key('TimerViewLayout'),
     );
   }
 }
 
-_onTimerStopped(PageNotifier pageNotifier, List<Page> pages) {
-  pageNotifier.removeLast();
-}
+// TODO: Create Custom Button Widget, in order to use Providers directly
 
 class _RaceTimer extends HookWidget {
   const _RaceTimer({required Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    const String time = '3:30';
+    // const String time = '3:30';
 
-    final isWatch = useProvider(isWatchProvider);
+    final time = useProvider(syncedTimerNotifier);
 
     return Container(
       alignment: Alignment.center,
-      child: Text(
-        time,
-        style: TextStyle(
-            fontSize: isWatch ? TextSize.watch * 2 : TextSize.other * 2.5,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 2),
+      child: _RaceTimerText(
+        time: time,
+        key: const Key('RaceTimerData'),
       ),
+    );
+  }
+}
+
+class _RaceTimerText extends HookWidget {
+  final Duration time;
+
+  const _RaceTimerText({required Duration this.time, required Key key})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final isWatch = useProvider(isWatchProvider);
+
+    return Text(
+      time.toString(),
+      style: TextStyle(
+          fontSize: isWatch ? TextSize.watch * 2 : TextSize.other * 2.5,
+          fontWeight: FontWeight.bold,
+          letterSpacing: 2),
     );
   }
 }

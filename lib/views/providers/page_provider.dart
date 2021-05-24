@@ -4,6 +4,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../set_timer_view.dart';
 
+// TODO: Remove unused
+
 final pageProvider = StateProvider<List<Page>>((ref) {
   var setTimerPage = const MaterialPage(
     child: SetTimerView(
@@ -15,6 +17,10 @@ final pageProvider = StateProvider<List<Page>>((ref) {
     setTimerPage,
   ];
 });
+
+// ---------------------------------------------------------------------------
+
+typedef PagesList = List<Page>;
 
 class PageNotifier extends StateNotifier<PagesList> {
   PageNotifier(List<Page> pages) : super(pages);
@@ -28,9 +34,7 @@ class PageNotifier extends StateNotifier<PagesList> {
   }
 }
 
-typedef PagesList = List<Page>;
-
-final pageNotifierProvider = StateNotifierProvider<PageNotifier, List<Page>>(
+final pageNotifierProvider = StateNotifierProvider<PageNotifier, PagesList>(
   (ref) => PageNotifier(
     [
       const MaterialPage(
@@ -45,6 +49,8 @@ final pageNotifierProvider = StateNotifierProvider<PageNotifier, List<Page>>(
     ],
   ),
 );
+
+// ---------------------------------------------------------------------------
 
 class PageChangeNotifier extends ChangeNotifier {
   List<Page> pages = [

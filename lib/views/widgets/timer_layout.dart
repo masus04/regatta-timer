@@ -82,10 +82,13 @@ class TimerButton extends HookWidget {
   final Color? textColor;
   final void Function(PageNotifier, List<Page>) onPressed;
 
+  final TextButton? secondaryButton;
+
   const TimerButton({
     required this.text,
     this.textColor,
     required this.onPressed,
+    this.secondaryButton,
     required Key key,
   }) : super(key: key);
 
@@ -95,57 +98,35 @@ class TimerButton extends HookWidget {
     final pages = useProvider(pageNotifierProvider);
     final pagesNotifier = useProvider(pageNotifierProvider.notifier);
 
-    return TextButton(
-      child: Column(
-        children: [
-          const Spacer(),
-          Text(
-            text,
-            style: TextStyle(
-              color: textColor ?? Theme.of(context).primaryColor,
-              fontWeight: FontWeight.bold,
-              fontSize: isWatch ? TextSize.watch : TextSize.other,
-            ),
-          ),
-          const Spacer(
-            flex: 3,
-          ),
-        ],
-      ),
-      onPressed: () => onPressed(pagesNotifier, pages),
-    );
-  }
-}
-
-// Work in Progress
-
-class _ButtonsLayout extends HookWidget {
-  final TextButton primaryButton;
-  final TextButton? secondaryButton;
-  const _ButtonsLayout(
-      {required this.primaryButton, this.secondaryButton, required Key key})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        TextButton(
-          onPressed: primaryButton.onPressed,
-          child: Column(
-            children: const [
-              Spacer(),
-              Text('text'),
-              Spacer(
-                flex: 2,
-              ),
-            ],
+        Expanded(
+          flex: 2,
+          child: TextButton(
+            child: Column(
+              children: [
+                const Spacer(),
+                Text(
+                  text,
+                  style: TextStyle(
+                    color: textColor ?? Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: isWatch ? TextSize.watch : TextSize.other,
+                  ),
+                ),
+                Spacer(
+                  flex: secondaryButton == null ? 2 : 1,
+                ),
+              ],
+            ),
+            onPressed: () => onPressed(pagesNotifier, pages),
           ),
         ),
-        TextButton(
-          onPressed: () {},
-          child: Container(),
-        )
+        Expanded(
+          flex: secondaryButton == null ? 0 : 1,
+          child: secondaryButton ?? const SizedBox.shrink(),
+        ),
       ],
     );
   }
