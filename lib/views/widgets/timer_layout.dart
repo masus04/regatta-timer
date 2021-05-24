@@ -80,7 +80,7 @@ class _LayoutHeader extends HookWidget {
 class TimerButton extends HookWidget {
   final String text;
   final Color? textColor;
-  final void Function(PageNotifier, List<Page>) onPressed;
+  final void Function() onPressed;
 
   final TextButton? secondaryButton;
 
@@ -95,8 +95,6 @@ class TimerButton extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final isWatch = useProvider(isWatchProvider);
-    final pages = useProvider(pageNotifierProvider);
-    final pagesNotifier = useProvider(pageNotifierProvider.notifier);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -120,7 +118,7 @@ class TimerButton extends HookWidget {
                 ),
               ],
             ),
-            onPressed: () => onPressed(pagesNotifier, pages),
+            onPressed: onPressed,
           ),
         ),
         Expanded(

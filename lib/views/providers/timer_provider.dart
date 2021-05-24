@@ -7,7 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '_providers.dart';
 
 final syncedTimerNotifier =
-    StateNotifierProvider.autoDispose<SyncedTimerNotifier, Duration>(
+    StateNotifierProvider<SyncedTimerNotifier, Duration>(
   (ref) {
     // Set selected Start Time as initial state
     final selectedStartTime = ref.read(selectedStartTimeProvider).state;
@@ -34,29 +34,28 @@ class SyncedTimerNotifier extends StateNotifier<Duration> {
 
   // Set Timer to given Duration
   set(Duration timer) {
+    // Create new Stream
     state = timer;
+    _stream = _newTimerStreamFromDuration(timer);
 
     // Cancel all subscriptions
     for (var subscription in subscriptions) {
       subscription.cancel();
     }
 
-    // set new Stream
-    _stream = _newTimerStreamFromDuration(timer);
-
-    // subscribe to new Stream
+    // Subscribe to new Stream
     final subscription = _stream.listen((tick) {
       state = tick;
     });
     subscriptions.add(subscription);
 
-    // Create, listen and store one time Stream in order to update syncTarget
-    var resetTimerSubscription = Rx.timer(
-            syncTarget - const Duration(minutes: 1),
-            const Duration(seconds: 30))
-        .listen((newMinute) {
-      syncTarget = newMinute;
+    // Create a new stream for syncTarget updates
+    final resetTimerSubscription = _stream
+        .where((tick) => tick.inSeconds.remainder(60) == 30)
+        .listen((syncTick) {
+      syncTarget = Duration(minutes: syncTick.inMinutes);
     });
+
     subscriptions.add(resetTimerSubscription);
   }
 
@@ -79,5 +78,6 @@ Stream<Duration> _newTimerStreamFromDuration(Duration startTimer) {
     return currentTimer > Duration.zero ? currentTimer : Duration.zero;
   }
 
-  return Stream<Duration>.periodic(const Duration(seconds: 1), _timerCallback);
+  return Stream<Duration>.periodic(const Duration(seconds: 1), _timerCallback)
+      .asBroadcastStream();
 }

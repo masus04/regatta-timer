@@ -14,7 +14,12 @@ class SetTimerView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final pageNotifier = useProvider(pageNotifierProvider.notifier);
+    final pages = useProvider(pageNotifierProvider);
     final timerNotifier = useProvider(syncedTimerNotifier.notifier);
+    final startTimer = useProvider(selectedStartTimeProvider).state;
+
 
     return TimerLayout(
         title: 'Start Timer',
@@ -22,14 +27,28 @@ class SetTimerView extends HookWidget {
         button: TimerButton(
           text: 'Start',
           textColor: Colors.green,
-          onPressed: (PageNotifier pageNotifier, List<Page> pages) => _onStartButtonPressed(pageNotifier, pages, timerNotifier),
+          onPressed: () {
+            timerNotifier.set(Duration(minutes: startTimer));
+
+            pageNotifier.add(
+              MaterialPage(
+                child: const TimerView(
+                  key: Key('TimerView'),
+                ),
+                key: ValueKey('NewWidget-${pages.length}'),
+                name: 'NewWidget-${pages.length}',
+                fullscreenDialog: true,
+                maintainState: true,
+              ),
+            );
+          },
           key: const Key('StartTimerButton'),
         ),
         key: const Key('StartTimerLayout'));
   }
 }
 
-_onStartButtonPressed(PageNotifier pageNotifier, List<Page> pages, SyncedTimerNotifier timerNotifier) {
+_onStartButtonPressed(PageNotifier pageNotifier, List<Page> pages) {
 
   // Reset Timer
   // timerNotifier.sta
