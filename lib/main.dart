@@ -37,11 +37,16 @@ class _RegattaTimerNavigator extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isWatch = useProvider(isWatchProvider);
     final pages = useProvider(pageNotifierProvider);
 
-    return Navigator(
-      pages: pages,
-      onPopPage: (route, result) => route.didPop(result),
+    return Container(
+      margin: isWatch ? const EdgeInsets.all(0) : const EdgeInsets.all(10),
+
+      child: Navigator(
+        pages: pages,
+        onPopPage: (route, result) => route.didPop(result),
+      ),
     );
   }
 }

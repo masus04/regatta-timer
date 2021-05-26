@@ -12,11 +12,13 @@ class TimerView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isWatch = useProvider(isWatchProvider);
+
     final pagesNotifier = useProvider(pageNotifierProvider.notifier);
-    
+
     final timeNotifier = useProvider(startTimerProvider.notifier);
     final time = useProvider(startTimerProvider);
-    
+
     onSync() {
       timeNotifier.sync();
     }
@@ -38,9 +40,12 @@ class TimerView extends HookWidget {
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.red),
           ),
-          child: const Text(
+          child: Text(
             'Reset',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(
+                color: Colors.white,
+                fontSize:
+                    isWatch ? TextSize.watch * 0.75 : TextSize.other * 0.75),
           ),
           onPressed: () {
             pagesNotifier.removeLast();

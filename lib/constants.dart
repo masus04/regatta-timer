@@ -2,5 +2,5 @@
 
 class TextSize {
   static const double watch = 17;
-  static const double other = 25;
+  static const double other = 40;
 }

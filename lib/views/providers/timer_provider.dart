@@ -44,7 +44,7 @@ final startTimerProvider = StateNotifierProvider<SyncedTimerNotifier, Duration>(
             tick <= const Duration(seconds: -1),
         pattern: [100, 100],
       ),
-      _VibrationPattern.exact(timeEquals: Duration.zero, pattern: [2000]),
+      _VibrationPattern.exact(timeEquals: Duration.zero, pattern: [0, 2000]),
     ];
 
     final vibrationListener = TimerListener(
@@ -55,7 +55,6 @@ final startTimerProvider = StateNotifierProvider<SyncedTimerNotifier, Duration>(
 
           if (matchingPatterns.isNotEmpty) {
             Vibration.vibrate(pattern: matchingPatterns.first.pattern);
-            print('Vibrating with pattern: ${matchingPatterns.first.pattern}');
           }
         });
 
