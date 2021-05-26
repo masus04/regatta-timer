@@ -17,7 +17,7 @@ class SetTimerView extends HookWidget {
 
     final pageNotifier = useProvider(pageNotifierProvider.notifier);
     final pages = useProvider(pageNotifierProvider);
-    final timerNotifier = useProvider(syncedTimerNotifier.notifier);
+    final timerNotifier = useProvider(startTimerNotifier.notifier);
     final startTimer = useProvider(selectedStartTimeProvider).state;
 
 
@@ -28,7 +28,7 @@ class SetTimerView extends HookWidget {
           text: 'Start',
           textColor: Colors.green,
           onPressed: () {
-            timerNotifier.set(Duration(minutes: startTimer));
+            timerNotifier.set(Duration(minutes: -startTimer));
 
             pageNotifier.add(
               MaterialPage(

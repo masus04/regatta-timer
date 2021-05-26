@@ -5,9 +5,10 @@ export 'page_provider.dart';
 export 'timer_provider.dart';
 
 // Provides the selected Start Time
-final selectedStartTimeProvider = StateProvider<int>((ref) {
-  return 3;
-});
+final selectedStartTimeProvider = StateProvider<int>((ref) => 3);
+
+// Provides a boolean, representing whether the app is currently locked for interactions
+final lockProvider = StateProvider<bool>( (ref) => false);
 
 // Provides whether the device is a watch (os == gwear)
 final isWatchProvider = Provider<bool>((ref) {

@@ -6,12 +6,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '_providers.dart';
 
-final syncedTimerNotifier =
-    StateNotifierProvider<SyncedTimerNotifier, Duration>(
+final startTimerNotifier = StateNotifierProvider<SyncedTimerNotifier, Duration>(
   (ref) {
     // Set selected Start Time as initial state
     final selectedStartTime = ref.read(selectedStartTimeProvider).state;
-    return SyncedTimerNotifier(selectedStartTime);
+    return SyncedTimerNotifier(-selectedStartTime);
   },
 );
 
@@ -20,7 +19,7 @@ class SyncedTimerNotifier extends StateNotifier<Duration> {
   late Duration syncTarget;
   final List<StreamSubscription<Duration>> subscriptions = [];
 
-  SyncedTimerNotifier(startTimer) : super(Duration(minutes: startTimer)) {
+  SyncedTimerNotifier(int startTimer) : super(Duration(minutes: startTimer)) {
     syncTarget = Duration(minutes: startTimer);
 
     // Setup all required streams
@@ -51,7 +50,7 @@ class SyncedTimerNotifier extends StateNotifier<Duration> {
 
     // Create a new stream for syncTarget updates
     final resetTimerSubscription = _stream
-        .where((tick) => tick.inSeconds.remainder(60) == 30)
+        .where((tick) => tick.inSeconds.remainder(60).abs() == 30)
         .listen((syncTick) {
       syncTarget = Duration(minutes: syncTick.inMinutes);
     });
@@ -71,13 +70,6 @@ class SyncedTimerNotifier extends StateNotifier<Duration> {
 // -------------------- Helper Functions -------------------- //
 
 Stream<Duration> _newTimerStreamFromDuration(Duration startTimer) {
-  Duration _timerCallback(int t) {
-    final currentTimer = startTimer - Duration(seconds: t + 1);
-
-    // Min Value = 0:00
-    return currentTimer > Duration.zero ? currentTimer : Duration.zero;
-  }
-
-  return Stream<Duration>.periodic(const Duration(seconds: 1), _timerCallback)
-      .asBroadcastStream();
+  return Stream<Duration>.periodic(const Duration(seconds: 1),
+      (int t) => startTimer + Duration(seconds: t + 1)).asBroadcastStream();
 }

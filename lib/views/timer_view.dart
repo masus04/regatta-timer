@@ -12,8 +12,17 @@ class TimerView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    var pagesNotifier = useProvider(pageNotifierProvider.notifier);
-    final timeNotifier = useProvider(syncedTimerNotifier.notifier);
+    final pagesNotifier = useProvider(pageNotifierProvider.notifier);
+    final timeNotifier = useProvider(startTimerNotifier.notifier);
+    final time = useProvider(startTimerNotifier);
+
+    onSync() {
+      timeNotifier.sync();
+    }
+
+    onLap() {
+      timeNotifier.set(Duration.zero);
+    }
 
     return TimerLayout(
       title: 'Racing',
@@ -21,11 +30,9 @@ class TimerView extends HookWidget {
         key: Key('RaceTimer'),
       ),
       button: TimerButton(
-        text: 'Sync',
-        onPressed: () {
-          timeNotifier.sync();
-        },
-        key: const Key('StopButton'),
+        text: time < Duration.zero ? 'Sync' : 'Lap',
+        onPressed: time < Duration.zero ? onSync : onLap,
+        key: const Key('ResetButton'),
         secondaryButton: TextButton(
           style: ButtonStyle(
             backgroundColor: MaterialStateProperty.all(Colors.red),
@@ -45,8 +52,6 @@ class TimerView extends HookWidget {
   }
 }
 
-// TODO: Create Custom Button Widget, in order to use Providers directly
-
 class _RaceTimer extends HookWidget {
   const _RaceTimer({required Key key}) : super(key: key);
 
@@ -54,7 +59,7 @@ class _RaceTimer extends HookWidget {
   Widget build(BuildContext context) {
     // const String time = '3:30';
 
-    final time = useProvider(syncedTimerNotifier);
+    final time = useProvider(startTimerNotifier);
 
     return Container(
       alignment: Alignment.center,
@@ -80,6 +85,7 @@ class _RaceTimerText extends HookWidget {
       _formatDuration(time),
       style: TextStyle(
           fontSize: isWatch ? TextSize.watch * 2 : TextSize.other * 2.5,
+          // color: time.isNegative ? Colors.red : Colors.green,
           fontWeight: FontWeight.bold,
           letterSpacing: 2),
     );
@@ -87,20 +93,19 @@ class _RaceTimerText extends HookWidget {
 }
 
 String _formatDuration(Duration duration) {
-  var hours = duration.inHours;
-  var minutes = duration.inMinutes.remainder(60);
-  var seconds = duration.inSeconds.remainder(60);
+  var hours = duration.inHours.abs();
+  var minutes = duration.inMinutes.remainder(60).abs();
+  var seconds = duration.inSeconds.remainder(60).abs();
 
   String stringRep;
-  if (hours>0) {
+  if (hours > 0) {
     stringRep = hours.toString();
     stringRep += ':${minutes.toString().padLeft(2, "0")}';
-
   } else {
     stringRep = minutes.toString();
   }
 
   stringRep += ':${seconds.toString().padLeft(2, "0")}';
 
-  return stringRep;
+  return (duration.isNegative ? '-' : '') + stringRep;
 }
