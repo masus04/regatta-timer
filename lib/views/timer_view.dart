@@ -13,9 +13,10 @@ class TimerView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final pagesNotifier = useProvider(pageNotifierProvider.notifier);
-    final timeNotifier = useProvider(startTimerNotifier.notifier);
-    final time = useProvider(startTimerNotifier);
-
+    
+    final timeNotifier = useProvider(startTimerProvider.notifier);
+    final time = useProvider(startTimerProvider);
+    
     onSync() {
       timeNotifier.sync();
     }
@@ -59,7 +60,7 @@ class _RaceTimer extends HookWidget {
   Widget build(BuildContext context) {
     // const String time = '3:30';
 
-    final time = useProvider(startTimerNotifier);
+    final time = useProvider(startTimerProvider);
 
     return Container(
       alignment: Alignment.center,

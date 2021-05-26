@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:wakelock/wakelock.dart';
 
 import 'providers/_providers.dart';
 import '_views.dart';
@@ -14,12 +15,31 @@ class SetTimerView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-
     final pageNotifier = useProvider(pageNotifierProvider.notifier);
     final pages = useProvider(pageNotifierProvider);
-    final timerNotifier = useProvider(startTimerNotifier.notifier);
+    final timerNotifier = useProvider(startTimerProvider.notifier);
     final startTimer = useProvider(selectedStartTimeProvider).state;
 
+    startTimerPressed() {
+      // Reset Timer
+      timerNotifier.set(Duration(minutes: -startTimer));
+
+      // Navigate to TimerView
+      pageNotifier.add(
+        MaterialPage(
+          child: const TimerView(
+            key: Key('TimerView'),
+          ),
+          key: ValueKey('NewWidget-${pages.length}'),
+          name: 'NewWidget-${pages.length}',
+          fullscreenDialog: true,
+          maintainState: true,
+        ),
+      );
+
+      // Enable Wakelock - Wakelock is disabled once timer reaches 0:00
+      Wakelock.enable();
+    }
 
     return TimerLayout(
         title: 'Start Timer',
@@ -27,44 +47,11 @@ class SetTimerView extends HookWidget {
         button: TimerButton(
           text: 'Start',
           textColor: Colors.green,
-          onPressed: () {
-            timerNotifier.set(Duration(minutes: -startTimer));
-
-            pageNotifier.add(
-              MaterialPage(
-                child: const TimerView(
-                  key: Key('TimerView'),
-                ),
-                key: ValueKey('NewWidget-${pages.length}'),
-                name: 'NewWidget-${pages.length}',
-                fullscreenDialog: true,
-                maintainState: true,
-              ),
-            );
-          },
+          onPressed: startTimerPressed,
           key: const Key('StartTimerButton'),
         ),
         key: const Key('StartTimerLayout'));
   }
-}
-
-_onStartButtonPressed(PageNotifier pageNotifier, List<Page> pages) {
-
-  // Reset Timer
-  // timerNotifier.sta
-
-  // Navigate to Timer View
-  pageNotifier.add(
-    MaterialPage(
-      child: const TimerView(
-        key: Key('TimerView'),
-      ),
-      key: ValueKey('NewWidget-${pages.length}'),
-      name: 'NewWidget-${pages.length}',
-      fullscreenDialog: true,
-      maintainState: true,
-    ),
-  );
 }
 
 class _TimerSelector extends HookWidget {

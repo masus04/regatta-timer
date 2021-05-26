@@ -43,7 +43,6 @@ final pageNotifierProvider = StateNotifierProvider<PageNotifier, PagesList>(
         ),
         key: ValueKey('SetTimerView'),
         name: 'SetTimerView',
-        fullscreenDialog: true,
         maintainState: true,
       ),
     ],

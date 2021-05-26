@@ -3,10 +3,11 @@ import 'dart:async';
 import 'package:rxdart/rxdart.dart';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:wakelock/wakelock.dart';
 
 import '_providers.dart';
 
-final startTimerNotifier = StateNotifierProvider<SyncedTimerNotifier, Duration>(
+final startTimerProvider = StateNotifierProvider<SyncedTimerNotifier, Duration>(
   (ref) {
     // Set selected Start Time as initial state
     final selectedStartTime = ref.read(selectedStartTimeProvider).state;
@@ -15,13 +16,13 @@ final startTimerNotifier = StateNotifierProvider<SyncedTimerNotifier, Duration>(
 );
 
 class SyncedTimerNotifier extends StateNotifier<Duration> {
+  Duration syncTarget;
   late Stream<Duration> _stream;
-  late Duration syncTarget;
   final List<StreamSubscription<Duration>> subscriptions = [];
 
-  SyncedTimerNotifier(int startTimer) : super(Duration(minutes: startTimer)) {
-    syncTarget = Duration(minutes: startTimer);
-
+  SyncedTimerNotifier(int startTimer)
+      : syncTarget = Duration(minutes: startTimer),
+        super(Duration(minutes: startTimer)) {
     // Setup all required streams
     set(syncTarget);
   }
@@ -53,6 +54,11 @@ class SyncedTimerNotifier extends StateNotifier<Duration> {
         .where((tick) => tick.inSeconds.remainder(60).abs() == 30)
         .listen((syncTick) {
       syncTarget = Duration(minutes: syncTick.inMinutes);
+
+      // Disable Wakelock after start
+      if (syncTick == Duration.zero) {
+        Wakelock.disable();
+      }
     });
 
     subscriptions.add(resetTimerSubscription);
