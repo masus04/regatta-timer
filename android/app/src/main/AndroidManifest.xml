@@ -1,9 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.regatta_timer">
-   <application
+    <uses-permission android:name="android.permission.VIBRATE"/>
+    <application
         android:label="regatta_timer"
         android:icon="@mipmap/ic_launcher">
-        <activity
+       <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
