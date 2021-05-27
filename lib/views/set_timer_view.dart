@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:numberpicker/numberpicker.dart';
 import 'package:wakelock/wakelock.dart';
 
 import 'providers/_providers.dart';
@@ -18,11 +19,12 @@ class SetTimerView extends HookWidget {
     final pageNotifier = useProvider(pageNotifierProvider.notifier);
     final pages = useProvider(pageNotifierProvider);
     final timerNotifier = useProvider(startTimerProvider.notifier);
-    final startTimer = useProvider(selectedStartTimeProvider).state;
+    final selectedTimeIndexProvider = useProvider(startTimeOptionIndexProvider);
 
-    startTimerPressed() {
+    _startTimerPressed() {
       // Reset Timer
-      timerNotifier.set(Duration(minutes: -startTimer));
+      timerNotifier.set(Duration(
+          minutes: -startTimeOptions[selectedTimeIndexProvider.state]));
 
       // Navigate to TimerView
       pageNotifier.add(
@@ -43,56 +45,54 @@ class SetTimerView extends HookWidget {
 
     return TimerLayout(
         title: 'Start Timer',
-        body: const _TimerSelector(),
+        body: const _TimeSelector(key: Key('TimerSelector'),),
         button: TimerButton(
           text: 'Start',
           textColor: Colors.green,
-          onPressed: startTimerPressed,
+          onPressed: _startTimerPressed,
           key: const Key('StartTimerButton'),
         ),
         key: const Key('StartTimerLayout'));
   }
 }
 
-class _TimerSelector extends HookWidget {
-  static const timerOptions = [3, 5];
+class _TimeSelector extends HookWidget {
 
-  const _TimerSelector({
-    Key? key,
-  }) : super(key: key);
+  const _TimeSelector({required Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final isWatch = useProvider(isWatchProvider);
-    final selectedTimer = useProvider(selectedStartTimeProvider);
+    final selectedTimeIndexProvider = useProvider(startTimeOptionIndexProvider);
 
+    final isWatch = useProvider(isWatchProvider);
     final textSize = isWatch ? TextSize.watch : TextSize.other;
 
-    return DropdownButton<int>(
-      isExpanded: true,
-      value: selectedTimer.state,
-      style: TextStyle(
-        fontSize: textSize,
-        color: Colors.black87,
-      ),
-      menuMaxHeight: double.infinity,
-      underline: const SizedBox.shrink(),
-      items: timerOptions
-          .map((minute) => DropdownMenuItem(
-                value: minute,
-                child: Text(
-                  '$minute min',
-                  style: TextStyle(
-                    fontSize: textSize,
-                    height: 0.5,
-                    color: Colors.black87,
-                  ),
-                ),
-              ))
-          .toList(),
-      onChanged: (selected) {
-        selectedTimer.state = selected ?? selectedTimer.state;
-      },
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        NumberPicker(
+          minValue: 0,
+          maxValue: startTimeOptions.length - 1,
+          value: selectedTimeIndexProvider.state,
+          onChanged: (selected) {
+            selectedTimeIndexProvider.state = selected;
+          },
+          textStyle: TextStyle(fontSize: textSize * 0.75),
+          selectedTextStyle: TextStyle(
+            fontSize: textSize,
+            fontWeight: FontWeight.bold,
+          ),
+          textMapper: (number) => '${startTimeOptions[int.parse(number)]}',
+          itemHeight: textSize * 1.2,
+          itemWidth: 3 * textSize,
+          itemCount: 3,
+        ),
+        Text(
+          'Minutes',
+          style: TextStyle(fontSize: textSize, fontWeight: FontWeight.bold),
+        ),
+      ],
     );
   }
 }

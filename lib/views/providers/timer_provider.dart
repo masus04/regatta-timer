@@ -10,7 +10,7 @@ import '_providers.dart';
 final startTimerProvider = StateNotifierProvider<SyncedTimerNotifier, Duration>(
   (ref) {
     // Set selected Start Time as initial state
-    final selectedStartTime = ref.read(selectedStartTimeProvider).state;
+    const selectedStartTime = 0;
 
     // WakeLock Listener
     final wakeLockListener = TimerListener(
@@ -96,6 +96,7 @@ class SyncedTimerNotifier extends StateNotifier<Duration> {
   set(Duration timer) {
     // Create new Stream
     state = timer;
+    syncTarget = timer;
     _stream = _newTimerStreamFromDuration(timer);
 
     // Cancel all subscriptions

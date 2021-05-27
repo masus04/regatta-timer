@@ -6,7 +6,7 @@ export 'page_provider.dart';
 export 'timer_provider.dart';
 
 // Provides the selected Start Time
-final selectedStartTimeProvider = StateProvider<int>((ref) => 3);
+final startTimeOptionIndexProvider = StateProvider<int>((ref) => 2);
 
 // Provides whether the app screen is locked and all buttons should be disabled
 final appLockProvider = StateProvider<bool>((ref) => false);

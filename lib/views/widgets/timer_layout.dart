@@ -30,22 +30,25 @@ class TimerLayout extends HookWidget {
         children: [
           // Header
           Expanded(
-            flex: 2,
+            flex: 4,
             child: _LayoutHeader(title: title),
           ),
           // Time Slot
           Expanded(
-            flex: 2,
-            child: Container(
-              color: Colors.white,
-              alignment: isWatch ? Alignment.bottomCenter : Alignment.center,
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: body,
+            flex: 4,
+            child: IgnorePointer(
+              ignoring: lock.state,
+              child: Container(
+                color: Colors.white,
+                alignment: isWatch ? Alignment.bottomCenter : Alignment.center,
+                padding: const EdgeInsets.symmetric(horizontal: 25),
+                child: body,
+              ),
             ),
           ),
           // Buttons
           Expanded(
-            flex: 3,
+            flex: 6,
             child: IgnorePointer(
               ignoring: lock.state,
               child: Container(
@@ -77,39 +80,30 @@ class _LayoutHeader extends HookWidget {
 
     final lockProvider = useProvider(appLockProvider);
 
-    onLockPressed() {
+    _onLockPressed() {
       lockProvider.state = !lockProvider.state;
     }
 
-    return Ink(
-      color: Colors.indigo,
+    return TextButton(
+      style: ElevatedButton.styleFrom(elevation: 0, primary: Colors.indigo),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Center(
-            child: Text(
-              title,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: textSize),
-            ),
+          Text(
+            title,
+            style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: textSize),
           ),
-          IconButton(
-            constraints: BoxConstraints(
-                maxHeight: textSize * 1.5, maxWidth: textSize * 1.5),
-            splashRadius: textSize,
-            splashColor: Colors.indigo.shade300,
-            icon: Icon(
-              lockProvider.state ? Icons.lock : Icons.lock_open_outlined,
-              color: Colors.white,
-            ),
-            iconSize: textSize,
-            onPressed: onLockPressed,
+          Icon(
+            lockProvider.state ? Icons.lock : Icons.lock_open_outlined,
+            color: Colors.white,
           ),
-        ],
+        ]
       ),
+      onPressed: _onLockPressed,
     );
   }
 }
