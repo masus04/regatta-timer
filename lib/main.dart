@@ -16,6 +16,7 @@ class RegattaTimer extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Regatta Timer',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.indigo,
       ),

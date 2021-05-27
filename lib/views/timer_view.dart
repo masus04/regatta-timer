@@ -37,15 +37,17 @@ class TimerView extends HookWidget {
         onPressed: time < Duration.zero ? onSync : onLap,
         key: const Key('ResetButton'),
         secondaryButton: TextButton(
-          style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(Colors.red),
+          style: TextButton.styleFrom(
+            primary: Colors.white,
+            backgroundColor: Colors.red,
+            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
           ),
           child: Text(
             'Reset',
             style: TextStyle(
                 color: Colors.white,
                 fontSize:
-                    isWatch ? TextSize.watch * 0.75 : TextSize.other * 0.75),
+                    isWatch ? TextSize.watch * 0.5 : TextSize.other * 0.75),
           ),
           onPressed: () {
             pagesNotifier.removeLast();
@@ -93,6 +95,7 @@ class _RaceTimerText extends HookWidget {
           fontSize: isWatch ? TextSize.watch * 2 : TextSize.other * 2.5,
           // color: time.isNegative ? Colors.red : Colors.green,
           fontWeight: FontWeight.bold,
+          color: Colors.black87,
           letterSpacing: 2),
     );
   }

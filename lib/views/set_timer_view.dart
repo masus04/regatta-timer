@@ -66,29 +66,33 @@ class _TimerSelector extends HookWidget {
     final isWatch = useProvider(isWatchProvider);
     final selectedTimer = useProvider(selectedStartTimeProvider);
 
-    return DropdownButtonHideUnderline(
-      child: DropdownButton<int>(
-        isExpanded: true,
-        value: selectedTimer.state,
-        style: TextStyle(
-            fontSize: isWatch ? TextSize.watch : TextSize.other,
-            color: Colors.blueGrey),
-        items: timerOptions
-            .map((minute) => DropdownMenuItem(
-                  value: minute,
-                  child: Text(
-                    '$minute min',
-                    style: TextStyle(
-                      fontSize: isWatch ? TextSize.watch : TextSize.other,
-                      height: 0.5,
-                    ),
-                  ),
-                ))
-            .toList(),
-        onChanged: (selected) {
-          selectedTimer.state = selected ?? selectedTimer.state;
-        },
+    final textSize = isWatch ? TextSize.watch : TextSize.other;
+
+    return DropdownButton<int>(
+      isExpanded: true,
+      value: selectedTimer.state,
+      style: TextStyle(
+        fontSize: textSize,
+        color: Colors.black87,
       ),
+      menuMaxHeight: double.infinity,
+      underline: const SizedBox.shrink(),
+      items: timerOptions
+          .map((minute) => DropdownMenuItem(
+                value: minute,
+                child: Text(
+                  '$minute min',
+                  style: TextStyle(
+                    fontSize: textSize,
+                    height: 0.5,
+                    color: Colors.black87,
+                  ),
+                ),
+              ))
+          .toList(),
+      onChanged: (selected) {
+        selectedTimer.state = selected ?? selectedTimer.state;
+      },
     );
   }
 }
