@@ -3,7 +3,7 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
     <application
         android:label="regatta_timer"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/regatta_timer_wb">
        <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
