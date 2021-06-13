@@ -47,7 +47,7 @@ class TimerView extends HookWidget {
             style: TextStyle(
                 color: Colors.white,
                 fontSize:
-                    isWatch ? TextSize.watch * 0.5 : TextSize.other * 0.75),
+                    isWatch ? TextSize.watch * 0.75 : TextSize.other * 0.75),
           ),
           onPressed: () {
             pagesNotifier.removeLast();

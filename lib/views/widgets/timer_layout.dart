@@ -89,20 +89,21 @@ class _LayoutHeader extends HookWidget {
       child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            title,
-            style: TextStyle(
+          children: [
+            Text(
+              title,
+              style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
-                fontSize: textSize),
-          ),
-          Icon(
-            lockProvider.state ? Icons.lock : Icons.lock_open_outlined,
-            color: Colors.white,
-          ),
-        ]
-      ),
+                fontSize: textSize,
+              ),
+            ),
+            Icon(
+              lockProvider.state ? Icons.lock : Icons.lock_open_outlined,
+              color: Colors.white,
+              size: textSize,
+            ),
+          ]),
       onPressed: _onLockPressed,
     );
   }
@@ -141,7 +142,7 @@ class TimerButton extends HookWidget {
                   style: TextStyle(
                     color: textColor ?? Theme.of(context).primaryColor,
                     fontWeight: FontWeight.bold,
-                    fontSize: isWatch ? TextSize.watch : TextSize.other,
+                    fontSize: isWatch ? TextSize.watch *1.25 : TextSize.other *1.5,
                   ),
                 ),
                 Spacer(

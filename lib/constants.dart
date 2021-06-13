@@ -2,7 +2,7 @@
 
 // Font sizes for different screen types
 class TextSize {
-  static const double watch = 17;
+  static const double watch = 15;
   static const double other = 40;
 }
 

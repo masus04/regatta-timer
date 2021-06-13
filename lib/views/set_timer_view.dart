@@ -44,7 +44,7 @@ class SetTimerView extends HookWidget {
     }
 
     return TimerLayout(
-        title: 'Start Timer',
+        title: 'Regatta Timer',
         body: const _TimeSelector(key: Key('TimerSelector'),),
         button: TimerButton(
           text: 'Start',
