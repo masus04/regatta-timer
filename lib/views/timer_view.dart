@@ -5,7 +5,7 @@ import 'package:regatta_timer/views/providers/_providers.dart';
 import 'package:regatta_timer/views/widgets/_widgets.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
-import '../constants.dart';
+import '../values.dart';
 import 'providers/page_provider.dart';
 
 class TimerView extends HookWidget {
@@ -13,7 +13,7 @@ class TimerView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fontSize = (MediaQuery.of(context).size.width / 13).floorToDouble();
+    final fontSize = fontSizeFromScreenSize(context);
 
     final pagesNotifier = useProvider(pageNotifierProvider.notifier);
 
@@ -90,7 +90,7 @@ class _RaceTimerText extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fontSize = (MediaQuery.of(context).size.width / 13).floorToDouble() * 2;
+    final fontSize = fontSizeFromScreenSize(context) * 2;
 
     return AutoSizeText(
       _formatDuration(time),

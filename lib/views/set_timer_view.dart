@@ -8,7 +8,7 @@ import 'package:wakelock/wakelock.dart';
 
 import 'providers/_providers.dart';
 import '_views.dart';
-import 'package:regatta_timer/constants.dart';
+import 'package:regatta_timer/values.dart';
 
 import 'widgets/_widgets.dart';
 
@@ -64,7 +64,7 @@ class _TimeSelector extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final selectedTimeIndexProvider = useProvider(startTimeOptionIndexProvider);
-    final fontSize = (MediaQuery.of(context).size.width / 13).floorToDouble();
+    final fontSize = fontSizeFromScreenSize(context);
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -85,7 +85,7 @@ class _TimeSelector extends HookWidget {
             ),
             textMapper: (number) => '${startTimeOptions[int.parse(number)]}',
             itemHeight: fontSize * 1.2,
-            itemWidth: 3 * fontSize,
+            itemWidth: fontSize * 3,
             itemCount: 3,
           ),
         ),

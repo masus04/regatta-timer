@@ -2,7 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:regatta_timer/constants.dart';
+import 'package:regatta_timer/values.dart';
 
 import '../providers/_providers.dart';
 
@@ -20,8 +20,6 @@ class TimerLayout extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isWatch = useProvider(isWatchProvider);
-
     final lock = useProvider(appLockProvider);
 
     return Center(
@@ -41,7 +39,7 @@ class TimerLayout extends HookWidget {
               ignoring: lock.state,
               child: Container(
                 color: Colors.white,
-                alignment: isWatch ? Alignment.bottomCenter : Alignment.center,
+                alignment: Alignment.center,
                 padding: const EdgeInsets.symmetric(horizontal: 25),
                 child: body,
               ),
@@ -76,8 +74,7 @@ class _LayoutHeader extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isWatch = useProvider(isWatchProvider);
-    final fontSize = (MediaQuery.of(context).size.width / 13).floorToDouble();
+    final fontSize = fontSizeFromScreenSize(context);
 
     final lockProvider = useProvider(appLockProvider);
 
@@ -129,8 +126,7 @@ class TimerButton extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fontSize =
-        (MediaQuery.of(context).size.width / 13).floorToDouble() * 1.5;
+    final fontSize = fontSizeFromScreenSize(context) * 1.5;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
