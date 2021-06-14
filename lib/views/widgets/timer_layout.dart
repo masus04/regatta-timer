@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -76,7 +77,7 @@ class _LayoutHeader extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final isWatch = useProvider(isWatchProvider);
-    final textSize = isWatch ? TextSize.watch : TextSize.other;
+    final fontSize = (MediaQuery.of(context).size.width / 13).floorToDouble();
 
     final lockProvider = useProvider(appLockProvider);
 
@@ -90,18 +91,20 @@ class _LayoutHeader extends HookWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
+            AutoSizeText(
               title,
+              textAlign: TextAlign.center,
+              maxLines: 1,
               style: TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
-                fontSize: textSize,
+                fontSize: fontSize,
               ),
             ),
             Icon(
               lockProvider.state ? Icons.lock : Icons.lock_open_outlined,
               color: Colors.white,
-              size: textSize,
+              size: fontSize,
             ),
           ]),
       onPressed: _onLockPressed,
@@ -126,35 +129,45 @@ class TimerButton extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isWatch = useProvider(isWatchProvider);
+    final fontSize =
+        (MediaQuery.of(context).size.width / 13).floorToDouble() * 1.5;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Expanded(
-          flex: 2,
+          flex: 3,
           child: TextButton(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Spacer(),
-                Text(
-                  text,
-                  style: TextStyle(
-                    color: textColor ?? Theme.of(context).primaryColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: isWatch ? TextSize.watch *1.25 : TextSize.other *1.5,
+                Expanded(
+                  flex: 3,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      AutoSizeText(
+                        text,
+                        maxLines: 1,
+                        style: TextStyle(
+                          color: textColor ?? Theme.of(context).primaryColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: fontSize,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                Spacer(
-                  flex: secondaryButton == null ? 2 : 1,
-                ),
+                Expanded(
+                    flex: secondaryButton == null ? 2 : 0,
+                    child: const SizedBox.shrink())
               ],
             ),
             onPressed: onPressed,
           ),
         ),
         Expanded(
-          flex: secondaryButton == null ? 0 : 1,
+          flex: secondaryButton == null ? 0 : 2,
           child: secondaryButton ?? const SizedBox.shrink(),
         ),
       ],

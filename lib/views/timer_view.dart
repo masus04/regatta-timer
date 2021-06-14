@@ -3,6 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/views/providers/_providers.dart';
 import 'package:regatta_timer/views/widgets/_widgets.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 import '../constants.dart';
 import 'providers/page_provider.dart';
@@ -12,7 +13,7 @@ class TimerView extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isWatch = useProvider(isWatchProvider);
+    final fontSize = (MediaQuery.of(context).size.width / 13).floorToDouble();
 
     final pagesNotifier = useProvider(pageNotifierProvider.notifier);
 
@@ -40,14 +41,16 @@ class TimerView extends HookWidget {
           style: TextButton.styleFrom(
             primary: Colors.white,
             backgroundColor: Colors.red,
-            shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
+            shape:
+                const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
           ),
-          child: Text(
+          child: AutoSizeText(
             'Reset',
+            maxLines: 1,
             style: TextStyle(
-                color: Colors.white,
-                fontSize:
-                    isWatch ? TextSize.watch * 0.75 : TextSize.other * 0.75),
+              fontSize: fontSize * 0.75,
+              color: Colors.white,
+            ),
           ),
           onPressed: () {
             pagesNotifier.removeLast();
@@ -87,16 +90,18 @@ class _RaceTimerText extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isWatch = useProvider(isWatchProvider);
+    final fontSize = (MediaQuery.of(context).size.width / 13).floorToDouble() * 2;
 
-    return Text(
+    return AutoSizeText(
       _formatDuration(time),
+      maxLines: 1,
       style: TextStyle(
-          fontSize: isWatch ? TextSize.watch * 2 : TextSize.other * 2.5,
-          // color: time.isNegative ? Colors.red : Colors.green,
-          fontWeight: FontWeight.bold,
-          color: Colors.black87,
-          letterSpacing: 2),
+        fontSize: fontSize,
+        // color: time.isNegative ? Colors.red : Colors.green,
+        fontWeight: FontWeight.bold,
+        color: Colors.black87,
+        letterSpacing: 2,
+      ),
     );
   }
 }

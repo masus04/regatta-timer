@@ -5,8 +5,6 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:vibration/vibration.dart';
 import 'package:wakelock/wakelock.dart';
 
-import '_providers.dart';
-
 final startTimerProvider = StateNotifierProvider<SyncedTimerNotifier, Duration>(
   (ref) {
     // Set selected Start Time as initial state

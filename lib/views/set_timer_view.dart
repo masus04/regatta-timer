@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -63,34 +64,37 @@ class _TimeSelector extends HookWidget {
   @override
   Widget build(BuildContext context) {
     final selectedTimeIndexProvider = useProvider(startTimeOptionIndexProvider);
-
-    final isWatch = useProvider(isWatchProvider);
-    final textSize = isWatch ? TextSize.watch : TextSize.other;
+    final fontSize = (MediaQuery.of(context).size.width / 13).floorToDouble();
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        NumberPicker(
-          minValue: 0,
-          maxValue: startTimeOptions.length - 1,
-          value: selectedTimeIndexProvider.state,
-          onChanged: (selected) {
-            selectedTimeIndexProvider.state = selected;
-          },
-          textStyle: TextStyle(fontSize: textSize * 0.75),
-          selectedTextStyle: TextStyle(
-            fontSize: textSize,
-            fontWeight: FontWeight.bold,
+        Expanded(
+          child: NumberPicker(
+            minValue: 0,
+            maxValue: startTimeOptions.length - 1,
+            value: selectedTimeIndexProvider.state,
+            onChanged: (selected) {
+              selectedTimeIndexProvider.state = selected;
+            },
+            textStyle: TextStyle(fontSize: fontSize * 0.75),
+            selectedTextStyle: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+            ),
+            textMapper: (number) => '${startTimeOptions[int.parse(number)]}',
+            itemHeight: fontSize * 1.2,
+            itemWidth: 3 * fontSize,
+            itemCount: 3,
           ),
-          textMapper: (number) => '${startTimeOptions[int.parse(number)]}',
-          itemHeight: textSize * 1.2,
-          itemWidth: 3 * textSize,
-          itemCount: 3,
         ),
-        Text(
-          'Minutes',
-          style: TextStyle(fontSize: textSize, fontWeight: FontWeight.bold),
+        Expanded(
+          child: AutoSizeText(
+            'Minutes',
+            maxLines: 1,
+            style: TextStyle(fontSize: fontSize, fontWeight: FontWeight.bold),
+          ),
         ),
       ],
     );
