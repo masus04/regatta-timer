@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/providers/selected_start_time_provider.dart';
+import 'package:regatta_timer/providers/timer_provider_v2.dart';
 import 'package:regatta_timer/views/components/layout.dart';
 import 'package:regatta_timer/views/components/timer.dart';
 
@@ -11,10 +12,16 @@ class PreStartView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const RegattaTimerLayout(
-      topButton: ResetButton(),
-      bottomButton: SyncButton(),
-      centerWidget: StartTimer(),
+    final timer = ref.watch(ref.watch(timerProvider));
+
+    return RegattaTimerLayout(
+        topButton: const ResetButton(),
+        bottomButton: const SyncButton(),
+        centerWidget: timer.when(
+          data: (timer) => StartTimer(timer),
+          error: (err, stackTrace) => Text(err.toString()),
+          loading: () => const CircularProgressIndicator(),
+        ),
     );
   }
 }
@@ -28,9 +35,15 @@ class ResetButton extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return TextButton(
       onPressed: pressReset(context),
-      child: Text("Reset", style: Theme.of(context).textTheme.button),
+      child: Text("Reset", style: Theme
+          .of(context)
+          .textTheme
+          .button),
       style: TextButton.styleFrom(
-          backgroundColor: Theme.of(context).colorScheme.tertiary),
+          backgroundColor: Theme
+              .of(context)
+              .colorScheme
+              .tertiary),
     );
   }
 
@@ -50,24 +63,28 @@ class SyncButton extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return TextButton(
       onPressed: () {},
-      child: Text("Sync", style: Theme.of(context).textTheme.button),
+      child: Text("Sync", style: Theme
+          .of(context)
+          .textTheme
+          .button),
       style: TextButton.styleFrom(
-          backgroundColor: Theme.of(context).colorScheme.primary),
+          backgroundColor: Theme
+              .of(context)
+              .colorScheme
+              .primary),
     );
   }
 }
 
-class StartTimer extends HookConsumerWidget {
-  const StartTimer({
+class StartTimer extends StatelessWidget {
+  final Duration timer;
+
+  const StartTimer(this.timer, {
     Key? key,
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Timer(
-      Duration(
-        minutes: -ref.watch(selectedStartTimeProvider.notifier).selectedMinutes,
-      ),
-    );
+  Widget build(BuildContext context) {
+    return Timer(timer);
   }
 }
