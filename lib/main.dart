@@ -1,53 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:regatta_timer/views/providers/_providers.dart';
+
+import 'post_start/post_start_view.dart';
+import 'pre_start/pre_start_view.dart';
+import 'set_time/set_time_view.dart';
+import 'settings/settings_view.dart';
+
 
 void main() {
-  runApp(const RegattaTimer(
-    key: Key('RegattaTimer'),
-  ));
+  runApp(const RegattaTimer());
 }
 
 class RegattaTimer extends StatelessWidget {
-  const RegattaTimer({required Key key}) : super(key: key);
+  const RegattaTimer({Key? key}) : super(key: key);
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Regatta Timer',
-      debugShowCheckedModeBanner: false,
+      title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.indigo,
       ),
-      home: const ProviderScope(
-        child: SafeArea(
-          child: Scaffold(
-            body: _RegattaTimerNavigator(key: Key('RegattaTimerNavigator'),),
-          ),
-        ),
-      ),
+      routes: {
+        "/": (context) => const SetTimeView(),
+        "/pre-start": (context) => const PreStartView(),
+        "/post-start": (context) => const PostStartView(),
+        "/settings": (context) => const SettingsView(),
+      },
     );
   }
 }
 
-class _RegattaTimerNavigator extends HookWidget {
-  const _RegattaTimerNavigator({
-    required Key key,
-  }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    final isWatch = useProvider(isWatchProvider);
-    final pages = useProvider(pageNotifierProvider);
 
-    return Container(
-      margin: isWatch ? const EdgeInsets.all(0) : const EdgeInsets.all(10),
-
-      child: Navigator(
-        pages: pages,
-        onPopPage: (route, result) => route.didPop(result),
-      ),
-    );
-  }
-}
