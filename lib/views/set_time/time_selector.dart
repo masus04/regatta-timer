@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/constants.dart';
-import 'package:regatta_timer/providers/providers.dart';
+import 'package:regatta_timer/providers/selected_start_time_provider.dart';
+import 'package:regatta_timer/providers/app_lock_provider.dart';
 import 'package:numberpicker/numberpicker.dart';
 
 class TimeSelector extends HookConsumerWidget {
@@ -10,6 +11,8 @@ class TimeSelector extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final numberPickerIndex = ref.watch(selectedStartTimeProvider);
+
     return Container(
       height: TimerOptions.fontSize * TimerOptions.numItems,
       color: Colors.white,
@@ -19,7 +22,7 @@ class TimeSelector extends HookConsumerWidget {
           NumberPicker(
             minValue: 0,
             maxValue: startTimeOptions.length - 1,
-            value: 3,
+            value: numberPickerIndex,
             onChanged: onChange(ref),
             textStyle: Theme.of(context).textTheme.bodyText2?.copyWith(
                 fontSize: TimerOptions.fontSize * 0.5,
@@ -46,7 +49,7 @@ class TimeSelector extends HookConsumerWidget {
 
   onChange(WidgetRef ref) {
     return (int newValue) {
-      // ref.watch(provider).state = newValue
+      ref.watch(selectedStartTimeProvider.notifier).setSelectedTimeIndex(newValue);
     };
   }
 }
