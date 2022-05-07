@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/components/layout.dart';
+import 'package:regatta_timer/components/timer.dart';
 
 class PreStartView extends HookConsumerWidget {
   const PreStartView({
@@ -62,6 +63,6 @@ class StartTimer extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container();
+    return const Timer(Duration(minutes: -5));
   }
 }

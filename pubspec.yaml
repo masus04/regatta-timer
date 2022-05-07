@@ -12,6 +12,9 @@ dependencies:
   flutter:
     sdk: flutter
   hooks_riverpod: ^1.0.3
+  numberpicker: ^2.1.1
+  vibration: ^1.7.4-nullsafety.0
+  wakelock: ^0.6.1+2
 
 dev_dependencies:
   flutter_test:

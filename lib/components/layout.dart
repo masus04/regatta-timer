@@ -27,7 +27,21 @@ class RegattaTimerLayout extends StatelessWidget {
             Expanded(child: bottomButton),
           ],
         ),
-        centerWidget,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Spacer(flex: 1),
+            Expanded(
+              flex: 3,
+              child: Container(
+                height: 75,
+                color: Colors.white,
+                child: centerWidget,
+              ),
+            ),
+            const Spacer(flex: 1),
+          ],
+        ),
       ],
     );
   }

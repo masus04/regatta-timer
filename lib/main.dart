@@ -24,9 +24,10 @@ class RegattaTimer extends StatelessWidget {
           secondary: Colors.green,
           tertiary: Colors.red,
         ),
-        textTheme: Theme.of(context).textTheme.apply(
-          bodyColor: Colors.white,
-          displayColor: Colors.white,
+        textTheme: const TextTheme(
+          button: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
+          bodyText1: TextStyle(color: Colors.indigo),
+          bodyText2: TextStyle(color: Colors.black),
         ),
       ),
       initialRoute: Routes.setTimeRoute,
@@ -34,7 +35,7 @@ class RegattaTimer extends StatelessWidget {
         Routes.setTimeRoute: (context) => const SetTimeView(),
         Routes.preStartRoute: (context) => const PreStartView(),
         Routes.postStartRoute: (context) => const PostStartView(),
-        // Routes.setTimeRoute: (context) => const SettingsView(),
+        Routes.settingsRoute: (context) => const SettingsView(),
       },
     );
   }

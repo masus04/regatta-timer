@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/components/layout.dart';
+import 'package:regatta_timer/components/timer.dart';
 
 class PostStartView extends HookConsumerWidget {
   const PostStartView({
@@ -26,9 +27,15 @@ class ResetButton extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return TextButton(
       onPressed: onReset(context),
-      child: Text("Reset", style: Theme.of(context).textTheme.button),
+      child: Text("Reset", style: Theme
+          .of(context)
+          .textTheme
+          .button),
       style: TextButton.styleFrom(
-          backgroundColor: Theme.of(context).colorScheme.tertiary),
+          backgroundColor: Theme
+              .of(context)
+              .colorScheme
+              .tertiary),
     );
   }
 
@@ -48,9 +55,15 @@ class InfoButton extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return TextButton(
       onPressed: () {},
-      child: Text("Info", style: Theme.of(context).textTheme.button),
+      child: Text("Info", style: Theme
+          .of(context)
+          .textTheme
+          .button),
       style: TextButton.styleFrom(
-          backgroundColor: Theme.of(context).colorScheme.primary),
+          backgroundColor: Theme
+              .of(context)
+              .colorScheme
+              .primary),
     );
   }
 }
@@ -62,6 +75,6 @@ class RaceTimer extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container();
+    return const Timer(Duration(minutes: 5));
   }
 }
