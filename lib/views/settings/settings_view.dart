@@ -8,6 +8,8 @@ class SettingsView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return Container();
+    return Scaffold(
+      body: Container(),
+    );
   }
 }

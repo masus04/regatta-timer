@@ -12,10 +12,12 @@ class SetTimeView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const RegattaTimerLayout(
-      topButton: TimerTypeButton(),
-      bottomButton: StartButton(),
-      centerWidget: SetStartTimer(),
+    return const Scaffold(
+      body: RegattaTimerLayout(
+        topButton: TimerTypeButton(),
+        bottomButton: StartButton(),
+        centerWidget: SetStartTimer(),
+      ),
     );
   }
 }
@@ -51,7 +53,7 @@ class StartButton extends HookConsumerWidget {
     );
   }
 
-  void Function() onStartPressed(BuildContext context, WidgetRef ref){
+  void Function() onStartPressed(BuildContext context, WidgetRef ref) {
     return () {
       ref.watch(timerProvider.notifier).reset();
       Navigator.pushNamed(context, Routes.timerRoute);
