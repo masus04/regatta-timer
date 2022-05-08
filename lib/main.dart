@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/constants.dart';
-import 'package:regatta_timer/views/post_start/post_start_view.dart';
-import 'package:regatta_timer/views/pre_start/pre_start_view.dart';
 import 'package:regatta_timer/views/set_time/set_time_view.dart';
 import 'package:regatta_timer/views/settings/settings_view.dart';
+import 'package:regatta_timer/views/timer/timer_view.dart';
 
 void main() {
   runApp(const RegattaTimer());
@@ -36,8 +35,7 @@ class RegattaTimer extends StatelessWidget {
         initialRoute: Routes.setTimeRoute,
         routes: {
           Routes.setTimeRoute: (context) => const SetTimeView(),
-          Routes.preStartRoute: (context) => const PreStartView(),
-          Routes.postStartRoute: (context) => const PostStartView(),
+          Routes.timerRoute: (context) => const TimerView(),
           Routes.settingsRoute: (context) => const SettingsView(),
         },
       ),

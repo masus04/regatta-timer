@@ -1,7 +1,6 @@
 class Routes {
   static String setTimeRoute = "/setTime";
-  static String preStartRoute = "/preStart";
-  static String postStartRoute = "/postStart";
+  static String timerRoute = "/timer";
   static String settingsRoute = "/settings";
 }
 

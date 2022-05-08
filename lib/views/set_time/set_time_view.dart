@@ -28,7 +28,7 @@ class TimerTypeButton extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TextButton(
-      onPressed: () {},
+      onPressed: () {}, // TODO: Implement start by clock time
       child: Text("Timer", style: Theme.of(context).textTheme.button),
       style: TextButton.styleFrom(
           backgroundColor: Theme.of(context).colorScheme.primary),
@@ -44,17 +44,17 @@ class StartButton extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TextButton(
-      onPressed: onPressStart(context, ref),
+      onPressed: onStartPressed(context, ref),
       child: Text("Start", style: Theme.of(context).textTheme.button),
       style: TextButton.styleFrom(
           backgroundColor: Theme.of(context).colorScheme.secondary),
     );
   }
 
-  void Function() onPressStart(BuildContext context, WidgetRef ref){
+  void Function() onStartPressed(BuildContext context, WidgetRef ref){
     return () {
       ref.watch(timerProvider.notifier).reset();
-      Navigator.pushNamed(context, Routes.preStartRoute);
+      Navigator.pushNamed(context, Routes.timerRoute);
     };
   }
 }
