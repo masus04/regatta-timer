@@ -12,7 +12,7 @@ class PreStartView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final timer = ref.watch(ref.watch(timerProvider));
+    final timer = ref.watch(currentTimeProvider);
 
     return RegattaTimerLayout(
         topButton: const ResetButton(),
@@ -34,7 +34,7 @@ class ResetButton extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TextButton(
-      onPressed: pressReset(context),
+      onPressed: onPressReset(context, ref),
       child: Text("Reset", style: Theme
           .of(context)
           .textTheme
@@ -47,7 +47,7 @@ class ResetButton extends HookConsumerWidget {
     );
   }
 
-  void Function() pressReset(BuildContext context) {
+  void Function() onPressReset(BuildContext context, WidgetRef ref) {
     return () {
       Navigator.pop(context);
     };
@@ -62,7 +62,7 @@ class SyncButton extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TextButton(
-      onPressed: () {},
+      onPressed: onPressedSync(context, ref),
       child: Text("Sync", style: Theme
           .of(context)
           .textTheme
@@ -73,6 +73,12 @@ class SyncButton extends HookConsumerWidget {
               .colorScheme
               .primary),
     );
+  }
+
+  void Function() onPressedSync(BuildContext context, WidgetRef ref) {
+    return () {
+      ref.watch(timerProvider.notifier).sync();
+    };
   }
 }
 

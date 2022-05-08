@@ -27,14 +27,14 @@ class ResetButton extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TextButton(
-      onPressed: onReset(context),
+      onPressed: onPressedReset(context),
       child: Text("Reset", style: Theme.of(context).textTheme.button),
       style: TextButton.styleFrom(
           backgroundColor: Theme.of(context).colorScheme.tertiary),
     );
   }
 
-  void Function() onReset(BuildContext context) {
+  void Function() onPressedReset(BuildContext context) {
     return () {
       Navigator.pop(context);
     };

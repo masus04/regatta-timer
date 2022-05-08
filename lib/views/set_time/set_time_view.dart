@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/constants.dart';
+import 'package:regatta_timer/providers/timer_provider_v2.dart';
 import 'package:regatta_timer/views/components/layout.dart';
 import 'package:regatta_timer/views/set_time/time_selector.dart';
 
@@ -43,15 +44,16 @@ class StartButton extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TextButton(
-      onPressed: pressStart(context),
+      onPressed: onPressStart(context, ref),
       child: Text("Start", style: Theme.of(context).textTheme.button),
       style: TextButton.styleFrom(
           backgroundColor: Theme.of(context).colorScheme.secondary),
     );
   }
 
-  void Function() pressStart(BuildContext context){
+  void Function() onPressStart(BuildContext context, WidgetRef ref){
     return () {
+      ref.watch(timerProvider.notifier).reset();
       Navigator.pushNamed(context, Routes.preStartRoute);
     };
   }

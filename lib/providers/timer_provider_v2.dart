@@ -8,57 +8,56 @@ import 'package:wakelock/wakelock.dart';
 
 /// [timerStreamProvider] provides a StreamProvider<Duration> which in turn provides
 /// a Stream<Duration>, which represent the current state of the timer
-class TimerNotifier extends StateNotifier<StreamProvider<Duration>> {
-  final StateNotifierProviderRef ref;
+class TimerNotifier extends StateNotifier<Stream<Duration>> {
+  final Ref ref;
 
-  TimerNotifier({required this.ref}) : super(_timerProviderFactory()) {
-    reset();
+  TimerNotifier({required Duration startTime, required this.ref})
+      : super(_timerStreamFactory(startTime: startTime)) {
+    print("constructor called");
   }
 
-  Stream<Duration> reset() async* {
-    state = _timerProviderFactory();
+  void reset() {
+    state = _timerStreamFactory(
+      startTime: Duration(
+          minutes:
+              -ref.watch(selectedStartTimeProvider.notifier).selectedMinutes),
+    );
   }
 
-  void sync() {
-    final currentTime = ref.watch(state).value!;
+  Future<void> sync() async {
+    // TODO: add rxDart & BehaviorSubject to remove the wait time
+    final currentTime = await state.first; // state.last state.single
 
-    final syncedTime = currentTime.inSeconds % 60 >= 30
-        ? Duration(minutes: currentTime.inMinutes % 60 + 1)
-        : Duration(minutes: currentTime.inMinutes % 60);
+    final syncedTime = currentTime.inSeconds.remainder(60).abs() >= 30
+        ? Duration(
+            minutes: currentTime.inMinutes + 1 * currentTime.inMinutes.sign)
+        : Duration(minutes: currentTime.inMinutes);
 
-    state = _timerProviderFactory(startTime: syncedTime);
-  }
-
-  /// Returns a StreamProvider<Duration>, which in turn provides a Stream<Duration> representing the current timer state
-  /// If [startTime] == null, use [selectedStartTimeProvider]'s value (selected start time in UI).
-  static StreamProvider<Duration> _timerProviderFactory({Duration? startTime}) {
-    return StreamProvider<Duration>((ref) async* {
-      final _startTime = startTime ??
-          Duration(
-              minutes: ref
-                  .watch(selectedStartTimeProvider.notifier)
-                  .selectedMinutes);
-
-      final timerStream = _timerStreamFactory(_startTime);
-      yield _startTime;
-
-      await for (final time in timerStream) {
-        yield time;
-      }
-    });
+    state = _timerStreamFactory(startTime: syncedTime);
   }
 
   /// Returns a Stream<Duration>, counting up from [startTime].
   /// Pass a negative [startTime] to count from the negative value to 0
-  static Stream<Duration> _timerStreamFactory(Duration startTimer) {
+  static Stream<Duration> _timerStreamFactory({required Duration startTime}) {
     return Stream<Duration>.periodic(const Duration(seconds: 1),
-        (int t) => -startTimer + Duration(seconds: t + 1)).asBroadcastStream();
+        (int t) => startTime + Duration(seconds: t + 1)).asBroadcastStream();
   }
 }
 
 final timerProvider =
-    StateNotifierProvider<TimerNotifier, StreamProvider<Duration>>((ref) {
+    StateNotifierProvider<TimerNotifier, Stream<Duration>>((ref) {
   return TimerNotifier(
+    startTime: Duration(
+        minutes:
+            -ref.watch(selectedStartTimeProvider.notifier).selectedMinutes),
     ref: ref,
   );
+});
+
+final currentTimeProvider = StreamProvider<Duration>((ref) async* {
+  final timeStream = ref.watch(timerProvider);
+
+  await for (final time in timeStream) {
+    yield time;
+  }
 });
