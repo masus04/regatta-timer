@@ -44,7 +44,7 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "ch.masus.regatta_timer"
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion flutter.minSdkVersion // set to 26 or higher for generating icons
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
