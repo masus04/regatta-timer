@@ -2,7 +2,9 @@
 import 'dart:async';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:regatta_timer/constants.dart';
 import 'package:regatta_timer/providers/selected_start_time_provider.dart';
+import 'package:regatta_timer/views/components/vibration.dart';
 import 'package:vibration/vibration.dart';
 import 'package:wakelock/wakelock.dart';
 
@@ -14,7 +16,7 @@ class TimerNotifier extends StateNotifier<Stream<Duration>> {
   late Duration syncTarget;
 
   StreamSubscription<Duration>? _syncSubscription;
-  StreamSubscription<Duration>? _startSubscription;
+  StreamSubscription<VibrationEvent>? _vibrationSubscription;
 
   TimerNotifier({required this.ref}) : super(const Stream.empty()) {
     reset();
@@ -25,7 +27,7 @@ class TimerNotifier extends StateNotifier<Stream<Duration>> {
   set state(Stream<Duration> newState) {
     // Cancel all subscriptions
     _syncSubscription?.cancel();
-    _startSubscription?.cancel();
+    _vibrationSubscription?.cancel();
 
     super.state = newState;
 
@@ -36,13 +38,22 @@ class TimerNotifier extends StateNotifier<Stream<Duration>> {
       syncTarget = Duration(minutes: syncTimeStep.inMinutes);
     });
 
-    // Create & subscribe to new start stream
-    _startSubscription =
-        state.where((timeStep) => timeStep.inSeconds == 0).listen((event) {
-          // Race starts
-          Wakelock.disable();
-
-        });
+    // Create & subscribe to new vibration stream
+    _vibrationSubscription = state
+        .where(
+          // Filter for matched vibration patterns
+          (timeStep) => vibrationPatterns
+              .any((vibration) => vibration.activationTimeStep == timeStep),
+        )
+        .map(
+          // map to matching vibration pattern
+          (timeStep) => vibrationPatterns.firstWhere(
+              (vibration) => timeStep == vibration.activationTimeStep),
+        )
+        .listen(
+          // listen to resulting stream and execute pattern when triggered
+          (triggeredVibration) => triggeredVibration.execute(),
+        );
 
     // Enable Wakelock since the timer is in a pre start state
     Wakelock.enable();
