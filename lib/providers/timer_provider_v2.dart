@@ -11,29 +11,55 @@ import 'package:wakelock/wakelock.dart';
 class TimerNotifier extends StateNotifier<Stream<Duration>> {
   final Ref ref;
 
-  TimerNotifier({required Duration startTime, required this.ref})
-      : super(_timerStreamFactory(startTime: startTime)) {
-    print("constructor called");
+  late Duration syncTarget;
+
+  StreamSubscription<Duration>? _syncSubscription;
+  StreamSubscription<Duration>? _startSubscription;
+
+  TimerNotifier({required this.ref}) : super(const Stream.empty()) {
+    reset();
   }
 
+  /// Replace the state stream and handle subscriptions in order to update [syncTarget]
+  @override
+  set state(Stream<Duration> newState) {
+    // Cancel all subscriptions
+    _syncSubscription?.cancel();
+    _startSubscription?.cancel();
+
+    super.state = newState;
+
+    // Create & subscribe to new sync stream
+    _syncSubscription = state
+        .where((timeStep) => timeStep.inSeconds % 60 == 30)
+        .listen((syncTimeStep) {
+      syncTarget = Duration(minutes: syncTimeStep.inMinutes);
+    });
+
+    // Create & subscribe to new start stream
+    _startSubscription =
+        state.where((timeStep) => timeStep.inSeconds == 0).listen((event) {
+          // Race starts
+          Wakelock.disable();
+
+        });
+
+    // Enable Wakelock since the timer is in a pre start state
+    Wakelock.enable();
+  }
+
+  /// Reset timer to selected start time
   void reset() {
-    state = _timerStreamFactory(
-      startTime: Duration(
-          minutes:
-              -ref.watch(selectedStartTimeProvider.notifier).selectedMinutes),
-    );
+    final selectedStartTime =
+        -ref.watch(selectedStartTimeProvider.notifier).selectedDuration;
+
+    syncTarget = selectedStartTime;
+    state = _timerStreamFactory(startTime: selectedStartTime);
   }
 
-  Future<void> sync() async {
-    // TODO: add rxDart & BehaviorSubject to remove the wait time
-    final currentTime = await state.first; // state.last state.single
-
-    final syncedTime = currentTime.inSeconds.remainder(60).abs() >= 30
-        ? Duration(
-            minutes: currentTime.inMinutes + 1 * currentTime.inMinutes.sign)
-        : Duration(minutes: currentTime.inMinutes);
-
-    state = _timerStreamFactory(startTime: syncedTime);
+  /// Reset timer to closest minute (rounding down)
+  void sync() {
+    state = _timerStreamFactory(startTime: syncTarget);
   }
 
   /// Returns a Stream<Duration>, counting up from [startTime].
@@ -47,9 +73,6 @@ class TimerNotifier extends StateNotifier<Stream<Duration>> {
 final timerProvider =
     StateNotifierProvider<TimerNotifier, Stream<Duration>>((ref) {
   return TimerNotifier(
-    startTime: Duration(
-        minutes:
-            -ref.watch(selectedStartTimeProvider.notifier).selectedMinutes),
     ref: ref,
   );
 });

@@ -65,9 +65,7 @@ class RaceTimer extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Timer(
-      Duration(
-        minutes: -ref.watch(selectedStartTimeProvider.notifier).selectedMinutes,
-      ),
+      -ref.watch(selectedStartTimeProvider.notifier).selectedDuration,
     );
   }
 }
