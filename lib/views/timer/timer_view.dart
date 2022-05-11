@@ -53,12 +53,15 @@ class LockScreenButton extends HookConsumerWidget {
           decoration: ShapeDecoration(
             color: Colors.white,
             shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           ),
           child: IconButton(
             onPressed: onLockScreenPressed(context, ref),
-            icon: Icon(isScreenLocked ? Icons.lock : Icons.lock_open),
-            constraints: BoxConstraints.tight(const Size.fromRadius(20)),
+            icon: Icon(
+              isScreenLocked ? Icons.lock : Icons.lock_open,
+              size: 18,
+            ),
+            constraints: BoxConstraints.tight(const Size.fromRadius(18)),
           ),
         ),
       ),

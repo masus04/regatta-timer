@@ -18,6 +18,7 @@ class RegattaTimer extends StatelessWidget {
     return ProviderScope(
       child: MaterialApp(
         title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
         theme: ThemeData(
           primarySwatch: Colors.indigo,
           colorScheme: const ColorScheme.light(

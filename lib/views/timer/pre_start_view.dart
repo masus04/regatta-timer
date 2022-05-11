@@ -14,9 +14,23 @@ class PreStartView extends HookConsumerWidget {
     final currentTime = ref.watch(currentTimeProvider);
     final syncTime = ref.watch(timerProvider.notifier).syncTarget;
 
+    final resetButton = TopButton(
+      text: Text("Reset", style: Theme.of(context).textTheme.button),
+      onPressed: onResetPressed(context, ref),
+      buttonStyle: TextButton.styleFrom(
+          backgroundColor: Theme.of(context).colorScheme.tertiary),
+    );
+
+    final syncButton = BottomButton(
+      text: Text("Sync", style: Theme.of(context).textTheme.button),
+      onPressed: onSyncPressed(context, ref),
+      buttonStyle: TextButton.styleFrom(
+          backgroundColor: Theme.of(context).colorScheme.primary),
+    );
+
     return RegattaTimerLayout(
-      topButton: const ResetButton(),
-      bottomButton: const SyncButton(),
+      topButton: resetButton,
+      bottomButton: syncButton,
       centerWidget: currentTime.when(
         data: (timer) => StartTimer(timer),
         error: (err, stackTrace) => Text(err.toString()),
@@ -24,43 +38,11 @@ class PreStartView extends HookConsumerWidget {
       ),
     );
   }
-}
-
-class ResetButton extends HookConsumerWidget {
-  const ResetButton({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return TextButton(
-      onPressed: onResetPressed(context, ref),
-      child: Text("Reset", style: Theme.of(context).textTheme.button),
-      style: TextButton.styleFrom(
-          backgroundColor: Theme.of(context).colorScheme.tertiary),
-    );
-  }
 
   void Function() onResetPressed(BuildContext context, WidgetRef ref) {
     return () {
       Navigator.pop(context);
     };
-  }
-}
-
-class SyncButton extends HookConsumerWidget {
-  const SyncButton({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return TextButton(
-      onPressed: onSyncPressed(context, ref),
-      child: Text("Sync", style: Theme.of(context).textTheme.button),
-      style: TextButton.styleFrom(
-          backgroundColor: Theme.of(context).colorScheme.primary),
-    );
   }
 
   void Function() onSyncPressed(BuildContext context, WidgetRef ref) {

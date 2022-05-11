@@ -13,53 +13,44 @@ class PostStartView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentTime = ref.watch(currentTimeProvider);
 
+    final endRaceButton = TopButton(
+      text: Text("End Race", style: Theme.of(context).textTheme.button),
+      onPressed: onEndRacePressed(context, ref),
+      buttonStyle: TextButton.styleFrom(
+          backgroundColor: Theme.of(context).colorScheme.secondary),
+    );
+
+    final infoButton = BottomButton(
+      text: Text(
+        "Racing",
+        style: Theme.of(context).textTheme.button,
+        maxLines: 2,
+      ),
+      onPressed: onInfoPressed(context, ref),
+      buttonStyle: TextButton.styleFrom(
+          backgroundColor: Theme.of(context).colorScheme.primary),
+    );
+
     return RegattaTimerLayout(
-      topButton: const EndRaceButton(),
-      bottomButton: const InfoButton(),
+      topButton: endRaceButton,
+      bottomButton: infoButton,
       centerWidget: currentTime.when(
         data: (time) => RaceTimer(time),
         error: (err, stackTrace) => Text(err.toString()),
-        loading: () => const CircularProgressIndicator(), // This case should be unreachable
+        loading: () =>
+            const CircularProgressIndicator(), // This case should be unreachable
       ),
     );
   }
-}
 
-class EndRaceButton extends StatelessWidget {
-  const EndRaceButton({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: onEndRacePressed(context),
-      child: Text("End Race", style: Theme.of(context).textTheme.button),
-      style: TextButton.styleFrom(
-          backgroundColor: Theme.of(context).colorScheme.secondary),
-    );
-  }
-
-  void Function() onEndRacePressed(BuildContext context) {
+  void Function() onEndRacePressed(BuildContext context, WidgetRef ref) {
     return () {
       Navigator.pop(context);
     };
   }
-}
 
-class InfoButton extends StatelessWidget {
-  const InfoButton({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () {},
-      child: Text("Info", style: Theme.of(context).textTheme.button),
-      style: TextButton.styleFrom(
-          backgroundColor: Theme.of(context).colorScheme.primary),
-    );
+  void Function() onInfoPressed(BuildContext context, WidgetRef ref) {
+    return () {};
   }
 }
 

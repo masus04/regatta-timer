@@ -12,45 +12,34 @@ class SetTimeView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const Scaffold(
-      body: RegattaTimerLayout(
-        topButton: TimerTypeButton(),
-        bottomButton: StartButton(),
-        centerWidget: SetStartTimer(),
-      ),
-    );
-  }
-}
-
-class TimerTypeButton extends HookConsumerWidget {
-  const TimerTypeButton({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return TextButton(
-      onPressed: () {}, // TODO: Implement start by clock time
-      child: Text("Timer", style: Theme.of(context).textTheme.button),
-      style: TextButton.styleFrom(
+    final timerTypeButton = TopButton(
+      text: Text("Timer", style: Theme.of(context).textTheme.button),
+      onPressed: onTimerTypePressed(context, ref),
+      buttonStyle: TextButton.styleFrom(
           backgroundColor: Theme.of(context).colorScheme.primary),
     );
-  }
-}
 
-class StartButton extends HookConsumerWidget {
-  const StartButton({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return TextButton(
+    final startButton = BottomButton(
+      text: Text("Start", style: Theme.of(context).textTheme.button),
       onPressed: onStartPressed(context, ref),
-      child: Text("Start", style: Theme.of(context).textTheme.button),
-      style: TextButton.styleFrom(
+      buttonStyle: TextButton.styleFrom(
           backgroundColor: Theme.of(context).colorScheme.secondary),
     );
+
+    return Scaffold(
+      body: RegattaTimerLayout(
+        topButton: timerTypeButton,
+        bottomButton: startButton,
+        centerWidget: const SetStartTimer(),
+      ),
+    );
+
+  }
+
+  void Function() onTimerTypePressed(BuildContext context, WidgetRef ref) {
+    return () {
+
+    };
   }
 
   void Function() onStartPressed(BuildContext context, WidgetRef ref) {
@@ -59,6 +48,7 @@ class StartButton extends HookConsumerWidget {
       Navigator.pushNamed(context, Routes.timerRoute);
     };
   }
+
 }
 
 class SetStartTimer extends HookConsumerWidget {
