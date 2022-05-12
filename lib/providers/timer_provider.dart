@@ -2,158 +2,99 @@
 import 'dart:async';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:vibration/vibration.dart';
+import 'package:regatta_timer/constants.dart';
+import 'package:regatta_timer/providers/selected_start_time_provider.dart';
+import 'package:regatta_timer/views/components/vibration.dart';
 import 'package:wakelock/wakelock.dart';
 
-final startTimerProvider = StateNotifierProvider<SyncedTimerNotifier, Duration>(
-      (ref) {
-    // Set selected Start Time as initial state
-    const selectedStartTime = 0;
+/// [timerStreamProvider] provides a StreamProvider<Duration> which in turn provides
+/// a Stream<Duration>, which represent the current state of the timer
+class TimerNotifier extends StateNotifier<Stream<Duration>> {
+  final Ref ref;
 
-    // WakeLock Listener
-    final wakeLockListener = TimerListener(
-      condition: (Duration tick) => tick == Duration.zero,
-      callBack: (Duration tick) => Wakelock.disable(),
-    );
+  late Duration syncTarget;
 
-    // Vibration Listener
-    final vibrationPatterns = [
-      _VibrationPattern.exact(
-          timeEquals: const Duration(minutes: -5),
-          pattern: [100, 500, 100, 500, 100, 500, 100, 500, 100, 500]),
-      _VibrationPattern.exact(
-          timeEquals: const Duration(minutes: -3),
-          pattern: [100, 500, 100, 500, 100, 500]),
-      _VibrationPattern.exact(
-          timeEquals: const Duration(minutes: -2),
-          pattern: [100, 500, 100, 500]),
-      _VibrationPattern.exact(
-          timeEquals: const Duration(minutes: -1), pattern: [100, 500]),
-      _VibrationPattern.exact(
-          timeEquals: const Duration(seconds: -30), pattern: [0, 500]),
-      _VibrationPattern.exact(
-          timeEquals: const Duration(seconds: -20), pattern: [0, 500]),
-      _VibrationPattern.exact(
-          timeEquals: const Duration(seconds: -10), pattern: [0, 500]),
-      _VibrationPattern(
-        // Any second between 1 and 9, trigger single short vibration
-        triggers: (Duration tick) =>
-        const Duration(seconds: -9) <= tick &&
-            tick <= const Duration(seconds: -1),
-        pattern: [100, 100],
-      ),
-      _VibrationPattern.exact(timeEquals: Duration.zero, pattern: [0, 2000]),
-    ];
+  StreamSubscription<Duration>? _syncSubscription;
+  StreamSubscription<VibrationEvent>? _vibrationSubscription;
 
-    final vibrationListener = TimerListener(
-        condition: (Duration tick) => true,
-        callBack: (Duration tick) {
-          final matchingPatterns =
-          vibrationPatterns.where((pattern) => pattern.triggers(tick));
-
-          if (matchingPatterns.isNotEmpty) {
-            Vibration.vibrate(pattern: matchingPatterns.first.pattern);
-          }
-        });
-
-    return SyncedTimerNotifier(-selectedStartTime)
-      ..addTimerListener(wakeLockListener)
-      ..addTimerListener(vibrationListener);
-  },
-);
-
-class SyncedTimerNotifier extends StateNotifier<Duration> {
-  Duration syncTarget;
-  late Stream<Duration> _stream;
-  final List<StreamSubscription<Duration>> subscriptions = [];
-  List<TimerListener> timerListeners;
-
-  SyncedTimerNotifier(int startTimer)
-      : syncTarget = Duration(minutes: startTimer),
-        timerListeners = [],
-        super(Duration(minutes: startTimer)) {
-    // Setup all required streams
-    set(syncTarget);
-
-    // Add Refresh listener
-    timerListeners.add(
-      TimerListener(
-        condition: (Duration tick) => tick.inSeconds.remainder(60).abs() == 30,
-        callBack: (Duration tick) =>
-        syncTarget = Duration(minutes: tick.inMinutes),
-      ),
-    );
+  TimerNotifier({required this.ref}) : super(const Stream.empty()) {
+    reset();
   }
 
-  // Sync Timer to nearest minute
-  sync() {
-    set(syncTarget);
-  }
-
-  // Set Timer to given Duration
-  set(Duration timer) {
-    // Create new Stream
-    state = timer;
-    syncTarget = timer;
-    _stream = _newTimerStreamFromDuration(timer);
-
+  /// Replace the state stream and handle subscriptions in order to update [syncTarget]
+  @override
+  set state(Stream<Duration> newState) {
     // Cancel all subscriptions
-    for (var subscription in subscriptions) {
-      subscription.cancel();
-    }
+    _syncSubscription?.cancel();
+    _vibrationSubscription?.cancel();
 
-    // Subscribe to new Stream
-    final subscription = _stream.listen((tick) {
-      state = tick;
+    super.state = newState;
+
+    // Create & subscribe to new sync stream
+    _syncSubscription = state
+        .where((timeStep) => timeStep.inSeconds % 60 == 30)
+        .listen((syncTimeStep) {
+      syncTarget = Duration(minutes: syncTimeStep.inMinutes);
     });
-    subscriptions.add(subscription);
 
-    // Resubscribe all listeners to new stream
-    for (final listener in timerListeners) {
-      subscriptions.add(
-        _stream
-            .where((tick) => listener.condition(tick))
-            .listen((tick) => listener.callBack(tick)),
-      );
-    }
+    // Create & subscribe to new vibration stream
+    _vibrationSubscription = state
+        .where(
+          // Filter for matched vibration patterns
+          (timeStep) => vibrationPatterns
+              .any((vibration) => vibration.activationTimeStep == timeStep),
+        )
+        .map(
+          // map to matching vibration pattern
+          (timeStep) => vibrationPatterns.firstWhere(
+              (vibration) => timeStep == vibration.activationTimeStep),
+        )
+        .listen(
+          // listen to resulting stream and execute pattern when triggered
+          (triggeredVibration) => triggeredVibration.execute(),
+        );
+
+    // Enable Wakelock since the timer is in a pre start state
+    Wakelock.enable();
   }
 
-  addTimerListener(TimerListener listener) {
-    timerListeners.add(listener);
-    subscriptions.add(
-      _stream
-          .where((tick) => listener.condition(tick))
-          .listen((tick) => listener.callBack(tick)),
-    );
+  /// Reset timer to selected start time
+  void reset() {
+    final selectedStartTime =
+        -ref.watch(selectedStartTimeProvider.notifier).selectedDuration;
+
+    syncTarget = selectedStartTime;
+    state = _timerStreamFactory(startTime: selectedStartTime);
   }
 
-  clear() {
-    for (var sub in subscriptions) {
-      sub.cancel();
-    }
+  /// Reset timer to closest minute (rounding down)
+  void sync() {
+    state = _timerStreamFactory(startTime: syncTarget);
+  }
 
-    _stream.drain();
+  void abort() {
+    state = const Stream.empty();
+  }
+
+  /// Returns a Stream<Duration>, counting up from [startTime].
+  /// Pass a negative [startTime] to count from the negative value to 0
+  static Stream<Duration> _timerStreamFactory({required Duration startTime}) {
+    return Stream<Duration>.periodic(const Duration(seconds: 1),
+        (int t) => startTime + Duration(seconds: t + 1)).asBroadcastStream();
   }
 }
 
-class TimerListener {
-  final bool Function(Duration) condition;
-  final void Function(Duration) callBack;
+final timerProvider =
+    StateNotifierProvider<TimerNotifier, Stream<Duration>>((ref) {
+  return TimerNotifier(
+    ref: ref,
+  );
+});
 
-  TimerListener({required this.condition, required this.callBack});
-}
+final currentTimeProvider = StreamProvider<Duration>((ref) async* {
+  final timeStream = ref.watch(timerProvider);
 
-class _VibrationPattern {
-  bool Function(Duration) triggers;
-  List<int> pattern;
-
-  _VibrationPattern({required this.triggers, required this.pattern});
-
-  _VibrationPattern.exact({required Duration timeEquals, required this.pattern})
-      : triggers = ((Duration tick) => tick == timeEquals);
-}
-
-Stream<Duration> _newTimerStreamFromDuration(Duration startTimer) {
-  return Stream<Duration>.periodic(const Duration(seconds: 1),
-          (int t) => startTimer + Duration(seconds: t + 1)).asBroadcastStream();
-}
+  await for (final time in timeStream) {
+    yield time;
+  }
+});

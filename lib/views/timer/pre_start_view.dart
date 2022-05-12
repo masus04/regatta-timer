@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:regatta_timer/providers/timer_provider_v2.dart';
+import 'package:regatta_timer/providers/timer_provider.dart';
 import 'package:regatta_timer/views/components/layout.dart';
 import 'package:regatta_timer/views/components/timer.dart';
 
@@ -41,6 +41,7 @@ class PreStartView extends HookConsumerWidget {
 
   void Function() onResetPressed(BuildContext context, WidgetRef ref) {
     return () {
+      ref.watch(timerProvider.notifier).abort();
       Navigator.pop(context);
     };
   }
