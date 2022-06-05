@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:regatta_timer/providers/app_lock_provider.dart';
 
-class RegattaTimerLayout extends StatelessWidget {
+class RegattaTimerLayout extends HookConsumerWidget {
   final TopButton topButton;
   final BottomButton bottomButton;
   final Widget centerWidget;
@@ -13,36 +15,47 @@ class RegattaTimerLayout extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final screenLocked = ref.watch(appLockedProvider);
+
     return SafeArea(
       child: Stack(
-        fit: StackFit.expand,
-        // Stack center widget on top of both buttons
+        alignment: AlignmentDirectional.centerEnd,
         children: [
-          Container(color: Colors.white),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(child: topButton),
-              SizedBox.fromSize(size: const Size.fromHeight(5)),
-              Expanded(child: bottomButton),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Spacer(flex: 1),
-              Expanded(
-                flex: 3,
-                child: Container(
-                  height: 75,
-                  color: Colors.white,
-                  child: centerWidget,
+          IgnorePointer(
+            ignoring: screenLocked,
+            child: Stack(
+              fit: StackFit.expand,
+              // Stack center widget on top of both buttons
+              children: [
+                Container(color: Colors.white),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(child: topButton),
+                    SizedBox.fromSize(size: const Size.fromHeight(5)),
+                    Expanded(child: bottomButton),
+                  ],
                 ),
-              ),
-              const Spacer(flex: 1),
-            ],
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Spacer(flex: 1),
+                    Expanded(
+                      flex: 3,
+                      child: Container(
+                        height: 75,
+                        color: Colors.white,
+                        child: centerWidget,
+                      ),
+                    ),
+                    const Spacer(flex: 1),
+                  ],
+                ),
+              ],
+            ),
           ),
+          const LockScreenButton(),
         ],
       ),
     );
@@ -122,6 +135,44 @@ class BottomButton extends StatelessWidget {
         ],
       ),
     );
-    ;
+  }
+}
+
+class LockScreenButton extends HookConsumerWidget {
+  const LockScreenButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isScreenLocked = ref.watch(appLockedProvider);
+
+    return Padding(
+      padding: const EdgeInsets.only(right: 1),
+      child: Material(
+        color: Colors.transparent,
+        child: Ink(
+          decoration: ShapeDecoration(
+            color: Colors.white,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          ),
+          child: IconButton(
+            onPressed: onLockScreenPressed(context, ref),
+            icon: Icon(
+              isScreenLocked ? Icons.lock : Icons.lock_open,
+              size: 18,
+            ),
+            constraints: BoxConstraints.tight(const Size.fromRadius(18)),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void Function() onLockScreenPressed(BuildContext context, WidgetRef ref) {
+    return () {
+      ref.watch(appLockedProvider.notifier).toggle();
+    };
   }
 }
