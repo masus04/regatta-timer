@@ -53,19 +53,21 @@ class TopButton extends StatelessWidget {
   final Text text;
   final void Function() onPressed;
   final ButtonStyle buttonStyle;
+  final bool longPressRequired;
 
   const TopButton({
     Key? key,
     required this.text,
     required this.onPressed,
     required this.buttonStyle,
+    this.longPressRequired = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
       onLongPress: onPressed,
-      onPressed: onPressed,
+      onPressed: longPressRequired ? () {} : onPressed,
       style: buttonStyle,
       child: Column(
         children: [
@@ -89,18 +91,21 @@ class BottomButton extends StatelessWidget {
   final Text text;
   final void Function() onPressed;
   final ButtonStyle buttonStyle;
+  final bool longPressRequired;
 
   const BottomButton({
     Key? key,
     required this.text,
     required this.onPressed,
     required this.buttonStyle,
+    this.longPressRequired = false,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      onPressed: onPressed,
+      onLongPress: onPressed,
+      onPressed: longPressRequired ? () {} : onPressed,
       style: buttonStyle,
       child: Column(
         children: [
