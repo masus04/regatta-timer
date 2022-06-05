@@ -64,6 +64,7 @@ class TopButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextButton(
+      onLongPress: onPressed,
       onPressed: onPressed,
       style: buttonStyle,
       child: Column(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/providers/timer_provider.dart';
+import 'package:regatta_timer/providers/app_view_provider.dart';
 import 'package:regatta_timer/views/components/layout.dart';
 import 'package:regatta_timer/views/components/timer.dart';
 
@@ -45,8 +46,7 @@ class PostStartView extends HookConsumerWidget {
 
   void Function() onEndRacePressed(BuildContext context, WidgetRef ref) {
     return () {
-      ref.watch(timerProvider.notifier).abort();
-      Navigator.pop(context);
+      ref.watch(appViewProvider.notifier).enterSetTimeState(context);
     };
   }
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:regatta_timer/constants.dart';
-import 'package:regatta_timer/providers/timer_provider.dart';
+import 'package:regatta_timer/providers/app_view_provider.dart';
 import 'package:regatta_timer/views/components/layout.dart';
 import 'package:regatta_timer/views/set_time/time_selector.dart';
 
@@ -33,22 +32,17 @@ class SetTimeView extends HookConsumerWidget {
         centerWidget: const SetStartTimer(),
       ),
     );
-
   }
 
   void Function() onTimerTypePressed(BuildContext context, WidgetRef ref) {
-    return () {
-
-    };
+    return () {};
   }
 
   void Function() onStartPressed(BuildContext context, WidgetRef ref) {
     return () {
-      ref.watch(timerProvider.notifier).reset();
-      Navigator.pushNamed(context, Routes.timerRoute);
+      ref.watch(appViewProvider.notifier).enterPreStartState(context);
     };
   }
-
 }
 
 class SetStartTimer extends HookConsumerWidget {

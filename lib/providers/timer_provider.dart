@@ -4,8 +4,8 @@ import 'dart:async';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/constants.dart';
 import 'package:regatta_timer/providers/selected_start_time_provider.dart';
+import 'package:regatta_timer/providers/settings_provider.dart';
 import 'package:regatta_timer/views/components/vibration.dart';
-import 'package:wakelock/wakelock.dart';
 
 /// [timerStreamProvider] provides a StreamProvider<Duration> which in turn provides
 /// a Stream<Duration>, which represent the current state of the timer
@@ -29,6 +29,7 @@ class TimerNotifier extends StateNotifier<Stream<Duration>> {
     _vibrationSubscription?.cancel();
 
     super.state = newState;
+    final vibrationPatterns = ref.read(settingsProvider).selectedVibrations;
 
     // Create & subscribe to new sync stream
     _syncSubscription = state
@@ -53,9 +54,6 @@ class TimerNotifier extends StateNotifier<Stream<Duration>> {
           // listen to resulting stream and execute pattern when triggered
           (triggeredVibration) => triggeredVibration.execute(),
         );
-
-    // Enable Wakelock since the timer is in a pre start state
-    Wakelock.enable();
   }
 
   /// Reset timer to selected start time

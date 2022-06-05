@@ -1,15 +1,14 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:regatta_timer/constants.dart';
+import 'package:regatta_timer/providers/settings_provider.dart';
 
 class SelectedStartTimeNotifier extends StateNotifier<int> {
-  SelectedStartTimeNotifier(int selectedTimeIndex) : super(selectedTimeIndex);
+  final Ref ref;
 
-  int get selectedMinutes {
-    return startTimeOptions[state];
-  }
+  SelectedStartTimeNotifier(int selectedTimeIndex, {required this.ref})
+      : super(selectedTimeIndex);
 
   Duration get selectedDuration {
-    return Duration(minutes: selectedMinutes);
+    return ref.read(settingsProvider).selectedStartTimeOptions[state].startTime;
   }
 
   void setSelectedTimeIndex(int newValue) {
@@ -19,7 +18,7 @@ class SelectedStartTimeNotifier extends StateNotifier<int> {
 
 final selectedStartTimeProvider =
     StateNotifierProvider<SelectedStartTimeNotifier, int>((ref) {
-  return SelectedStartTimeNotifier(3);
+  return SelectedStartTimeNotifier(4, ref: ref);
 });
 
 Stream<Duration> _newTimerStreamFromDuration(Duration startTimer) {
