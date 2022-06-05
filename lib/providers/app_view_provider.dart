@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:regatta_timer/providers/app_lock_provider.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
 import 'package:regatta_timer/providers/timer_provider.dart';
 import 'package:flutter/material.dart';
@@ -32,10 +33,13 @@ class AppViewNotifier extends StateNotifier<AppView> {
   }
 
   void enterPreStartState(BuildContext context) {
-    ref.watch(timerProvider.notifier).reset();
+    final settings = ref.watch(settingsProvider);
+    final appLock = ref.read(appLockedProvider);
+
+    ref.read(timerProvider.notifier).reset();
     Navigator.pushNamed(context, preStartState.route);
 
-    if (ref.watch(settingsProvider).preStartWakelockEnabled) {
+    if (settings.preStartWakelockEnabled && !appLock) {
       Wakelock.enable();
     } else {
       Wakelock.disable();
@@ -43,7 +47,10 @@ class AppViewNotifier extends StateNotifier<AppView> {
   }
 
   void enterPostStartState(BuildContext context) {
-    if (ref.watch(settingsProvider).postStartWakelockEnabled) {
+    final settings = ref.watch(settingsProvider);
+    final appLock = ref.read(appLockedProvider);
+
+    if (settings.postStartWakelockEnabled && !appLock) {
       Wakelock.enable();
     } else {
       Wakelock.disable();
