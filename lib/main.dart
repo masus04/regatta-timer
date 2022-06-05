@@ -33,11 +33,11 @@ class RegattaTimer extends StatelessWidget {
             bodyText2: TextStyle(color: Colors.black),
           ),
         ),
-        initialRoute: AppViewNotifier.setTimeState.route,
+        initialRoute: AppViewNotifier.setTimeView.route,
         routes: {
-          AppViewNotifier.setTimeState.route: (context) => const SetTimeView(),
-          AppViewNotifier.preStartState.route: (context) => const TimerView(),
-          AppViewNotifier.settingsState.route: (context) =>
+          AppViewNotifier.setTimeView.route: (context) => const SetTimeView(),
+          AppViewNotifier.preStartView.route: (context) => const TimerView(),
+          AppViewNotifier.settingsView.route: (context) =>
               const SettingsView(),
         },
       ),

@@ -14,12 +14,12 @@ class AppView {
 class AppViewNotifier extends StateNotifier<AppView> {
   final Ref ref;
 
-  static AppView setTimeState = AppView("/setTime");
-  static AppView preStartState = AppView("/timer");
-  static AppView postStartState = AppView("/timer");
-  static AppView settingsState = AppView("/settings");
+  static AppView setTimeView = AppView("/setTime");
+  static AppView preStartView = AppView("/timer");
+  static AppView postStartView = AppView("/timer");
+  static AppView settingsView = AppView("/settings");
 
-  AppViewNotifier({required this.ref}) : super(setTimeState);
+  AppViewNotifier({required this.ref}) : super(setTimeView);
 
   void enterSetTimeState(BuildContext context) {
     ref.watch(timerProvider.notifier).abort();
@@ -37,7 +37,7 @@ class AppViewNotifier extends StateNotifier<AppView> {
     final appLock = ref.read(appLockedProvider);
 
     ref.read(timerProvider.notifier).reset();
-    Navigator.pushNamed(context, preStartState.route);
+    Navigator.pushNamed(context, preStartView.route);
 
     if (settings.preStartWakelockEnabled && !appLock) {
       Wakelock.enable();
