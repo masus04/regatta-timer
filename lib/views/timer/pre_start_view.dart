@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:regatta_timer/providers/timer_provider.dart';
 import 'package:regatta_timer/providers/app_view_provider.dart';
+import 'package:regatta_timer/providers/settings_provider.dart';
+import 'package:regatta_timer/providers/timer_provider.dart';
 import 'package:regatta_timer/views/components/layout.dart';
 import 'package:regatta_timer/views/components/timer.dart';
 
@@ -18,15 +19,15 @@ class PreStartView extends HookConsumerWidget {
     final resetButton = TopButton(
       text: Text("Reset", style: Theme.of(context).textTheme.button),
       onPressed: onResetPressed(context, ref),
-      buttonStyle: TextButton.styleFrom(
-          backgroundColor: Theme.of(context).colorScheme.tertiary),
+      buttonStyle: TextButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.tertiary),
+      longPressRequired: ref.watch(settingsProvider).longPressToResetPreStart,
     );
 
     final syncButton = BottomButton(
       text: Text("Sync", style: Theme.of(context).textTheme.button),
       onPressed: onSyncPressed(context, ref),
-      buttonStyle: TextButton.styleFrom(
-          backgroundColor: Theme.of(context).colorScheme.primary),
+      buttonStyle: TextButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.primary),
+      longPressRequired: ref.watch(settingsProvider).longPressToSync,
     );
 
     return RegattaTimerLayout(

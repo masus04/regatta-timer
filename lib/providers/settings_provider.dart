@@ -27,6 +27,7 @@ BoatSpeedUnit? boatSpeedUnitFromString(String? name) {
 
 class RegattaTimerSettings {
   // Long Press settings
+  final bool longPressToStart;
   final bool longPressToResetPreStart;
   final bool longPressToResetPostStart;
   final bool longPressToSync;
@@ -45,6 +46,7 @@ class RegattaTimerSettings {
   final List<VibrationEvent> selectedVibrations;
 
   RegattaTimerSettings({
+    required this.longPressToStart,
     required this.longPressToResetPreStart,
     required this.longPressToResetPostStart,
     required this.longPressToSync,
@@ -58,7 +60,8 @@ class RegattaTimerSettings {
   });
 
   copyWith(
-      {bool? longPressToResetPreStart,
+      {bool? longPressToStart,
+      bool? longPressToResetPreStart,
       bool? longPressToResetPostStart,
       bool? longPressToSync,
       bool? timerSelectionWakelockEnabled,
@@ -69,6 +72,7 @@ class RegattaTimerSettings {
       List<StartTimeOption>? selectedStartTimeOptions,
       List<VibrationEvent>? selectedVibrations}) {
     return RegattaTimerSettings(
+      longPressToStart: longPressToStart ?? this.longPressToStart,
       longPressToResetPreStart: longPressToResetPreStart ?? this.longPressToResetPreStart,
       longPressToResetPostStart: longPressToResetPostStart ?? this.longPressToResetPostStart,
       longPressToSync: longPressToSync ?? this.longPressToSync,
@@ -85,6 +89,7 @@ class RegattaTimerSettings {
 
 enum _SharedPreferenceKeys {
   // LongPress
+  longPressToStart,
   longPressToResetPreStart,
   longPressToResetPostStart,
   longPressToSync,
@@ -114,6 +119,7 @@ class SettingsNotifier extends StateNotifier<RegattaTimerSettings> {
     final preferences = await prefs;
 
     state = state.copyWith(
+      longPressToStart: preferences.getBool(_SharedPreferenceKeys.longPressToStart.name),
       longPressToResetPreStart: preferences.getBool(_SharedPreferenceKeys.longPressToResetPreStart.name),
       longPressToResetPostStart: preferences.getBool(_SharedPreferenceKeys.longPressToResetPostStart.name),
       longPressToSync: preferences.getBool(_SharedPreferenceKeys.longPressToSync.name),
@@ -131,6 +137,14 @@ class SettingsNotifier extends StateNotifier<RegattaTimerSettings> {
 
   _setStringToSharedPrefs(_SharedPreferenceKeys key, String value) async {
     (await prefs).setString(key.name, value);
+  }
+
+  setLongPressToStart(bool newValue) {
+    state = state.copyWith(
+      longPressToStart: newValue,
+    );
+
+    _setBoolToSharedPrefs(_SharedPreferenceKeys.longPressToStart, newValue);
   }
 
   setLongPressToResetPreStart(bool newValue) {
@@ -221,6 +235,7 @@ final settingsProvider = StateNotifierProvider<SettingsNotifier, RegattaTimerSet
     RegattaTimerSettings(
       // Long Press settings
       // These options are not quite intuitive for first time users
+      longPressToStart: false,
       longPressToResetPostStart: false,
       longPressToResetPreStart: false,
       longPressToSync: false,

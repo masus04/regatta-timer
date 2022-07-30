@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/providers/app_view_provider.dart';
 import 'package:regatta_timer/providers/boat_speed_provider.dart';
+import 'package:regatta_timer/providers/settings_provider.dart';
 import 'package:regatta_timer/views/components/circular_icon_button.dart';
 import 'package:regatta_timer/views/components/layout.dart';
 import 'package:regatta_timer/views/set_time/time_selector.dart';
@@ -19,15 +20,14 @@ class SetTimeView extends HookConsumerWidget {
     final timerTypeButton = TopButton(
       text: Text("Timer", style: Theme.of(context).textTheme.button),
       onPressed: onTimerTypePressed(context, ref),
-      buttonStyle: TextButton.styleFrom(
-          backgroundColor: Theme.of(context).colorScheme.primary),
+      buttonStyle: TextButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.primary),
     );
 
     final startButton = BottomButton(
       text: Text("Start", style: Theme.of(context).textTheme.button),
       onPressed: onStartPressed(context, ref),
-      buttonStyle: TextButton.styleFrom(
-          backgroundColor: Theme.of(context).colorScheme.secondary),
+      buttonStyle: TextButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.secondary),
+      longPressRequired: ref.watch(settingsProvider).longPressToStart,
     );
 
     final settingsButton = CircularIconButton(

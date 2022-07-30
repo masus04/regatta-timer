@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/providers/app_view_provider.dart';
 import 'package:regatta_timer/providers/boat_speed_provider.dart';
+import 'package:regatta_timer/providers/settings_provider.dart';
 import 'package:regatta_timer/providers/timer_provider.dart';
 import 'package:regatta_timer/views/components/layout.dart';
 import 'package:regatta_timer/views/components/timer.dart';
@@ -19,6 +20,7 @@ class PostStartView extends HookConsumerWidget {
       text: Text("End Race", style: Theme.of(context).textTheme.button),
       onPressed: onEndRacePressed(context, ref),
       buttonStyle: TextButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.secondary),
+      longPressRequired: ref.watch(settingsProvider).longPressToResetPostStart,
     );
 
     final infoButton = BottomButton(

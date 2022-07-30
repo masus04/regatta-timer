@@ -21,19 +21,24 @@ class SettingsView extends HookConsumerWidget {
           ),
           const Divider(color: Colors.white),
           BooleanSetting(
-            text: "Long Press to Reset PreStart",
-            value: ref.watch(settingsProvider).longPressToResetPreStart,
-            onChanged: (newValue) => ref.read(settingsProvider.notifier).setLongPressToResetPreStart(newValue),
+            text: "Long Press to Start",
+            value: ref.watch(settingsProvider).longPressToStart,
+            onChanged: (newValue) => ref.read(settingsProvider.notifier).setLongPressToStart(newValue),
           ),
           BooleanSetting(
-            text: "Long Press to Reset PostStart",
-            value: ref.watch(settingsProvider).longPressToResetPostStart,
-            onChanged: (newValue) => ref.read(settingsProvider.notifier).setLongPressToResetPostStart(newValue),
+            text: "Long Press to Reset",
+            value: ref.watch(settingsProvider).longPressToResetPreStart,
+            onChanged: (newValue) => ref.read(settingsProvider.notifier).setLongPressToResetPreStart(newValue),
           ),
           BooleanSetting(
             text: "Long Press to Sync",
             value: ref.watch(settingsProvider).longPressToSync,
             onChanged: (newValue) => ref.read(settingsProvider.notifier).toggleLongPressToSync(newValue),
+          ),
+          BooleanSetting(
+            text: "Long Press to End Race",
+            value: ref.watch(settingsProvider).longPressToResetPostStart,
+            onChanged: (newValue) => ref.read(settingsProvider.notifier).setLongPressToResetPostStart(newValue),
           ),
           const Divider(color: Colors.white),
           BooleanSetting(
