@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/providers/app_view_provider.dart';
+import 'package:regatta_timer/providers/boat_speed_provider.dart';
 import 'package:regatta_timer/views/components/circular_icon_button.dart';
 import 'package:regatta_timer/views/components/layout.dart';
 import 'package:regatta_timer/views/set_time/time_selector.dart';
@@ -12,6 +13,9 @@ class SetTimeView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Trigger provider initialization
+    ref.read(boatSpeedProvider);
+
     final timerTypeButton = TopButton(
       text: Text("Timer", style: Theme.of(context).textTheme.button),
       onPressed: onTimerTypePressed(context, ref),

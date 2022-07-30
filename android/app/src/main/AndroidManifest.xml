@@ -4,6 +4,10 @@
     <!-- Allows access to the VIBRATE api -->
     <uses-permission android:name="android.permission.VIBRATE" />
 
+    <!-- Allows access to use the GPS location api -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
+
     <!-- Flags the app as a Wear app -->
     <uses-feature android:name="android.hardware.type.watch" />
 

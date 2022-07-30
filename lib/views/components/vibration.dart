@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:flutter/widgets.dart';
 import 'package:vibration/vibration.dart';
 
 /// Represents a vibration event which is triggered when the start timer is equal to the [activationTimeStep]
@@ -27,7 +28,7 @@ class VibrationEvent {
   }
 
   void execute() {
-    log("Executing pattern: $activationTimeStep - ${numVibrations}x ${vibrationDuration}ms");
+    debugPrint("Executing vibration pattern: $activationTimeStep - ${numVibrations}x ${vibrationDuration}ms");
     Vibration.vibrate(pattern: pattern);
   }
 }

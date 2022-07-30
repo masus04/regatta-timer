@@ -15,8 +15,7 @@ class TimerView extends HookConsumerWidget {
 
     return Scaffold(
       body: timeProvider.when(
-        data: (time) =>
-            time.isNegative ? const PreStartView() : const PostStartView(),
+        data: (time) => time.isNegative ? const PreStartView() : const PostStartView(),
         error: (err, stackTrace) => Text(err.toString()),
         loading: () => const PreStartView(),
       ),

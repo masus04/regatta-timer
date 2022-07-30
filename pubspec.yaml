@@ -12,6 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_launcher_icons: ^0.9.3
+  geolocator: ^9.0.1
   hooks_riverpod: ^1.0.4
   numberpicker: ^2.1.1
   shared_preferences: ^2.0.15
