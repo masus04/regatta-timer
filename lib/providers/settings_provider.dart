@@ -34,15 +34,70 @@ class RegattaTimerSettings {
     required this.selectedStartTimeOptions,
     required this.selectedVibrations,
   });
+
+  copyWith(
+      {bool? longPressToResetPreStart,
+      bool? longPressToResetPostStart,
+      bool? longPressToSync,
+      bool? timerSelectionWakelockEnabled,
+      bool? preStartWakelockEnabled,
+      bool? postStartWakelockEnabled,
+      List<StartTimeOption>? selectedStartTimeOptions,
+      List<VibrationEvent>? selectedVibrations}) {
+    return RegattaTimerSettings(
+      longPressToResetPreStart: longPressToResetPreStart ?? this.longPressToResetPreStart,
+      longPressToResetPostStart: longPressToResetPostStart ?? this.longPressToResetPostStart,
+      longPressToSync: longPressToSync ?? this.longPressToSync,
+      timerSelectionWakelockEnabled: timerSelectionWakelockEnabled ?? this.timerSelectionWakelockEnabled,
+      preStartWakelockEnabled: preStartWakelockEnabled ?? this.preStartWakelockEnabled,
+      postStartWakelockEnabled: postStartWakelockEnabled ?? this.postStartWakelockEnabled,
+      selectedStartTimeOptions: selectedStartTimeOptions ?? this.selectedStartTimeOptions,
+      selectedVibrations: selectedVibrations ?? this.selectedVibrations,
+    );
+  }
 }
 
 class SettingsNotifier extends StateNotifier<RegattaTimerSettings> {
-  SettingsNotifier(RegattaTimerSettings defaultSettings)
-      : super(defaultSettings);
+  SettingsNotifier(RegattaTimerSettings defaultSettings) : super(defaultSettings);
+
+  toggleLongPressToResetPreStart() {
+    state = state.copyWith(
+      longPressToResetPreStart: !state.longPressToResetPreStart,
+    );
+  }
+
+  toggleLongPressToResetPostStart() {
+    state = state.copyWith(
+      longPressToResetPostStart: !state.longPressToResetPostStart,
+    );
+  }
+
+  toggleLongPressToSync() {
+    state = state.copyWith(
+      longPressToSync: !state.longPressToSync,
+    );
+  }
+
+  toggleTimerSelectionWakelockEnabled() {
+    state = state.copyWith(
+      timerSelectionWakelockEnabled: !state.timerSelectionWakelockEnabled,
+    );
+  }
+
+  togglePreStartWakelockEnabled() {
+    state = state.copyWith(
+      preStartWakelockEnabled: !state.preStartWakelockEnabled,
+    );
+  }
+
+  togglePostStartWakelockEnabled() {
+    state = state.copyWith(
+      postStartWakelockEnabled: !state.postStartWakelockEnabled,
+    );
+  }
 }
 
-final settingsProvider =
-    StateNotifierProvider<SettingsNotifier, RegattaTimerSettings>((ref) {
+final settingsProvider = StateNotifierProvider<SettingsNotifier, RegattaTimerSettings>((ref) {
   return SettingsNotifier(
     RegattaTimerSettings(
       // Long Press settings
