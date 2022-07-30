@@ -60,7 +60,7 @@ class TimeSelector extends HookConsumerWidget {
     return (String numberString) {
       final index = int.parse(numberString);
       final minutes = ref
-          .read(settingsProvider)
+          .watch(settingsProvider)
           .selectedStartTimeOptions[index]
           .startTime
           .inMinutes;

@@ -52,15 +52,15 @@ class SettingsView extends HookConsumerWidget {
             value: ref.watch(settingsProvider).postStartWakelockEnabled,
             onChanged: (newValue) => ref.read(settingsProvider.notifier).setPostStartWakelockEnabled(newValue),
           ),
-          const Divider(color: Colors.white),
-          SelectFromListSetting(
-            text: "Start Time Options",
-            onPressed: () => ref.read(appViewProvider.notifier).enterStartTimeSettingsState(context),
-          ),
-          SelectFromListSetting(
-            text: "Vibration Alerts",
-            onPressed: () => ref.read(appViewProvider.notifier).enterVibrationAlertSettingsState(context),
-          ),
+          // const Divider(color: Colors.white),
+          // SelectFromListSetting(
+          //   text: "Start Time Options",
+          //   onPressed: () => ref.read(appViewProvider.notifier).enterStartTimeSettingsState(context),
+          // ),
+          // SelectFromListSetting(
+          //   text: "Vibration Alerts",
+          //   onPressed: () => ref.read(appViewProvider.notifier).enterVibrationAlertSettingsState(context),
+          // ),
           const Divider(color: Colors.white),
           IconButton(
             onPressed: onReturnPressed(context),
