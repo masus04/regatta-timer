@@ -50,7 +50,7 @@ class StartTimerSettingsView extends HookConsumerWidget {
                     child: Switch(
                       value: startTime.enabled,
                       activeColor: Colors.white,
-                      onChanged: (newValue) => ref.read(settingsProvider.notifier).setStartTime(startTime, newValue),
+                      onChanged: (newValue) => ref.read(settingsProvider.notifier).setStartTimeOptions(startTime, newValue),
                     ),
                   ),
                   dense: true,

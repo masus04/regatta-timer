@@ -13,6 +13,18 @@ class StartTimeOption {
   }
 }
 
+enum BoatSpeedUnit { mps, knots, kmh }
+
+BoatSpeedUnit? boatSpeedUnitFromString(String? name) {
+  if (name == BoatSpeedUnit.mps.name) return BoatSpeedUnit.mps;
+
+  if (name == BoatSpeedUnit.knots.name) return BoatSpeedUnit.knots;
+
+  if (name == BoatSpeedUnit.kmh.name) return BoatSpeedUnit.kmh;
+
+  return null;
+}
+
 class RegattaTimerSettings {
   // Long Press settings
   final bool longPressToResetPreStart;
@@ -23,6 +35,10 @@ class RegattaTimerSettings {
   final bool timerSelectionWakelockEnabled;
   final bool preStartWakelockEnabled;
   final bool postStartWakelockEnabled;
+
+  // Boat Speed settings
+  final bool showPostStartBoatSpeed;
+  final BoatSpeedUnit boatSpeedUnit;
 
   // Timer Options
   final List<StartTimeOption> selectedStartTimeOptions;
@@ -35,6 +51,8 @@ class RegattaTimerSettings {
     required this.timerSelectionWakelockEnabled,
     required this.preStartWakelockEnabled,
     required this.postStartWakelockEnabled,
+    required this.showPostStartBoatSpeed,
+    required this.boatSpeedUnit,
     required this.selectedStartTimeOptions,
     required this.selectedVibrations,
   });
@@ -46,6 +64,8 @@ class RegattaTimerSettings {
       bool? timerSelectionWakelockEnabled,
       bool? preStartWakelockEnabled,
       bool? postStartWakelockEnabled,
+      bool? showPostStartBoatSpeed,
+      BoatSpeedUnit? boatSpeedUnit,
       List<StartTimeOption>? selectedStartTimeOptions,
       List<VibrationEvent>? selectedVibrations}) {
     return RegattaTimerSettings(
@@ -55,6 +75,8 @@ class RegattaTimerSettings {
       timerSelectionWakelockEnabled: timerSelectionWakelockEnabled ?? this.timerSelectionWakelockEnabled,
       preStartWakelockEnabled: preStartWakelockEnabled ?? this.preStartWakelockEnabled,
       postStartWakelockEnabled: postStartWakelockEnabled ?? this.postStartWakelockEnabled,
+      showPostStartBoatSpeed: showPostStartBoatSpeed ?? this.showPostStartBoatSpeed,
+      boatSpeedUnit: boatSpeedUnit ?? this.boatSpeedUnit,
       selectedStartTimeOptions: selectedStartTimeOptions ?? this.selectedStartTimeOptions,
       selectedVibrations: selectedVibrations ?? this.selectedVibrations,
     );
@@ -71,6 +93,10 @@ enum _SharedPreferenceKeys {
   timerSelectionWakelockEnabled,
   preStartWakelockEnabled,
   postStartWakelockEnabled,
+
+  // BoatSpeed
+  showPostStartBoatSpeed,
+  boatSpeedUnit,
 
   // Lists
   selectedStartTimeOptions,
@@ -92,6 +118,8 @@ class SettingsNotifier extends StateNotifier<RegattaTimerSettings> {
       longPressToResetPostStart: preferences.getBool(_SharedPreferenceKeys.longPressToResetPostStart.name),
       longPressToSync: preferences.getBool(_SharedPreferenceKeys.longPressToSync.name),
       timerSelectionWakelockEnabled: preferences.getBool(_SharedPreferenceKeys.timerSelectionWakelockEnabled.name),
+      showPostStartBoatSpeed: preferences.getBool(_SharedPreferenceKeys.showPostStartBoatSpeed.name),
+      boatSpeedUnit: boatSpeedUnitFromString(preferences.getString(_SharedPreferenceKeys.boatSpeedUnit.name)),
       preStartWakelockEnabled: preferences.getBool(_SharedPreferenceKeys.preStartWakelockEnabled.name),
       postStartWakelockEnabled: preferences.getBool(_SharedPreferenceKeys.postStartWakelockEnabled.name),
     );
@@ -99,6 +127,10 @@ class SettingsNotifier extends StateNotifier<RegattaTimerSettings> {
 
   _setBoolToSharedPrefs(_SharedPreferenceKeys key, bool value) async {
     (await prefs).setBool(key.name, value);
+  }
+
+  _setStringToSharedPrefs(_SharedPreferenceKeys key, String value) async {
+    (await prefs).setString(key.name, value);
   }
 
   setLongPressToResetPreStart(bool newValue) {
@@ -149,7 +181,23 @@ class SettingsNotifier extends StateNotifier<RegattaTimerSettings> {
     _setBoolToSharedPrefs(_SharedPreferenceKeys.postStartWakelockEnabled, newValue);
   }
 
-  setStartTime(StartTimeOption startTime, bool newValue) {
+  setShowPostStartBoatSpeed(bool newValue) {
+    state = state.copyWith(
+      showPostStartBoatSpeed: newValue,
+    );
+
+    _setBoolToSharedPrefs(_SharedPreferenceKeys.showPostStartBoatSpeed, newValue);
+  }
+
+  setBoatSpeedUnit(BoatSpeedUnit newValue) {
+    state = state.copyWith(
+      boatSpeedUnit: newValue,
+    );
+
+    _setStringToSharedPrefs(_SharedPreferenceKeys.boatSpeedUnit, newValue.name);
+  }
+
+  setStartTimeOptions(StartTimeOption startTime, bool newValue) {
     // TODO: Fix issue where dependent widgets are not notified of the update. Probably requires deep copy
 
     final startTimeOptions = state.selectedStartTimeOptions;
@@ -182,6 +230,10 @@ final settingsProvider = StateNotifierProvider<SettingsNotifier, RegattaTimerSet
       timerSelectionWakelockEnabled: false,
       preStartWakelockEnabled: true,
       postStartWakelockEnabled: false,
+
+      // Boat Speed Settings
+      showPostStartBoatSpeed: true,
+      boatSpeedUnit: BoatSpeedUnit.knots,
 
       // Timer settings
       selectedStartTimeOptions: [

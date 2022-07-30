@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:regatta_timer/providers/app_view_provider.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
 
 class SettingsView extends HookConsumerWidget {
@@ -52,6 +51,14 @@ class SettingsView extends HookConsumerWidget {
             value: ref.watch(settingsProvider).postStartWakelockEnabled,
             onChanged: (newValue) => ref.read(settingsProvider.notifier).setPostStartWakelockEnabled(newValue),
           ),
+          const Divider(color: Colors.white),
+          BooleanSetting(
+            text: "Show post start boat speed",
+            value: ref.watch(settingsProvider).showPostStartBoatSpeed,
+            onChanged: (newValue) => ref.read(settingsProvider.notifier).setShowPostStartBoatSpeed(newValue),
+          ),
+          // TODO: Add BoatSpeedUnit selector setting
+
           // const Divider(color: Colors.white),
           // SelectFromListSetting(
           //   text: "Start Time Options",
