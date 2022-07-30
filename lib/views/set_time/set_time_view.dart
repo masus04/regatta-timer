@@ -58,7 +58,7 @@ class SetTimeView extends HookConsumerWidget {
 
   void Function() onSettingsPressed(BuildContext context, WidgetRef ref) {
     return () {
-      Navigator.of(context).pushNamed(AppViewNotifier.settingsView.route);
+      ref.read(appViewProvider.notifier).enterSettingsState(context);
     };
   }
 }

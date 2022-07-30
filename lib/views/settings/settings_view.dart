@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:regatta_timer/providers/app_view_provider.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
 
 class SettingsView extends HookConsumerWidget {
@@ -10,50 +11,70 @@ class SettingsView extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColor,
       body: ListView(
-        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        padding: const EdgeInsets.only(top: 15),
         children: [
-          const Center(
-              child: Text(
+          const Text(
             "Settings",
-            style: TextStyle(color: Colors.white),
-          )),
+            textAlign: TextAlign.center,
+            style: TextStyle(color: Colors.white, fontSize: 17),
+          ),
           const Divider(color: Colors.white),
           BooleanSetting(
             text: "Long Press to Reset PreStart",
             value: ref.watch(settingsProvider).longPressToResetPreStart,
-            onChanged: (newValue) => ref.read(settingsProvider.notifier).toggleLongPressToResetPreStart(),
+            onChanged: (newValue) => ref.read(settingsProvider.notifier).setLongPressToResetPreStart(newValue),
           ),
           BooleanSetting(
             text: "Long Press to Reset PostStart",
             value: ref.watch(settingsProvider).longPressToResetPostStart,
-            onChanged: (newValue) => ref.read(settingsProvider.notifier).toggleLongPressToResetPostStart(),
+            onChanged: (newValue) => ref.read(settingsProvider.notifier).setLongPressToResetPostStart(newValue),
           ),
           BooleanSetting(
             text: "Long Press to Sync",
             value: ref.watch(settingsProvider).longPressToSync,
-            onChanged: (newValue) => ref.read(settingsProvider.notifier).toggleLongPressToSync(),
+            onChanged: (newValue) => ref.read(settingsProvider.notifier).toggleLongPressToSync(newValue),
           ),
           const Divider(color: Colors.white),
           BooleanSetting(
             text: "Enable WakeLock on Timer screen",
             value: ref.watch(settingsProvider).timerSelectionWakelockEnabled,
-            onChanged: (newValue) => ref.read(settingsProvider.notifier).toggleTimerSelectionWakelockEnabled(),
+            onChanged: (newValue) => ref.read(settingsProvider.notifier).setTimerSelectionWakelockEnabled(newValue),
           ),
           BooleanSetting(
             text: "Enable WakeLock during PreStart",
             value: ref.watch(settingsProvider).preStartWakelockEnabled,
-            onChanged: (newValue) => ref.read(settingsProvider.notifier).togglePreStartWakelockEnabled(),
+            onChanged: (newValue) => ref.read(settingsProvider.notifier).setPreStartWakelockEnabled(newValue),
           ),
           BooleanSetting(
             text: "Enable WakeLock during PostStart",
             value: ref.watch(settingsProvider).postStartWakelockEnabled,
-            onChanged: (newValue) => ref.read(settingsProvider.notifier).togglePostStartWakelockEnabled(),
+            onChanged: (newValue) => ref.read(settingsProvider.notifier).setPostStartWakelockEnabled(newValue),
           ),
+          const Divider(color: Colors.white),
+          SelectFromListSetting(
+            text: "Start Time Options",
+            onPressed: () => ref.read(appViewProvider.notifier).enterStartTimeSettingsState(context),
+          ),
+          SelectFromListSetting(
+            text: "Vibration Alerts",
+            onPressed: () => ref.read(appViewProvider.notifier).enterVibrationAlertSettingsState(context),
+          ),
+          const Divider(color: Colors.white),
+          IconButton(
+            onPressed: onReturnPressed(context),
+            icon: const Icon(Icons.check_circle_outline, color: Colors.white),
+          )
         ],
       ),
-      backgroundColor: Theme.of(context).primaryColor,
     );
+  }
+
+  void Function() onReturnPressed(BuildContext context) {
+    return () {
+      Navigator.of(context).pop();
+    };
   }
 }
 
@@ -67,6 +88,7 @@ class BooleanSetting extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      contentPadding: const EdgeInsets.only(left: 35, right: 10),
       title: Text(
         text,
         textAlign: TextAlign.left,
@@ -75,10 +97,13 @@ class BooleanSetting extends StatelessWidget {
           fontSize: 10,
         ),
       ),
-      trailing: Switch(
-        value: value,
-        onChanged: onChanged,
-        activeColor: Colors.white,
+      trailing: Transform.scale(
+        scale: 0.75,
+        child: Switch(
+          value: value,
+          onChanged: onChanged,
+          activeColor: Colors.white,
+        ),
       ),
       dense: true,
       visualDensity: VisualDensity.compact,
@@ -86,22 +111,30 @@ class BooleanSetting extends StatelessWidget {
   }
 }
 
-class SelectSetting extends StatelessWidget {
+class SelectFromListSetting extends StatelessWidget {
   final String text;
+  final void Function() onPressed;
 
-  const SelectSetting({Key? key, required this.text}) : super(key: key);
+  const SelectFromListSetting({Key? key, required this.text, required this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      contentPadding: const EdgeInsets.only(left: 35, right: 10),
       title: Text(
         text,
+        textAlign: TextAlign.left,
         style: const TextStyle(
           color: Colors.white,
-          fontSize: 8,
+          fontSize: 10,
         ),
       ),
+      trailing: IconButton(
+        onPressed: onPressed,
+        icon: const Icon(Icons.list, color: Colors.white),
+      ),
       dense: true,
+      visualDensity: VisualDensity.compact,
     );
   }
 }

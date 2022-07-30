@@ -1,8 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/providers/app_lock_provider.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
 import 'package:regatta_timer/providers/timer_provider.dart';
-import 'package:flutter/material.dart';
 import 'package:wakelock/wakelock.dart';
 
 class AppView {
@@ -18,6 +18,8 @@ class AppViewNotifier extends StateNotifier<AppView> {
   static AppView preStartView = AppView("/timer");
   static AppView postStartView = AppView("/timer");
   static AppView settingsView = AppView("/settings");
+  static AppView startTimeSettingsView = AppView("/startTimeSettings");
+  static AppView vibrationAlertSettingsView = AppView("/vibrationAlertSettings");
 
   AppViewNotifier({required this.ref}) : super(setTimeView);
 
@@ -58,7 +60,15 @@ class AppViewNotifier extends StateNotifier<AppView> {
   }
 
   void enterSettingsState(BuildContext context) {
-    Wakelock.disable();
+    Navigator.pushNamed(context, settingsView.route);
+  }
+
+  void enterStartTimeSettingsState(BuildContext context) {
+    Navigator.pushNamed(context, startTimeSettingsView.route);
+  }
+
+  void enterVibrationAlertSettingsState(BuildContext context) {
+    Navigator.pushNamed(context, vibrationAlertSettingsView.route);
   }
 }
 

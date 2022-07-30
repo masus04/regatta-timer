@@ -3,10 +3,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../views/components/vibration.dart';
 
 class StartTimeOption {
-  final bool enabled;
+  bool enabled;
   final Duration startTime;
 
   StartTimeOption(this.startTime, {this.enabled = true});
+
+  copyWith({Duration? startTime, bool? enabled}) {
+    return StartTimeOption(startTime ?? this.startTime, enabled: enabled ?? this.enabled);
+  }
 }
 
 class RegattaTimerSettings {
@@ -35,15 +39,14 @@ class RegattaTimerSettings {
     required this.selectedVibrations,
   });
 
-  copyWith(
-      {bool? longPressToResetPreStart,
-      bool? longPressToResetPostStart,
-      bool? longPressToSync,
-      bool? timerSelectionWakelockEnabled,
-      bool? preStartWakelockEnabled,
-      bool? postStartWakelockEnabled,
-      List<StartTimeOption>? selectedStartTimeOptions,
-      List<VibrationEvent>? selectedVibrations}) {
+  copyWith({bool? longPressToResetPreStart,
+    bool? longPressToResetPostStart,
+    bool? longPressToSync,
+    bool? timerSelectionWakelockEnabled,
+    bool? preStartWakelockEnabled,
+    bool? postStartWakelockEnabled,
+    List<StartTimeOption>? selectedStartTimeOptions,
+    List<VibrationEvent>? selectedVibrations}) {
     return RegattaTimerSettings(
       longPressToResetPreStart: longPressToResetPreStart ?? this.longPressToResetPreStart,
       longPressToResetPostStart: longPressToResetPostStart ?? this.longPressToResetPostStart,
@@ -60,40 +63,54 @@ class RegattaTimerSettings {
 class SettingsNotifier extends StateNotifier<RegattaTimerSettings> {
   SettingsNotifier(RegattaTimerSettings defaultSettings) : super(defaultSettings);
 
-  toggleLongPressToResetPreStart() {
+  setLongPressToResetPreStart(bool newValue) {
     state = state.copyWith(
-      longPressToResetPreStart: !state.longPressToResetPreStart,
+      longPressToResetPreStart: newValue,
     );
   }
 
-  toggleLongPressToResetPostStart() {
+  setLongPressToResetPostStart(bool newValue) {
     state = state.copyWith(
-      longPressToResetPostStart: !state.longPressToResetPostStart,
+      longPressToResetPostStart: newValue,
     );
   }
 
-  toggleLongPressToSync() {
+  toggleLongPressToSync(bool newValue) {
     state = state.copyWith(
-      longPressToSync: !state.longPressToSync,
+      longPressToSync: newValue,
     );
   }
 
-  toggleTimerSelectionWakelockEnabled() {
+  setTimerSelectionWakelockEnabled(bool newValue) {
     state = state.copyWith(
-      timerSelectionWakelockEnabled: !state.timerSelectionWakelockEnabled,
+      timerSelectionWakelockEnabled: newValue,
     );
   }
 
-  togglePreStartWakelockEnabled() {
+  setPreStartWakelockEnabled(bool newValue) {
     state = state.copyWith(
-      preStartWakelockEnabled: !state.preStartWakelockEnabled,
+      preStartWakelockEnabled: newValue,
     );
   }
 
-  togglePostStartWakelockEnabled() {
+  setPostStartWakelockEnabled(bool newValue) {
     state = state.copyWith(
-      postStartWakelockEnabled: !state.postStartWakelockEnabled,
+      postStartWakelockEnabled: newValue,
     );
+  }
+
+  setStartTime(StartTimeOption startTime, bool newValue) {
+    final startTimeOptions = state.selectedStartTimeOptions;
+
+    final index = startTimeOptions.indexOf(startTime);
+    // state.selectedStartTimeOptions.replaceRange(index, index, [startTime]);
+
+    // state.selectedStartTimeOptions.removeAt(index);
+    // state.selectedStartTimeOptions.insert(index, startTime.copyWith(enabled: newValue));
+
+    startTimeOptions[index].enabled = newValue;
+
+    state = state.copyWith(selectedStartTimeOptions: startTimeOptions);
   }
 }
 

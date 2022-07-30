@@ -3,6 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/providers/app_view_provider.dart';
 import 'package:regatta_timer/views/set_time/set_time_view.dart';
 import 'package:regatta_timer/views/settings/settings_view.dart';
+import 'package:regatta_timer/views/settings/start_timer_settings_view.dart';
+import 'package:regatta_timer/views/settings/vibration_pattern_settings_view.dart';
 import 'package:regatta_timer/views/timer/timer_view.dart';
 
 void main() {
@@ -27,20 +29,18 @@ class RegattaTimer extends StatelessWidget {
             tertiary: Colors.red,
           ),
           textTheme: const TextTheme(
-            button: TextStyle(
-                color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
+            button: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
             bodyText1: TextStyle(color: Colors.indigo),
             bodyText2: TextStyle(color: Colors.black),
           ),
         ),
         initialRoute: AppViewNotifier.setTimeView.route,
         routes: {
-          AppViewNotifier.setTimeView.route: (context) =>
-              const SafeArea(child: SetTimeView()),
-          AppViewNotifier.preStartView.route: (context) =>
-              const SafeArea(child: TimerView()),
-          AppViewNotifier.settingsView.route: (context) =>
-              const SafeArea(child: SettingsView()),
+          AppViewNotifier.setTimeView.route: (context) => const SafeArea(child: SetTimeView()),
+          AppViewNotifier.preStartView.route: (context) => const SafeArea(child: TimerView()),
+          AppViewNotifier.settingsView.route: (context) => const SafeArea(child: SettingsView()),
+          AppViewNotifier.startTimeSettingsView.route: (context) => const SafeArea(child: StartTimerSettingsView()),
+          AppViewNotifier.vibrationAlertSettingsView.route: (context) => const SafeArea(child: VibrationPatternSettingsView()),
         },
       ),
     );
