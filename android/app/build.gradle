@@ -33,7 +33,7 @@ if (keystorePropertiesFile.exists()) {
 
 android {
     compileSdkVersion 33 // flutter.compileSdkVersion
-    ndkVersion "23.1.7779620"  // Check here: https://stackoverflow.com/a/65747847/9481613
+    ndkVersion "25.0.8775105"  // Check here: https://stackoverflow.com/a/65747847/9481613
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -83,8 +83,9 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // Support WearOS
-    implementation 'com.android.support:wear:27.1.1'
-    implementation 'com.google.android.support:wearable:2.3.0'
-    compileOnly 'com.google.android.wearable:wearable:2.3.0'
+    implementation 'com.google.android.support:wearable:2.9.0'
+    compileOnly 'com.google.android.wearable:wearable:2.9.0'
 
 }
+
+android.buildTypes.release.ndk.debugSymbolLevel = 'FULL'
