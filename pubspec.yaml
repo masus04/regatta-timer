@@ -14,6 +14,7 @@ dependencies:
   flutter_launcher_icons: ^0.9.3
   hooks_riverpod: ^1.0.4
   numberpicker: ^2.1.1
+  shared_preferences: ^2.0.15
   vibration: ^1.7.5
   wakelock: ^0.6.2
 

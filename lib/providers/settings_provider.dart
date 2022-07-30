@@ -1,6 +1,6 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-
-import '../views/components/vibration.dart';
+import 'package:regatta_timer/views/components/vibration.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class StartTimeOption {
   bool enabled;
@@ -39,14 +39,15 @@ class RegattaTimerSettings {
     required this.selectedVibrations,
   });
 
-  copyWith({bool? longPressToResetPreStart,
-    bool? longPressToResetPostStart,
-    bool? longPressToSync,
-    bool? timerSelectionWakelockEnabled,
-    bool? preStartWakelockEnabled,
-    bool? postStartWakelockEnabled,
-    List<StartTimeOption>? selectedStartTimeOptions,
-    List<VibrationEvent>? selectedVibrations}) {
+  copyWith(
+      {bool? longPressToResetPreStart,
+      bool? longPressToResetPostStart,
+      bool? longPressToSync,
+      bool? timerSelectionWakelockEnabled,
+      bool? preStartWakelockEnabled,
+      bool? postStartWakelockEnabled,
+      List<StartTimeOption>? selectedStartTimeOptions,
+      List<VibrationEvent>? selectedVibrations}) {
     return RegattaTimerSettings(
       longPressToResetPreStart: longPressToResetPreStart ?? this.longPressToResetPreStart,
       longPressToResetPostStart: longPressToResetPostStart ?? this.longPressToResetPostStart,
@@ -60,57 +61,110 @@ class RegattaTimerSettings {
   }
 }
 
+enum _SharedPreferenceKeys {
+  // LongPress
+  longPressToResetPreStart,
+  longPressToResetPostStart,
+  longPressToSync,
+
+  // WakeLock
+  timerSelectionWakelockEnabled,
+  preStartWakelockEnabled,
+  postStartWakelockEnabled,
+
+  // Lists
+  selectedStartTimeOptions,
+  selectedVibrations,
+}
+
 class SettingsNotifier extends StateNotifier<RegattaTimerSettings> {
-  SettingsNotifier(RegattaTimerSettings defaultSettings) : super(defaultSettings);
+  late final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
+
+  SettingsNotifier(RegattaTimerSettings defaultSettings) : super(defaultSettings) {
+    _initFromSharedPreferences();
+  }
+
+  _initFromSharedPreferences() async {
+    final preferences = await prefs;
+
+    state = state.copyWith(
+      longPressToResetPreStart: preferences.getBool(_SharedPreferenceKeys.longPressToResetPreStart.name),
+      longPressToResetPostStart: preferences.getBool(_SharedPreferenceKeys.longPressToResetPostStart.name),
+      longPressToSync: preferences.getBool(_SharedPreferenceKeys.longPressToSync.name),
+      timerSelectionWakelockEnabled: preferences.getBool(_SharedPreferenceKeys.timerSelectionWakelockEnabled.name),
+      preStartWakelockEnabled: preferences.getBool(_SharedPreferenceKeys.preStartWakelockEnabled.name),
+      postStartWakelockEnabled: preferences.getBool(_SharedPreferenceKeys.postStartWakelockEnabled.name),
+    );
+  }
+
+  _setBoolToSharedPrefs(_SharedPreferenceKeys key, bool value) async {
+    (await prefs).setBool(key.name, value);
+  }
 
   setLongPressToResetPreStart(bool newValue) {
     state = state.copyWith(
       longPressToResetPreStart: newValue,
     );
+
+    _setBoolToSharedPrefs(_SharedPreferenceKeys.longPressToResetPreStart, newValue);
   }
 
   setLongPressToResetPostStart(bool newValue) {
     state = state.copyWith(
       longPressToResetPostStart: newValue,
     );
+
+    _setBoolToSharedPrefs(_SharedPreferenceKeys.longPressToResetPostStart, newValue);
   }
 
   toggleLongPressToSync(bool newValue) {
     state = state.copyWith(
       longPressToSync: newValue,
     );
+
+    _setBoolToSharedPrefs(_SharedPreferenceKeys.longPressToSync, newValue);
   }
 
   setTimerSelectionWakelockEnabled(bool newValue) {
     state = state.copyWith(
       timerSelectionWakelockEnabled: newValue,
     );
+
+    _setBoolToSharedPrefs(_SharedPreferenceKeys.timerSelectionWakelockEnabled, newValue);
   }
 
   setPreStartWakelockEnabled(bool newValue) {
     state = state.copyWith(
       preStartWakelockEnabled: newValue,
     );
+
+    _setBoolToSharedPrefs(_SharedPreferenceKeys.preStartWakelockEnabled, newValue);
   }
 
   setPostStartWakelockEnabled(bool newValue) {
     state = state.copyWith(
       postStartWakelockEnabled: newValue,
     );
+
+    _setBoolToSharedPrefs(_SharedPreferenceKeys.postStartWakelockEnabled, newValue);
   }
 
   setStartTime(StartTimeOption startTime, bool newValue) {
+    // TODO: Fix issue where dependent widgets are not notified of the update. Probably requires deep copy
+
     final startTimeOptions = state.selectedStartTimeOptions;
-
     final index = startTimeOptions.indexOf(startTime);
-    // state.selectedStartTimeOptions.replaceRange(index, index, [startTime]);
-
-    // state.selectedStartTimeOptions.removeAt(index);
-    // state.selectedStartTimeOptions.insert(index, startTime.copyWith(enabled: newValue));
 
     startTimeOptions[index].enabled = newValue;
 
     state = state.copyWith(selectedStartTimeOptions: startTimeOptions);
+
+    // TODO: store to shared preferences
+  }
+
+  setVibrationPatterns() {
+    throw Exception("Not yet implemented");
+    // TODO: Implement this similar to setStartTime
   }
 }
 
