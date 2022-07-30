@@ -35,10 +35,12 @@ class RegattaTimer extends StatelessWidget {
         ),
         initialRoute: AppViewNotifier.setTimeView.route,
         routes: {
-          AppViewNotifier.setTimeView.route: (context) => const SetTimeView(),
-          AppViewNotifier.preStartView.route: (context) => const TimerView(),
+          AppViewNotifier.setTimeView.route: (context) =>
+              const SafeArea(child: SetTimeView()),
+          AppViewNotifier.preStartView.route: (context) =>
+              const SafeArea(child: TimerView()),
           AppViewNotifier.settingsView.route: (context) =>
-              const SettingsView(),
+              const SafeArea(child: SettingsView()),
         },
       ),
     );

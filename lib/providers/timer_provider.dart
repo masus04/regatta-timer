@@ -2,7 +2,6 @@
 import 'dart:async';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:regatta_timer/constants.dart';
 import 'package:regatta_timer/providers/selected_start_time_provider.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
 import 'package:regatta_timer/views/components/vibration.dart';

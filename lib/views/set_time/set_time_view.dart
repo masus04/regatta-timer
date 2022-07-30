@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/providers/app_view_provider.dart';
+import 'package:regatta_timer/views/components/circular_icon_button.dart';
 import 'package:regatta_timer/views/components/layout.dart';
 import 'package:regatta_timer/views/set_time/time_selector.dart';
 
@@ -25,11 +26,22 @@ class SetTimeView extends HookConsumerWidget {
           backgroundColor: Theme.of(context).colorScheme.secondary),
     );
 
+    final settingsButton = CircularIconButton(
+      icon: Icons.settings,
+      onPressed: onSettingsPressed(context, ref),
+    );
+
     return Scaffold(
-      body: RegattaTimerLayout(
-        topButton: timerTypeButton,
-        bottomButton: startButton,
-        centerWidget: const SetStartTimer(),
+      body: Stack(
+        alignment: AlignmentDirectional.centerStart,
+        children: [
+          RegattaTimerLayout(
+            topButton: timerTypeButton,
+            bottomButton: startButton,
+            centerWidget: const SetStartTimer(),
+          ),
+          settingsButton,
+        ],
       ),
     );
   }
@@ -41,6 +53,12 @@ class SetTimeView extends HookConsumerWidget {
   void Function() onStartPressed(BuildContext context, WidgetRef ref) {
     return () {
       ref.watch(appViewProvider.notifier).enterPreStartState(context);
+    };
+  }
+
+  void Function() onSettingsPressed(BuildContext context, WidgetRef ref) {
+    return () {
+      Navigator.of(context).pushNamed(AppViewNotifier.settingsView.route);
     };
   }
 }

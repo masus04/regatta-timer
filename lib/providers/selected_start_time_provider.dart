@@ -21,7 +21,7 @@ final selectedStartTimeProvider =
   return SelectedStartTimeNotifier(4, ref: ref);
 });
 
-Stream<Duration> _newTimerStreamFromDuration(Duration startTimer) {
+Stream<Duration> newTimerStreamFromDuration(Duration startTimer) {
   return Stream<Duration>.periodic(const Duration(seconds: 1),
       (int t) => startTimer + Duration(seconds: t + 1)).asBroadcastStream();
 }
