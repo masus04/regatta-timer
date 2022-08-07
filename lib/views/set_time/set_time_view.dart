@@ -30,9 +30,20 @@ class SetTimeView extends HookConsumerWidget {
       longPressRequired: ref.watch(settingsProvider).longPressToStart,
     );
 
-    final settingsButton = CircularIconButton(
-      icon: Icons.settings,
-      onPressed: onSettingsPressed(context, ref),
+    final settingsButton = Stack(
+      alignment: AlignmentDirectional.centerStart,
+      children: [
+        Container(
+          color: Colors.transparent,
+          height: 60,
+          width: 50,
+          child: const IgnorePointer(ignoring: true),
+        ),
+        CircularIconButton(
+          icon: Icons.settings,
+          onPressed: onSettingsPressed(context, ref),
+        ),
+      ],
     );
 
     return Scaffold(

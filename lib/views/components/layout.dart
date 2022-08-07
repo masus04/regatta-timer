@@ -146,9 +146,20 @@ class LockScreenButton extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isScreenLocked = ref.watch(appLockedProvider);
 
-    return CircularIconButton(
-      icon: isScreenLocked ? Icons.lock : Icons.lock_open,
-      onPressed: onLockScreenPressed(context, ref),
+    return Stack(
+      alignment: AlignmentDirectional.centerEnd,
+      children: [
+        Container(
+          color: Colors.transparent,
+          height: 60,
+          width: 50,
+          child: const IgnorePointer(ignoring: true),
+        ),
+        CircularIconButton(
+          icon: isScreenLocked ? Icons.lock : Icons.lock_open,
+          onPressed: onLockScreenPressed(context, ref),
+        ),
+      ],
     );
   }
 
