@@ -11,14 +11,10 @@ class TimerView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final timeProvider = ref.watch(currentTimeProvider);
+    final currentTime = ref.watch(timerProvider);
 
     return Scaffold(
-      body: timeProvider.when(
-        data: (time) => time.isNegative ? const PreStartView() : const PostStartView(),
-        error: (err, stackTrace) => Text(err.toString()),
-        loading: () => const PreStartView(),
-      ),
+      body: currentTime!.isNegative ? const PreStartView() : const PostStartView()
     );
   }
 }

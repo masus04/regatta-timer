@@ -29,8 +29,11 @@ class AppViewNotifier extends StateNotifier<AppView> {
 
     if (ref.watch(settingsProvider).timerSelectionWakelockEnabled) {
       Wakelock.enable();
+      debugPrint("WakeLock: enabled");
     } else {
       Wakelock.disable();
+      debugPrint("WakeLock: disabled");
+
     }
   }
 
@@ -43,8 +46,10 @@ class AppViewNotifier extends StateNotifier<AppView> {
 
     if (settings.preStartWakelockEnabled && !appLock) {
       Wakelock.enable();
+      debugPrint("WakeLock: enabled");
     } else {
       Wakelock.disable();
+      debugPrint("WakeLock: disabled");
     }
   }
 
@@ -54,8 +59,10 @@ class AppViewNotifier extends StateNotifier<AppView> {
 
     if (settings.postStartWakelockEnabled && !appLock) {
       Wakelock.enable();
+      debugPrint("WakeLock: enabled");
     } else {
       Wakelock.disable();
+      debugPrint("WakeLock: disabled");
     }
   }
 

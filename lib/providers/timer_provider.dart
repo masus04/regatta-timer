@@ -1,97 +1,97 @@
 // Provides a Stream of Strings, representing the countdown from the selected Start Time
 import 'dart:async';
 
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/providers/selected_start_time_provider.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
 import 'package:regatta_timer/views/components/vibration.dart';
 
-/// [timerStreamProvider] provides a StreamProvider<Duration> which in turn provides
-/// a Stream<Duration>, which represent the current state of the timer
-class TimerNotifier extends StateNotifier<Stream<Duration>> {
-  final Ref ref;
+class TimerNotifier extends StateNotifier<Duration?> {
+  final Ref _ref;
 
-  late Duration syncTarget;
+  // The exact time of the race start, according to the current start timer
+  DateTime? startTime;
 
-  StreamSubscription<Duration>? _syncSubscription;
+  late Stream<DateTime> _tickStream;
+  StreamSubscription<DateTime>? _stateUpdateSubscription;
   StreamSubscription<VibrationEvent>? _vibrationSubscription;
 
-  TimerNotifier({required this.ref}) : super(const Stream.empty()) {
+  TimerNotifier(this._ref) : super(Duration.zero) {
     reset();
   }
 
-  /// Replace the state stream and handle subscriptions in order to update [syncTarget]
-  @override
-  set state(Stream<Duration> newState) {
-    // Cancel all subscriptions
-    _syncSubscription?.cancel();
-    _vibrationSubscription?.cancel();
+  void reset() {
+    // Read timer parameters
+    final DateTime now = DateTime.now();
+    final selectedStartTimer = _ref.watch(selectedStartTimeProvider.notifier).selectedDuration;
+    startTime = now.add(selectedStartTimer);
+    state = now.difference(startTime!);
 
-    super.state = newState;
-    final vibrationPatterns = ref.read(settingsProvider).selectedVibrations;
+    debugPrint("selectedStartTimer: ${selectedStartTimer.toString()}, \n"
+        "state: $state, \n"
+        "startTime: ${startTime.toString()}");
 
-    // Create & subscribe to new sync stream
-    _syncSubscription = state
-        .where((timeStep) => timeStep.inSeconds % 60 == 30)
-        .listen((syncTimeStep) {
-      syncTarget = Duration(minutes: syncTimeStep.inMinutes);
+    _initTicker();
+  }
+
+  void _initTicker() {
+    _stateUpdateSubscription?.cancel();
+
+    _tickStream = Stream.periodic(const Duration(seconds: 1), (int t) => DateTime.now()).asBroadcastStream();
+
+    _stateUpdateSubscription = _tickStream.listen((DateTime t) {
+      final diff = DateTime.now().difference(startTime!);
+      state = Duration(
+        hours: diff.inHours,
+        minutes: diff.inMinutes,
+        seconds: (diff.inMilliseconds / 1000).round().remainder(60),
+      );
+      // debugPrint("Update state: $state, startTime: $startTime, now: {DateTime.now()}");
     });
 
-    // Create & subscribe to new vibration stream
-    _vibrationSubscription = state
-        .where(
-          // Filter for matched vibration patterns
-          (timeStep) => vibrationPatterns
-              .any((vibration) => vibration.activationTimeStep == timeStep),
-        )
-        .map(
-          // map to matching vibration pattern
-          (timeStep) => vibrationPatterns.firstWhere(
-              (vibration) => timeStep == vibration.activationTimeStep),
-        )
-        .listen(
-          // listen to resulting stream and execute pattern when triggered
-          (triggeredVibration) => triggeredVibration.execute(),
-        );
+    _initVibrations();
   }
 
-  /// Reset timer to selected start time
-  void reset() {
-    final selectedStartTime =
-        -ref.watch(selectedStartTimeProvider.notifier).selectedDuration;
+  void _initVibrations() {
+    _vibrationSubscription?.cancel();
 
-    syncTarget = selectedStartTime;
-    state = _timerStreamFactory(startTime: selectedStartTime);
+    final vibrationPatterns = _ref.read(settingsProvider).selectedVibrations;
+
+    _vibrationSubscription = _tickStream
+        .where((DateTime t) => vibrationPatterns.any((vibration) => vibration.activationTimeStep == state))
+        .map((DateTime t) => vibrationPatterns.firstWhere((vibration) => state == vibration.activationTimeStep))
+        .listen((triggeredVibration) => triggeredVibration.execute());
   }
 
-  /// Reset timer to closest minute (rounding down)
-  void sync() {
-    state = _timerStreamFactory(startTime: syncTarget);
+  sync() {
+    final DateTime now = DateTime.now();
+    final Duration exactTimeToStart = now.difference(startTime!).abs();
+
+    final remainingMinutes = exactTimeToStart.inMinutes % 60;
+    final remainingSeconds = exactTimeToStart.inSeconds % 60;
+    final bool roundUpSeconds = remainingSeconds > 30;
+
+    final startOffset = Duration(
+      hours: exactTimeToStart.inHours,
+      minutes: roundUpSeconds ? remainingMinutes + 1 : remainingMinutes,
+      seconds: 0,
+    );
+
+    startTime = now.add(startOffset);
+    state = -startOffset;
+    _initTicker();
+
+    debugPrint("Synced Start Timer:\n new startTime: $startTime,\n new state: $state");
   }
 
   void abort() {
-    state = const Stream.empty();
-  }
-
-  /// Returns a Stream<Duration>, counting up from [startTime].
-  /// Pass a negative [startTime] to count from the negative value to 0
-  static Stream<Duration> _timerStreamFactory({required Duration startTime}) {
-    return Stream<Duration>.periodic(const Duration(seconds: 1),
-        (int t) => startTime + Duration(seconds: t + 1)).asBroadcastStream();
+    _stateUpdateSubscription?.cancel();
+    _vibrationSubscription?.cancel();
   }
 }
 
-final timerProvider =
-    StateNotifierProvider<TimerNotifier, Stream<Duration>>((ref) {
-  return TimerNotifier(
-    ref: ref,
-  );
-});
-
-final currentTimeProvider = StreamProvider<Duration>((ref) async* {
-  final timeStream = ref.watch(timerProvider);
-
-  await for (final time in timeStream) {
-    yield time;
-  }
+final timerProvider = StateNotifierProvider<TimerNotifier, Duration?>((ref) {
+  return TimerNotifier(ref);
 });

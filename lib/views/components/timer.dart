@@ -36,7 +36,7 @@ String _formatDuration(Duration duration) {
     stringRep = minutes.toString();
   }
 
-  stringRep += ':${seconds.toString().padLeft(2, "0")}';
+  stringRep += ':${(seconds).toString().padLeft(2, "0")}';
 
   return (duration.isNegative ? '-' : '+') + stringRep;
 }

@@ -13,8 +13,7 @@ class PreStartView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentTime = ref.watch(currentTimeProvider);
-    final syncTime = ref.watch(timerProvider.notifier).syncTarget;
+    final currentTime = ref.watch(timerProvider);
 
     final resetButton = TopButton(
       text: Text("Reset", style: Theme.of(context).textTheme.button),
@@ -33,11 +32,7 @@ class PreStartView extends HookConsumerWidget {
     return RegattaTimerLayout(
       topButton: resetButton,
       bottomButton: syncButton,
-      centerWidget: currentTime.when(
-        data: (timer) => StartTimer(timer),
-        error: (err, stackTrace) => Text(err.toString()),
-        loading: () => StartTimer(syncTime),
-      ),
+      centerWidget: StartTimer(currentTime!),
     );
   }
 

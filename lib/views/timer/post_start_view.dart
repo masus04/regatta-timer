@@ -14,7 +14,7 @@ class PostStartView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final currentTime = ref.watch(currentTimeProvider);
+    final currentTime = ref.watch(timerProvider);
 
     final endRaceButton = TopButton(
       text: Text("End Race", style: Theme.of(context).textTheme.button),
@@ -41,11 +41,7 @@ class PostStartView extends HookConsumerWidget {
     return RegattaTimerLayout(
       topButton: endRaceButton,
       bottomButton: infoButton,
-      centerWidget: currentTime.when(
-        data: (time) => RaceTimer(time),
-        error: (err, stackTrace) => Text(err.toString()),
-        loading: () => const CircularProgressIndicator(), // This case should be unreachable
-      ),
+      centerWidget: RaceTimer(currentTime!),
     );
   }
 
