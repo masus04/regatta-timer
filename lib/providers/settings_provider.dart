@@ -242,7 +242,7 @@ final settingsProvider = StateNotifierProvider<SettingsNotifier, RegattaTimerSet
 
       // Wake Lock settings
       // This option is not quite intuitive for first time users
-      timerSelectionWakelockEnabled: false,
+      timerSelectionWakelockEnabled: true,
       preStartWakelockEnabled: true,
       postStartWakelockEnabled: false,
 
