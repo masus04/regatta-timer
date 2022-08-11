@@ -20,7 +20,6 @@ class BoatSpeed {
 
 class BoatSpeedNotifier extends StateNotifier<AsyncValue<BoatSpeed>> {
   final Ref ref;
-  var permission = Geolocator.checkPermission();
   late StreamSubscription subscription;
 
   BoatSpeedNotifier({required this.ref}) : super(const AsyncValue.loading()) {
@@ -33,13 +32,13 @@ class BoatSpeedNotifier extends StateNotifier<AsyncValue<BoatSpeed>> {
 
   void init() async {
     debugPrint("Initializing boatSpeedProvider");
-    if (await permission == LocationPermission.denied) {
-      permission = Geolocator.requestPermission();
+    if (![LocationPermission.whileInUse, LocationPermission.always].contains(await Geolocator.checkPermission())) {
+      if (![LocationPermission.whileInUse, LocationPermission.always].contains(await Geolocator.requestPermission())) {
+        throw Exception("Location permissions denied by user");
+      }
     }
 
-    if (await permission == LocationPermission.denied) {
-      throw Exception("Location permissions denied");
-    }
+    debugPrint("current speed: ${(await Geolocator.getCurrentPosition()).speed}");
 
     subscription = Geolocator.getPositionStream(locationSettings: const LocationSettings(distanceFilter: 1)).listen(
       (updatedPosition) {
@@ -50,11 +49,6 @@ class BoatSpeedNotifier extends StateNotifier<AsyncValue<BoatSpeed>> {
         );
       },
     );
-  }
-
-  get isEnabled async {
-    // TODO: Check settings for boatSpeedEnabled flag
-    return [LocationPermission.whileInUse, LocationPermission.always].contains(await permission);
   }
 
   void stop() async {
