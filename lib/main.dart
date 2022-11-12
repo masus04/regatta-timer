@@ -1,17 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:regatta_timer/views/providers/_providers.dart';
+import 'package:regatta_timer/providers/app_view_provider.dart';
+import 'package:regatta_timer/views/set_time/set_time_view.dart';
+import 'package:regatta_timer/views/settings/settings_view.dart';
+import 'package:regatta_timer/views/settings/start_timer_settings_view.dart';
+import 'package:regatta_timer/views/settings/vibration_pattern_settings_view.dart';
+import 'package:regatta_timer/views/timer/timer_view.dart';
 
 void main() {
-  runApp(const RegattaTimer(
-    key: Key('RegattaTimer'),
-  ));
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  runApp(
+    const ProviderScope(
+      child: RegattaTimer(),
+    ),
+  );
 }
 
 class RegattaTimer extends StatelessWidget {
-  const RegattaTimer({required Key key}) : super(key: key);
+  const RegattaTimer({Key? key}) : super(key: key);
 
+  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -19,35 +29,26 @@ class RegattaTimer extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.indigo,
-      ),
-      home: const ProviderScope(
-        child: SafeArea(
-          child: Scaffold(
-            body: _RegattaTimerNavigator(key: Key('RegattaTimerNavigator'),),
-          ),
+        colorScheme: const ColorScheme.light(
+          primary: Colors.indigo,
+          secondary: Colors.green,
+          tertiary: Colors.red,
+        ),
+        textTheme: const TextTheme(
+          button: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold),
+          bodyText1: TextStyle(color: Colors.indigo),
+          bodyText2: TextStyle(color: Colors.black),
         ),
       ),
-    );
-  }
-}
-
-class _RegattaTimerNavigator extends HookWidget {
-  const _RegattaTimerNavigator({
-    required Key key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final isWatch = useProvider(isWatchProvider);
-    final pages = useProvider(pageNotifierProvider);
-
-    return Container(
-      margin: isWatch ? const EdgeInsets.all(0) : const EdgeInsets.all(10),
-
-      child: Navigator(
-        pages: pages,
-        onPopPage: (route, result) => route.didPop(result),
-      ),
+      // builder: (context, child) => SafeArea(child: child!),
+      initialRoute: AppViewNotifier.setTimeView.route,
+      routes: {
+        AppViewNotifier.setTimeView.route: (context) => const SetTimeView(),
+        AppViewNotifier.preStartView.route: (context) => const TimerView(),
+        AppViewNotifier.settingsView.route: (context) => const SettingsView(),
+        AppViewNotifier.startTimeSettingsView.route: (context) => const StartTimerSettingsView(),
+        AppViewNotifier.vibrationAlertSettingsView.route: (context) => const VibrationPatternSettingsView(),
+      },
     );
   }
 }
