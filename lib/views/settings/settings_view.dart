@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
+import 'package:regatta_timer/views/settings/boolean_settings_widget.dart';
 
 class SettingsView extends HookConsumerWidget {
-  const SettingsView({
-    Key? key,
-  }) : super(key: key);
+  const SettingsView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -87,66 +86,5 @@ class SettingsView extends HookConsumerWidget {
     return () {
       Navigator.of(context).pop();
     };
-  }
-}
-
-class BooleanSetting extends StatelessWidget {
-  final String text;
-  final bool value;
-  final void Function(bool) onChanged;
-
-  const BooleanSetting({Key? key, required this.text, required this.value, required this.onChanged}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      contentPadding: const EdgeInsets.only(left: 35, right: 10),
-      title: Text(
-        text,
-        textAlign: TextAlign.left,
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 10,
-        ),
-      ),
-      trailing: Transform.scale(
-        scale: 0.75,
-        child: Switch(
-          value: value,
-          onChanged: onChanged,
-          activeColor: Colors.white,
-        ),
-      ),
-      dense: true,
-      visualDensity: VisualDensity.compact,
-    );
-  }
-}
-
-class SelectFromListSetting extends StatelessWidget {
-  final String text;
-  final void Function() onPressed;
-
-  const SelectFromListSetting({Key? key, required this.text, required this.onPressed}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      contentPadding: const EdgeInsets.only(left: 35, right: 10),
-      title: Text(
-        text,
-        textAlign: TextAlign.left,
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 10,
-        ),
-      ),
-      trailing: IconButton(
-        onPressed: onPressed,
-        icon: const Icon(Icons.list, color: Colors.white),
-      ),
-      dense: true,
-      visualDensity: VisualDensity.compact,
-    );
   }
 }

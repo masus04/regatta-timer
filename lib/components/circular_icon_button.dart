@@ -4,11 +4,7 @@ class CircularIconButton extends StatelessWidget {
   final IconData icon;
   final void Function() onPressed;
 
-  const CircularIconButton(
-      {Key? key,
-      required this.icon,
-      required this.onPressed})
-      : super(key: key);
+  const CircularIconButton({Key? key, required this.icon, required this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +13,7 @@ class CircularIconButton extends StatelessWidget {
       child: Ink(
         decoration: ShapeDecoration(
           color: Colors.white,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         ),
         child: IconButton(
           icon: Icon(

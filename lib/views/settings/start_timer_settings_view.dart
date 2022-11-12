@@ -3,12 +3,13 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
 
 class StartTimerSettingsView extends HookConsumerWidget {
-  const StartTimerSettingsView({
-    Key? key,
-  }) : super(key: key);
+  /// Currently not reachable
+  /// TODO: Create button in Settings in order to display this view
 
   final title = "Start Time Options";
   final description = "Select which start time options should be displayed on the main Timer screen";
+
+  const StartTimerSettingsView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -17,12 +18,12 @@ class StartTimerSettingsView extends HookConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.only(top: 15, bottom: 35),
         children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 50),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 50),
             child: Text(
-              "Start Time Options",
+              title,
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.white, fontSize: 17),
+              style: const TextStyle(fontSize: 17, color: Colors.white),
             ),
           ),
           ListTile(

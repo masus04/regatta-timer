@@ -1,4 +1,3 @@
 class TimerOptions {
-  static const numItems = 3;
-  static const fontSize = 25.0;
+  static const watchFontsize = 25.0;
 }

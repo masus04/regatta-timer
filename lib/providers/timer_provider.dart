@@ -6,7 +6,7 @@ import 'package:flutter/widgets.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/providers/selected_start_time_provider.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
-import 'package:regatta_timer/components/vibration.dart';
+import 'package:regatta_timer/types/vibration.dart';
 
 class TimerNotifier extends StateNotifier<Duration?> {
   final Ref _ref;

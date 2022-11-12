@@ -6,7 +6,9 @@ import 'package:numberpicker/numberpicker.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
 
 class TimeSelector extends HookConsumerWidget {
-  const TimeSelector({Key? key}) : super(key: key);
+  final int numOptions;
+  
+  const TimeSelector({Key? key, this.numOptions = 3}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -15,7 +17,7 @@ class TimeSelector extends HookConsumerWidget {
         ref.watch(settingsProvider).selectedStartTimeOptions;
 
     return Container(
-      height: TimerOptions.fontSize * TimerOptions.numItems,
+      height: TimerOptions.watchFontsize * numOptions,
       color: Colors.white,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -26,21 +28,21 @@ class TimeSelector extends HookConsumerWidget {
             value: numberPickerIndex,
             onChanged: onChange(ref),
             textStyle: Theme.of(context).textTheme.bodyText2?.copyWith(
-                fontSize: TimerOptions.fontSize * 0.5,
+                fontSize: TimerOptions.watchFontsize * 0.5,
                 fontWeight: FontWeight.normal),
             selectedTextStyle: Theme.of(context).textTheme.bodyText1?.copyWith(
                   fontWeight: FontWeight.bold,
-                  fontSize: TimerOptions.fontSize,
+                  fontSize: TimerOptions.watchFontsize,
                 ),
             textMapper: textMapper(ref),
             itemCount: 3,
-            itemHeight: TimerOptions.fontSize,
-            itemWidth: TimerOptions.fontSize * 2,
+            itemHeight: TimerOptions.watchFontsize,
+            itemWidth: TimerOptions.watchFontsize * 2,
           ),
           Text(
             "min",
             style: Theme.of(context).textTheme.bodyText1?.copyWith(
-                  fontSize: TimerOptions.fontSize,
+                  fontSize: TimerOptions.watchFontsize,
                 ),
           ),
         ],

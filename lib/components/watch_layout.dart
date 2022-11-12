@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:regatta_timer/components/accidental_interaction_preventer.dart';
+import 'package:regatta_timer/components/controls/lock_screen_button.dart';
 import 'package:regatta_timer/providers/app_lock_provider.dart';
-import 'package:regatta_timer/components/circular_icon_button.dart';
 
-class RegattaTimerLayout extends HookConsumerWidget {
-  final TopButton topButton;
-  final BottomButton bottomButton;
+class WatchLayout extends HookConsumerWidget {
+  final WatchLayoutTopButton topButton;
+  final WatchLayoutBottomButton bottomButton;
   final Widget centerWidget;
 
-  const RegattaTimerLayout({
-    required this.topButton,
-    required this.bottomButton,
-    required this.centerWidget,
-    Key? key,
-  }) : super(key: key);
+  const WatchLayout({required this.topButton, required this.bottomButton, required this.centerWidget, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -55,24 +51,32 @@ class RegattaTimerLayout extends HookConsumerWidget {
             ],
           ),
         ),
-        const LockScreenButton(),
+        const AccidentalInteractionPreventer(
+          size: Size(50, 60),
+          alignment: AlignmentDirectional.centerEnd,
+          child: LockScreenButton(),
+        ),
       ],
     );
   }
 }
 
-class TopButton extends StatelessWidget {
-  final Text text;
+class WatchLayoutTopButton extends StatelessWidget {
+  final String text;
   final void Function() onPressed;
+
   final ButtonStyle buttonStyle;
+  final TextStyle? textStyle;
+
   final bool longPressRequired;
 
-  const TopButton({
-    Key? key,
+  const WatchLayoutTopButton({
     required this.text,
     required this.onPressed,
     required this.buttonStyle,
+    this.textStyle,
     this.longPressRequired = false,
+    Key? key
   }) : super(key: key);
 
   @override
@@ -87,7 +91,11 @@ class TopButton extends StatelessWidget {
             flex: 4,
             child: FittedBox(
               fit: BoxFit.scaleDown,
-              child: text,
+              child: Text(
+                text,
+                style: textStyle ?? Theme.of(context).textTheme.button,
+                maxLines: 2,
+              ),
             ),
           ),
           const Spacer(
@@ -99,17 +107,21 @@ class TopButton extends StatelessWidget {
   }
 }
 
-class BottomButton extends StatelessWidget {
-  final Text text;
+class WatchLayoutBottomButton extends StatelessWidget {
+  final String text;
   final void Function() onPressed;
+
   final ButtonStyle buttonStyle;
+  final TextStyle? textStyle;
+
   final bool longPressRequired;
 
-  const BottomButton({
+  const WatchLayoutBottomButton({
     Key? key,
     required this.text,
     required this.onPressed,
     required this.buttonStyle,
+    this.textStyle,
     this.longPressRequired = false,
   }) : super(key: key);
 
@@ -128,44 +140,15 @@ class BottomButton extends StatelessWidget {
             flex: 4,
             child: FittedBox(
               fit: BoxFit.scaleDown,
-              child: text,
+              child: Text(
+                text,
+                style: textStyle ?? Theme.of(context).textTheme.button,
+                maxLines: 2,
+              ),
             ),
           ),
         ],
       ),
     );
-  }
-}
-
-class LockScreenButton extends HookConsumerWidget {
-  const LockScreenButton({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final isScreenLocked = ref.watch(appLockedProvider);
-
-    return Stack(
-      alignment: AlignmentDirectional.centerEnd,
-      children: [
-        Container(
-          color: Colors.transparent,
-          height: 60,
-          width: 50,
-          child: const IgnorePointer(ignoring: true),
-        ),
-        CircularIconButton(
-          icon: isScreenLocked ? Icons.lock : Icons.lock_open,
-          onPressed: onLockScreenPressed(context, ref),
-        ),
-      ],
-    );
-  }
-
-  void Function() onLockScreenPressed(BuildContext context, WidgetRef ref) {
-    return () {
-      ref.watch(appLockedProvider.notifier).toggle();
-    };
   }
 }

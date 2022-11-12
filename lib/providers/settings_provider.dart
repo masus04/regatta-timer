@@ -1,5 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:regatta_timer/components/vibration.dart';
+import 'package:regatta_timer/types/vibration.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class StartTimeOption {
