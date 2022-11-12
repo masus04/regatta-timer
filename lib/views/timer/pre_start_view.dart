@@ -3,8 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/providers/app_view_provider.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
 import 'package:regatta_timer/providers/timer_provider.dart';
-import 'package:regatta_timer/views/components/layout.dart';
-import 'package:regatta_timer/views/components/timer.dart';
+import 'package:regatta_timer/components/layout.dart';
+import 'package:regatta_timer/components/timer.dart';
 
 class PreStartView extends HookConsumerWidget {
   const PreStartView({

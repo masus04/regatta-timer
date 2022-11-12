@@ -3,8 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/providers/app_view_provider.dart';
 import 'package:regatta_timer/providers/boat_speed_provider.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
-import 'package:regatta_timer/views/components/circular_icon_button.dart';
-import 'package:regatta_timer/views/components/layout.dart';
+import 'package:regatta_timer/components/circular_icon_button.dart';
+import 'package:regatta_timer/components/layout.dart';
 import 'package:regatta_timer/views/set_time/time_selector.dart';
 
 class SetTimeView extends HookConsumerWidget {

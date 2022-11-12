@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/providers/app_lock_provider.dart';
-import 'package:regatta_timer/views/components/circular_icon_button.dart';
+import 'package:regatta_timer/components/circular_icon_button.dart';
 
 class RegattaTimerLayout extends HookConsumerWidget {
   final TopButton topButton;

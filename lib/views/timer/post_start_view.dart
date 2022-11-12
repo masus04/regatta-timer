@@ -4,8 +4,8 @@ import 'package:regatta_timer/providers/app_view_provider.dart';
 import 'package:regatta_timer/providers/boat_speed_provider.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
 import 'package:regatta_timer/providers/timer_provider.dart';
-import 'package:regatta_timer/views/components/layout.dart';
-import 'package:regatta_timer/views/components/timer.dart';
+import 'package:regatta_timer/components/layout.dart';
+import 'package:regatta_timer/components/timer.dart';
 
 class PostStartView extends HookConsumerWidget {
   const PostStartView({
