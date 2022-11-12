@@ -25,8 +25,8 @@ class BoatSpeedNotifier extends StateNotifier<AsyncValue<BoatSpeed>> {
   BoatSpeedNotifier({required this.ref}) : super(const AsyncValue.loading()) {
     try {
       init();
-    } catch (err) {
-      state = AsyncValue.error(err);
+    } catch (err, stacktrace) {
+      state = AsyncValue.error(err, stacktrace);
     }
   }
 

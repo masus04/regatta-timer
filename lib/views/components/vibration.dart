@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/widgets.dart';
 import 'package:vibration/vibration.dart';
 
@@ -23,8 +21,7 @@ class VibrationEvent {
   });
 
   List<int> get pattern {
-    return List.generate(2 * numVibrations,
-        (index) => index.isOdd ? breakDuration : vibrationDuration);
+    return List.generate(2 * numVibrations, (index) => index.isOdd ? breakDuration : vibrationDuration);
   }
 
   void execute() {
