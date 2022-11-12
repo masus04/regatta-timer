@@ -82,9 +82,9 @@ flutter {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
-    // Support WearOS
-    implementation 'com.google.android.support:wearable:2.9.0'
-    compileOnly 'com.google.android.wearable:wearable:2.9.0'
+    // Support WearOS - Disable on master
+    // implementation 'com.google.android.support:wearable:2.9.0'
+    // compileOnly 'com.google.android.wearable:wearable:2.9.0'
 
 }
 
