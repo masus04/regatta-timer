@@ -2,19 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/components/controls/lock_screen_button.dart';
 import 'package:regatta_timer/providers/app_lock_provider.dart';
-import 'package:regatta_timer/views/set_time/start_button.dart';
 
 class MobileLayout extends HookConsumerWidget {
-  final Widget primaryButton;
-  final Widget secondaryButton;
+  final Widget? title;
+  final Widget? primaryButton;
+  final Widget? secondaryButton;
   final Widget centerWidget;
 
   final Iterable<Widget> additionalButtons;
 
   const MobileLayout({
     super.key,
-    required this.primaryButton,
-    required this.secondaryButton,
+    this.title,
+    this.primaryButton,
+    this.secondaryButton,
     required this.centerWidget,
     this.additionalButtons = const [],
   });
@@ -36,28 +37,35 @@ class MobileLayout extends HookConsumerWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     SizedBox(
                       height: 250,
-                      child: Image.asset("assets/icons/regatta_timer_with_border.png"),
+                      child: title ?? const SizedBox.shrink(),
                     ),
                     Container(
                       decoration: BoxDecoration(border: Border.all(color: Colors.indigo, width: 4)),
                       child: centerWidget,
                     ),
-                    // const Spacer(),
-                    // const RaceInfoWidget(),
-                    const Spacer(),
-                    const Expanded(
-                      flex: 3,
-                      child: StartButton(),
-                    ),
-                    const Spacer(),
-                    ...additionalButtons.expand(
-                      (button) => [
-                        button,
-                        const Spacer(),
-                      ],
+                    Expanded(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          const SizedBox.shrink(),
+                          if (primaryButton != null) primaryButton!,
+                          if (secondaryButton != null) secondaryButton!,
+                          ...additionalButtons,
+                        ]
+                            .expand(
+                              (element) => [
+                                element,
+                                const Spacer(),
+                              ],
+                            )
+                            .toList(),
+                      ),
                     ),
                   ],
                 ),

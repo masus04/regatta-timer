@@ -62,6 +62,12 @@ class SettingsView extends HookConsumerWidget {
               value: ref.watch(settingsProvider).showPostStartBoatSpeed,
               onChanged: (newValue) => ref.read(settingsProvider.notifier).setShowPostStartBoatSpeed(newValue),
             ),
+            const Divider(color: Colors.white),
+            BooleanSetting(
+              text: "Enable Charly Mode toggle",
+              value: ref.read(settingsProvider).charlyModeToggleEnabled,
+              onChanged: (newValue) => ref.read(settingsProvider.notifier).setCharlyModeToggleEnabled(newValue),
+            ),
             // TODO: Add BoatSpeedUnit selector setting
 
             // const Divider(color: Colors.white),

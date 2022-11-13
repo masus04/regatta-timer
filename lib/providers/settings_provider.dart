@@ -106,6 +106,11 @@ class SettingsNotifier extends StateNotifier<RegattaTimerSettings> {
     _setStringToSharedPrefs(_SharedPreferenceKeys.boatSpeedUnit, newValue.name);
   }
 
+  setCharlyModeToggleEnabled(bool newValue) {
+    state = state.copyWith(charlyModeToggleEnabled: newValue);
+    _setBoolToSharedPrefs(_SharedPreferenceKeys.charlyModeToggleEnabled, newValue);
+  }
+
   setStartTimeOptions(StartTimeOption startTime, bool newValue) {
     // TODO: Fix issue where dependent widgets are not notified of the update. Probably requires deep copy
 
@@ -154,6 +159,9 @@ final settingsProvider = StateNotifierProvider<SettingsNotifier, RegattaTimerSet
       // Boat Speed Settings
       showPostStartBoatSpeed: true,
       boatSpeedUnit: BoatSpeedUnit.knots,
+
+      // Charly Mode
+      charlyModeToggleEnabled: false,
 
       // Timer settings
       selectedStartTimeOptions: [
@@ -286,6 +294,9 @@ enum _SharedPreferenceKeys {
   // BoatSpeed
   showPostStartBoatSpeed,
   boatSpeedUnit,
+
+  // Charly Mode
+  charlyModeToggleEnabled,
 
   // Lists
   selectedStartTimeOptions,

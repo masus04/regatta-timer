@@ -37,6 +37,9 @@ class RegattaTimerSettings {
   final List<StartTimeOption> selectedStartTimeOptions;
   final List<VibrationEvent> selectedVibrations;
 
+  // Charly Mode
+  final bool charlyModeToggleEnabled;
+
   RegattaTimerSettings({
     required this.longPressToStart,
     required this.longPressToResetPreStart,
@@ -47,6 +50,7 @@ class RegattaTimerSettings {
     required this.postStartWakelockEnabled,
     required this.showPostStartBoatSpeed,
     required this.boatSpeedUnit,
+    required this.charlyModeToggleEnabled,
     required this.selectedStartTimeOptions,
     required this.selectedVibrations,
   });
