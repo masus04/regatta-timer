@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:regatta_timer/components/layouts/layout_mobile.dart';
 import 'package:regatta_timer/components/layouts/layout_watch.dart';
 import 'package:regatta_timer/components/widget_timer.dart';
+import 'package:regatta_timer/providers/layout_provider.dart';
 import 'package:regatta_timer/providers/timer_provider.dart';
+import 'package:regatta_timer/views/timer/button_race_info.dart';
 import 'package:regatta_timer/views/timer/button_reset.dart';
 import 'package:regatta_timer/views/timer/button_sync.dart';
 
@@ -13,10 +16,29 @@ class PreStartTimerView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentTime = ref.watch(timerProvider);
 
-    return WatchLayout(
-      topButton: const ResetButton(),
-      bottomButton: const SyncButton(),
-      centerWidget: TimerWidget(currentTime!),
-    );
+    switch (ref.read(uiProvider).deviceType) {
+      case DeviceType.watch:
+        return WatchLayout(
+          topButton: const ResetButton(),
+          bottomButton: const SyncButton(),
+          centerWidget: TimerWidget(currentTime!),
+        );
+      default:
+        return MobileLayout(
+          title: const Padding(
+            padding: EdgeInsets.only(bottom: 16),
+            child: RaceInfoWidget(),
+          ),
+          primaryButton: const Expanded(
+            flex: 10,
+            child: ResetButton(),
+          ),
+          secondaryButton: const Expanded(
+            flex: 10,
+            child: SyncButton(),
+          ),
+          centerWidget: TimerWidget(currentTime!),
+        );
+    }
   }
 }

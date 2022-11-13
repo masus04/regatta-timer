@@ -24,8 +24,14 @@ class PostStartTimerView extends HookConsumerWidget {
         );
       default:
         return MobileLayout(
-          primaryButton: const EndRaceButton(),
-          secondaryButton: const RaceInfoWidget(),
+          title: const Padding(
+            padding: EdgeInsets.only(bottom: 16),
+            child: RaceInfoWidget(),
+          ),
+          primaryButton: const Expanded(
+            flex: 10,
+            child: EndRaceButton(),
+          ),
           centerWidget: TimerWidget(currentTime!),
         );
     }

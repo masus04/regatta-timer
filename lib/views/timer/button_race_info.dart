@@ -26,10 +26,11 @@ class RaceInfoWidget extends HookConsumerWidget {
         return MobileLayoutButton(
           text: ref.watch(boatSpeedProvider).when(
                 // TODO: Check settings for unit preference
-                data: (boatSpeed) => "${boatSpeed.knots.toStringAsFixed(1)} kn",
+                data: (boatSpeed) => "BSp: ${boatSpeed.knots.toStringAsFixed(1)} kn",
                 error: (err, trace) => "BoatSpeedError",
                 loading: () => "Racing",
               ),
+          textStyle: Theme.of(context).textTheme.labelMedium?.copyWith(fontSize: 40),
           onPressed: onInfoPressed(context, ref),
           buttonStyle: TextButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.primary),
           longPressRequired: false,

@@ -23,6 +23,7 @@ class MobileLayout extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final screenLocked = ref.watch(appLockedProvider);
+    // final numButtons = additionalButtons.length + (primaryButton == null ? 1 : 0) * 2 + (secondaryButton == null ? 1 : 0) * 2;
 
     return Material(
       color: Colors.white,
@@ -86,6 +87,7 @@ class MobileLayoutButton extends StatelessWidget {
   final bool longPressRequired;
 
   final ButtonStyle buttonStyle;
+  final TextStyle? textStyle;
 
   const MobileLayoutButton({
     super.key,
@@ -93,6 +95,7 @@ class MobileLayoutButton extends StatelessWidget {
     required this.onPressed,
     required this.longPressRequired,
     required this.buttonStyle,
+    this.textStyle,
   });
 
   @override
@@ -101,7 +104,7 @@ class MobileLayoutButton extends StatelessWidget {
       onLongPress: onPressed,
       onPressed: longPressRequired ? () {} : onPressed,
       style: buttonStyle,
-      child: Text(text, style: Theme.of(context).textTheme.labelLarge),
+      child: Text(text, style: textStyle ?? Theme.of(context).textTheme.labelLarge),
     );
   }
 }

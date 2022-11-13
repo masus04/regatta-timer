@@ -46,9 +46,7 @@ class TimerNotifier extends StateNotifier<Duration?> {
     _stateUpdateSubscription = _tickStream.listen((DateTime t) {
       final diff = DateTime.now().difference(startTime!);
       state = Duration(
-        hours: diff.inHours,
-        minutes: diff.inMinutes,
-        seconds: (diff.inMilliseconds / 1000).round().remainder(60),
+        seconds: (diff.inMilliseconds / 1000).round(),
       );
     });
 
