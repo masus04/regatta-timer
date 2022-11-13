@@ -8,8 +8,8 @@ import 'package:regatta_timer/providers/timer_provider.dart';
 import 'package:regatta_timer/views/timer/button_end_race.dart';
 import 'package:regatta_timer/views/timer/button_race_info.dart';
 
-class PostStartView extends HookConsumerWidget {
-  const PostStartView({super.key});
+class PostStartTimerView extends HookConsumerWidget {
+  const PostStartTimerView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

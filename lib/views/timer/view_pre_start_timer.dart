@@ -6,8 +6,8 @@ import 'package:regatta_timer/providers/timer_provider.dart';
 import 'package:regatta_timer/views/timer/button_reset.dart';
 import 'package:regatta_timer/views/timer/button_sync.dart';
 
-class PreStartView extends HookConsumerWidget {
-  const PreStartView({super.key});
+class PreStartTimerView extends HookConsumerWidget {
+  const PreStartTimerView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
