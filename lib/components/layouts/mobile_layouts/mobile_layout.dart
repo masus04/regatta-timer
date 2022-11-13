@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:regatta_timer/components/controls/lock_screen_button.dart';
 import 'package:regatta_timer/providers/app_lock_provider.dart';
+import 'package:regatta_timer/views/set_time/start_button.dart';
 
 class MobileLayout extends HookConsumerWidget {
   final Widget primaryButton;
@@ -9,20 +11,61 @@ class MobileLayout extends HookConsumerWidget {
 
   final Iterable<Widget> additionalButtons;
 
-  const MobileLayout({super.key, required this.primaryButton, required this.secondaryButton, required this.centerWidget, this.additionalButtons = const []});
+  const MobileLayout({
+    super.key,
+    required this.primaryButton,
+    required this.secondaryButton,
+    required this.centerWidget,
+    this.additionalButtons = const [],
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final screenLocked = ref.watch(appLockedProvider);
 
-    return SafeArea(
-      child: Column(
-        children: [
-          centerWidget,
-          Row(
-            children: additionalButtons.toList(),
-          )
-        ],
+    return Material(
+      color: Colors.white,
+      child: SafeArea(
+        child: Stack(
+          alignment: Alignment.topRight,
+          children: [
+            IgnorePointer(
+              ignoring: screenLocked,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(
+                      height: 250,
+                      child: Image.asset("assets/icons/regatta_timer_with_border.png"),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(border: Border.all(color: Colors.indigo, width: 4)),
+                      child: centerWidget,
+                    ),
+                    // const Spacer(),
+                    // const RaceInfoWidget(),
+                    const Spacer(),
+                    const Expanded(
+                      flex: 3,
+                      child: StartButton(),
+                    ),
+                    const Spacer(),
+                    ...additionalButtons.expand(
+                      (button) => [
+                        button,
+                        const Spacer(),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const LockScreenButton(),
+          ],
+        ),
       ),
     );
   }
@@ -50,7 +93,7 @@ class MobileLayoutButton extends StatelessWidget {
       onLongPress: onPressed,
       onPressed: longPressRequired ? () {} : onPressed,
       style: buttonStyle,
-      child: Text(text),
+      child: Text(text, style: Theme.of(context).textTheme.labelLarge),
     );
   }
 }

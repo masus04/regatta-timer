@@ -38,7 +38,6 @@ class RegattaTimer extends HookConsumerWidget {
           ),
         ),
       ),
-      // builder: (context, child) => SafeArea(child: child!),
       initialRoute: AppViewNotifier.setTimeView.route,
       routes: {
         AppViewNotifier.setTimeView.route: (context) => const SetTimeView(),

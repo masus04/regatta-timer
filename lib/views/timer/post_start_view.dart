@@ -19,13 +19,13 @@ class PostStartView extends HookConsumerWidget {
       case DeviceType.watch:
         return WatchLayout(
           topButton: const EndRaceButton(),
-          bottomButton: const RaceInfoButton(),
+          bottomButton: const RaceInfoWidget(),
           centerWidget: Timer(currentTime!),
         );
       default:
         return MobileLayout(
           primaryButton: const EndRaceButton(),
-          secondaryButton: const RaceInfoButton(),
+          secondaryButton: const RaceInfoWidget(),
           centerWidget: Timer(currentTime!),
         );
     }

@@ -12,9 +12,7 @@ class SettingsButton extends HookConsumerWidget {
     switch (ref.watch(uiProvider).deviceType) {
       case DeviceType.watch:
         return const WatchSettingsButton();
-      case DeviceType.phone:
-        return const MobileSettingsButton();
-      case DeviceType.tablet:
+      default:
         return const MobileSettingsButton();
     }
   }
@@ -27,7 +25,7 @@ class WatchSettingsButton extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return CircularIconButton(
       borderRadius: 20,
-      icon: Icons.settings,
+      icon: Icons.settings_outlined,
       onPressed: onSettingsPressed(context, ref),
     );
   }
@@ -44,10 +42,25 @@ class MobileSettingsButton extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return CircularIconButton(
-      borderRadius: 20,
-      icon: Icons.settings,
+    return ElevatedButton(
       onPressed: onSettingsPressed(context, ref),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(
+              Icons.settings_outlined,
+              color: Colors.white,
+            ),
+            const SizedBox(width: 8),
+            Text(
+              "Settings",
+              style: Theme.of(context).textTheme.labelMedium,
+            ),
+          ],
+        ),
+      ),
     );
   }
 
