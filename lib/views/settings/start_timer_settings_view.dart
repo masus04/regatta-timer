@@ -23,7 +23,7 @@ class StartTimerSettingsView extends HookConsumerWidget {
             child: Text(
               title,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 17, color: Colors.white),
+              style: Theme.of(context).textTheme.labelLarge,
             ),
           ),
           ListTile(
@@ -31,7 +31,7 @@ class StartTimerSettingsView extends HookConsumerWidget {
             title: Text(
               description,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 10, color: Colors.white),
+              style: Theme.of(context).textTheme.labelMedium,
             ),
             dense: true,
             visualDensity: VisualDensity.compact,
@@ -44,7 +44,7 @@ class StartTimerSettingsView extends HookConsumerWidget {
                   contentPadding: const EdgeInsets.only(left: 35, right: 10),
                   title: Text(
                     "${startTime.startTime.inMinutes} min",
-                    style: const TextStyle(color: Colors.white, fontSize: 10),
+                    style: Theme.of(context).textTheme.labelMedium,
                   ),
                   trailing: Transform.scale(
                     scale: 0.75,

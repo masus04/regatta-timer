@@ -60,9 +60,15 @@ class TimerNotifier extends StateNotifier<Duration?> {
     final vibrationPatterns = _ref.read(settingsProvider).selectedVibrations;
 
     _vibrationSubscription = _tickStream
-        .where((DateTime t) => vibrationPatterns.any((vibration) => vibration.activationTimeStep == state))
-        .map((DateTime t) => vibrationPatterns.firstWhere((vibration) => state == vibration.activationTimeStep))
-        .listen((triggeredVibration) => triggeredVibration.execute());
+        .where(
+          (DateTime t) => vibrationPatterns.any((vibration) => vibration.activationTimeStep == state),
+        )
+        .map(
+          (DateTime t) => vibrationPatterns.firstWhere((vibration) => state == vibration.activationTimeStep),
+        )
+        .listen(
+          (triggeredVibration) => triggeredVibration.execute(),
+        );
   }
 
   sync() {

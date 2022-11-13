@@ -4,14 +4,12 @@ class SelectFromListSetting extends StatelessWidget {
   final String text;
   final void Function() onPressed;
 
-  final double fontSize;
   final EdgeInsetsGeometry contentPadding;
 
   const SelectFromListSetting({
     Key? key,
     required this.text,
     required this.onPressed,
-    this.fontSize = 10,
     this.contentPadding = const EdgeInsets.only(left: 35, right: 10),
   }) : super(key: key);
 
@@ -22,10 +20,7 @@ class SelectFromListSetting extends StatelessWidget {
       title: Text(
         text,
         textAlign: TextAlign.left,
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: fontSize,
-        ),
+        style: Theme.of(context).textTheme.labelMedium,
       ),
       trailing: IconButton(
         onPressed: onPressed,

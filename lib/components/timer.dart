@@ -13,10 +13,7 @@ class Timer extends StatelessWidget {
         padding: const EdgeInsets.all(1.0),
         child: Text(
           _formatDuration(time),
-          style: Theme.of(context)
-              .textTheme
-              .bodyText2
-              ?.copyWith(fontWeight: FontWeight.bold),
+          style: Theme.of(context).textTheme.displaySmall,
         ),
       ),
     );

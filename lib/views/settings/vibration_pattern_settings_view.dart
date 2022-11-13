@@ -20,7 +20,7 @@ class VibrationPatternSettingsView extends HookConsumerWidget {
             child: Text(
               title,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 17, color: Colors.white),
+              style: Theme.of(context).textTheme.labelMedium,
             ),
           ),
           ListTile(

@@ -1,112 +1,7 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:regatta_timer/types/settings_types.dart';
 import 'package:regatta_timer/types/vibration.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-class StartTimeOption {
-  bool enabled;
-  final Duration startTime;
-
-  StartTimeOption(this.startTime, {this.enabled = true});
-
-  copyWith({Duration? startTime, bool? enabled}) {
-    return StartTimeOption(startTime ?? this.startTime, enabled: enabled ?? this.enabled);
-  }
-}
-
-enum BoatSpeedUnit { mps, knots, kmh }
-
-BoatSpeedUnit? boatSpeedUnitFromString(String? name) {
-  if (name == BoatSpeedUnit.mps.name) return BoatSpeedUnit.mps;
-
-  if (name == BoatSpeedUnit.knots.name) return BoatSpeedUnit.knots;
-
-  if (name == BoatSpeedUnit.kmh.name) return BoatSpeedUnit.kmh;
-
-  return null;
-}
-
-class RegattaTimerSettings {
-  // Long Press settings
-  final bool longPressToStart;
-  final bool longPressToResetPreStart;
-  final bool longPressToResetPostStart;
-  final bool longPressToSync;
-
-  // Wake Lock settings
-  final bool timerSelectionWakelockEnabled;
-  final bool preStartWakelockEnabled;
-  final bool postStartWakelockEnabled;
-
-  // Boat Speed settings
-  final bool showPostStartBoatSpeed;
-  final BoatSpeedUnit boatSpeedUnit;
-
-  // Timer Options
-  final List<StartTimeOption> selectedStartTimeOptions;
-  final List<VibrationEvent> selectedVibrations;
-
-  RegattaTimerSettings({
-    required this.longPressToStart,
-    required this.longPressToResetPreStart,
-    required this.longPressToResetPostStart,
-    required this.longPressToSync,
-    required this.timerSelectionWakelockEnabled,
-    required this.preStartWakelockEnabled,
-    required this.postStartWakelockEnabled,
-    required this.showPostStartBoatSpeed,
-    required this.boatSpeedUnit,
-    required this.selectedStartTimeOptions,
-    required this.selectedVibrations,
-  });
-
-  copyWith(
-      {bool? longPressToStart,
-      bool? longPressToResetPreStart,
-      bool? longPressToResetPostStart,
-      bool? longPressToSync,
-      bool? timerSelectionWakelockEnabled,
-      bool? preStartWakelockEnabled,
-      bool? postStartWakelockEnabled,
-      bool? showPostStartBoatSpeed,
-      BoatSpeedUnit? boatSpeedUnit,
-      List<StartTimeOption>? selectedStartTimeOptions,
-      List<VibrationEvent>? selectedVibrations}) {
-    return RegattaTimerSettings(
-      longPressToStart: longPressToStart ?? this.longPressToStart,
-      longPressToResetPreStart: longPressToResetPreStart ?? this.longPressToResetPreStart,
-      longPressToResetPostStart: longPressToResetPostStart ?? this.longPressToResetPostStart,
-      longPressToSync: longPressToSync ?? this.longPressToSync,
-      timerSelectionWakelockEnabled: timerSelectionWakelockEnabled ?? this.timerSelectionWakelockEnabled,
-      preStartWakelockEnabled: preStartWakelockEnabled ?? this.preStartWakelockEnabled,
-      postStartWakelockEnabled: postStartWakelockEnabled ?? this.postStartWakelockEnabled,
-      showPostStartBoatSpeed: showPostStartBoatSpeed ?? this.showPostStartBoatSpeed,
-      boatSpeedUnit: boatSpeedUnit ?? this.boatSpeedUnit,
-      selectedStartTimeOptions: selectedStartTimeOptions ?? this.selectedStartTimeOptions,
-      selectedVibrations: selectedVibrations ?? this.selectedVibrations,
-    );
-  }
-}
-
-enum _SharedPreferenceKeys {
-  // LongPress
-  longPressToStart,
-  longPressToResetPreStart,
-  longPressToResetPostStart,
-  longPressToSync,
-
-  // WakeLock
-  timerSelectionWakelockEnabled,
-  preStartWakelockEnabled,
-  postStartWakelockEnabled,
-
-  // BoatSpeed
-  showPostStartBoatSpeed,
-  boatSpeedUnit,
-
-  // Lists
-  selectedStartTimeOptions,
-  selectedVibrations,
-}
 
 class SettingsNotifier extends StateNotifier<RegattaTimerSettings> {
   late final Future<SharedPreferences> prefs = SharedPreferences.getInstance();
@@ -227,6 +122,16 @@ class SettingsNotifier extends StateNotifier<RegattaTimerSettings> {
   setVibrationPatterns() {
     throw Exception("Not yet implemented");
     // TODO: Implement this similar to setStartTime
+  }
+
+  static BoatSpeedUnit? boatSpeedUnitFromString(String? name) {
+    if (name == BoatSpeedUnit.mps.name) return BoatSpeedUnit.mps;
+
+    if (name == BoatSpeedUnit.knots.name) return BoatSpeedUnit.knots;
+
+    if (name == BoatSpeedUnit.kmh.name) return BoatSpeedUnit.kmh;
+
+    return null;
   }
 }
 
@@ -365,3 +270,24 @@ final settingsProvider = StateNotifierProvider<SettingsNotifier, RegattaTimerSet
     ),
   );
 });
+
+enum _SharedPreferenceKeys {
+  // LongPress
+  longPressToStart,
+  longPressToResetPreStart,
+  longPressToResetPostStart,
+  longPressToSync,
+
+  // WakeLock
+  timerSelectionWakelockEnabled,
+  preStartWakelockEnabled,
+  postStartWakelockEnabled,
+
+  // BoatSpeed
+  showPostStartBoatSpeed,
+  boatSpeedUnit,
+
+  // Lists
+  selectedStartTimeOptions,
+  selectedVibrations,
+}

@@ -9,52 +9,65 @@ class WatchLayout extends HookConsumerWidget {
   final WatchLayoutBottomButton bottomButton;
   final Widget centerWidget;
 
-  const WatchLayout({required this.topButton, required this.bottomButton, required this.centerWidget, Key? key}) : super(key: key);
+  final Widget leftButton;
+  final Widget rightButton;
+
+  const WatchLayout({
+    super.key,
+    required this.topButton,
+    required this.bottomButton,
+    required this.centerWidget,
+    this.leftButton = const SizedBox(width: 50, height: 60),
+    this.rightButton = const AccidentalInteractionPreventer(
+      /// Lock Screen Button
+      size: Size(50, 60),
+      alignment: AlignmentDirectional.centerEnd,
+      child: LockScreenButton(),
+    ),
+  });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final screenLocked = ref.watch(appLockedProvider);
 
     return Stack(
-      alignment: AlignmentDirectional.centerEnd,
+      fit: StackFit.expand,
+      // Stack center widget on top of both buttons
       children: [
         IgnorePointer(
           ignoring: screenLocked,
-          child: Stack(
-            fit: StackFit.expand,
-            // Stack center widget on top of both buttons
+          child: Column(
+            /// Top & Bottom Buttons
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Container(color: Colors.white),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Expanded(child: topButton),
-                  SizedBox.fromSize(size: const Size.fromHeight(5)),
-                  Expanded(child: bottomButton),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Spacer(flex: 1),
-                  Expanded(
-                    flex: 3,
-                    child: Container(
-                      height: 75,
-                      color: Colors.white,
-                      child: centerWidget,
-                    ),
-                  ),
-                  const Spacer(flex: 1),
-                ],
-              ),
+              Expanded(child: topButton),
+              SizedBox.fromSize(size: const Size.fromHeight(5)),
+              Expanded(child: bottomButton),
             ],
           ),
         ),
-        const AccidentalInteractionPreventer(
-          size: Size(50, 60),
-          alignment: AlignmentDirectional.centerEnd,
-          child: LockScreenButton(),
+        Row(
+          /// Center elements
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            IgnorePointer(
+              ignoring: screenLocked,
+              child: leftButton,
+            ),
+            // const Spacer(flex: 1),
+            Expanded(
+              child: IgnorePointer(
+                ignoring: screenLocked,
+                child: Container(
+                  height: 75,
+                  color: Colors.white,
+                  child: centerWidget,
+                ),
+              ),
+            ),
+            // const Spacer(flex: 1),
+            rightButton,
+          ],
         ),
       ],
     );
@@ -65,19 +78,17 @@ class WatchLayoutTopButton extends StatelessWidget {
   final String text;
   final void Function() onPressed;
 
-  final ButtonStyle buttonStyle;
-  final TextStyle? textStyle;
-
   final bool longPressRequired;
 
+  final ButtonStyle buttonStyle;
+
   const WatchLayoutTopButton({
+    super.key,
     required this.text,
     required this.onPressed,
     required this.buttonStyle,
-    this.textStyle,
     this.longPressRequired = false,
-    Key? key
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -86,6 +97,7 @@ class WatchLayoutTopButton extends StatelessWidget {
       onPressed: longPressRequired ? () {} : onPressed,
       style: buttonStyle,
       child: Column(
+        /// Place Text in the middle between center element & screen edge
         children: [
           Expanded(
             flex: 4,
@@ -93,7 +105,7 @@ class WatchLayoutTopButton extends StatelessWidget {
               fit: BoxFit.scaleDown,
               child: Text(
                 text,
-                style: textStyle ?? Theme.of(context).textTheme.button,
+                style: Theme.of(context).textTheme.labelLarge,
                 maxLines: 2,
               ),
             ),
@@ -112,7 +124,6 @@ class WatchLayoutBottomButton extends StatelessWidget {
   final void Function() onPressed;
 
   final ButtonStyle buttonStyle;
-  final TextStyle? textStyle;
 
   final bool longPressRequired;
 
@@ -121,7 +132,6 @@ class WatchLayoutBottomButton extends StatelessWidget {
     required this.text,
     required this.onPressed,
     required this.buttonStyle,
-    this.textStyle,
     this.longPressRequired = false,
   }) : super(key: key);
 
@@ -132,6 +142,7 @@ class WatchLayoutBottomButton extends StatelessWidget {
       onPressed: longPressRequired ? () {} : onPressed,
       style: buttonStyle,
       child: Column(
+        /// Place Text in the middle between center element & screen edge
         children: [
           const Spacer(
             flex: 2,
@@ -142,7 +153,7 @@ class WatchLayoutBottomButton extends StatelessWidget {
               fit: BoxFit.scaleDown,
               child: Text(
                 text,
-                style: textStyle ?? Theme.of(context).textTheme.button,
+                style: Theme.of(context).textTheme.labelLarge,
                 maxLines: 2,
               ),
             ),

@@ -1,36 +1,32 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-class BooleanSetting extends StatelessWidget {
+class BooleanSetting extends HookConsumerWidget {
   final String text;
   final bool value;
 
   final void Function(bool) onChanged;
 
   final double switchScale;
-  final double fontSize;
   final EdgeInsetsGeometry contentPadding;
 
   const BooleanSetting({
-    Key? key,
+    super.key,
     required this.text,
     required this.value,
     required this.onChanged,
     this.switchScale = 0.75,
-    this.fontSize = 10,
     this.contentPadding = const EdgeInsets.only(left: 35, right: 10),
-  }) : super(key: key);
+  });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ListTile(
       contentPadding: contentPadding,
       title: Text(
         text,
         textAlign: TextAlign.left,
-        style: TextStyle(
-          color: Colors.white,
-          fontSize: fontSize,
-        ),
+        style: Theme.of(context).textTheme.labelMedium,
       ),
       trailing: Transform.scale(
         scale: switchScale,

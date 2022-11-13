@@ -13,10 +13,10 @@ class SettingsView extends HookConsumerWidget {
       body: ListView(
         padding: const EdgeInsets.only(top: 15),
         children: [
-          const Text(
+          Text(
             "Settings",
             textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontSize: 17),
+            style: Theme.of(context).textTheme.labelLarge,
           ),
           const Divider(color: Colors.white),
           BooleanSetting(
