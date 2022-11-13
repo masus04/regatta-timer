@@ -3,19 +3,28 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/providers/app_lock_provider.dart';
 
 class MobileLayout extends HookConsumerWidget {
-  final MobileLayoutButton primaryButton;
-  final MobileLayoutButton secondaryButton;
+  final Widget primaryButton;
+  final Widget secondaryButton;
   final Widget centerWidget;
 
   final Iterable<Widget> additionalButtons;
 
-  const MobileLayout({super.key, required this.primaryButton, required this.secondaryButton, required this.centerWidget, required this.additionalButtons});
+  const MobileLayout({super.key, required this.primaryButton, required this.secondaryButton, required this.centerWidget, this.additionalButtons = const []});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final screenLocked = ref.watch(appLockedProvider);
 
-    return Container();
+    return SafeArea(
+      child: Column(
+        children: [
+          centerWidget,
+          Row(
+            children: additionalButtons.toList(),
+          )
+        ],
+      ),
+    );
   }
 }
 

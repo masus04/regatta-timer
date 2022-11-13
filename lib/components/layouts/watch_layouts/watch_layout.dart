@@ -5,25 +5,18 @@ import 'package:regatta_timer/components/controls/lock_screen_button.dart';
 import 'package:regatta_timer/providers/app_lock_provider.dart';
 
 class WatchLayout extends HookConsumerWidget {
-  final WatchLayoutTopButton topButton;
-  final WatchLayoutBottomButton bottomButton;
+  final Widget topButton;
+  final Widget bottomButton;
   final Widget centerWidget;
 
   final Widget leftButton;
-  final Widget rightButton;
 
   const WatchLayout({
     super.key,
     required this.topButton,
     required this.bottomButton,
     required this.centerWidget,
-    this.leftButton = const SizedBox(width: 50, height: 60),
-    this.rightButton = const AccidentalInteractionPreventer(
-      /// Lock Screen Button
-      size: Size(50, 60),
-      alignment: AlignmentDirectional.centerEnd,
-      child: LockScreenButton(),
-    ),
+    this.leftButton = const SizedBox.shrink(),
   });
 
   @override
@@ -52,7 +45,11 @@ class WatchLayout extends HookConsumerWidget {
           children: [
             IgnorePointer(
               ignoring: screenLocked,
-              child: leftButton,
+              child: SizedBox(
+                width: 50,
+                height: 60,
+                child: leftButton,
+              ),
             ),
             // const Spacer(flex: 1),
             Expanded(
@@ -66,7 +63,11 @@ class WatchLayout extends HookConsumerWidget {
               ),
             ),
             // const Spacer(flex: 1),
-            rightButton,
+            const AccidentalInteractionPreventer(
+              size: Size(50, 60),
+              alignment: AlignmentDirectional.centerEnd,
+              child: LockScreenButton(),
+            ),
           ],
         ),
       ],

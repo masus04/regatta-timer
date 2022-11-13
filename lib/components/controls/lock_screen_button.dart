@@ -11,6 +11,7 @@ class LockScreenButton extends HookConsumerWidget {
     final isScreenLocked = ref.watch(appLockedProvider);
 
     return CircularIconButton(
+      borderRadius: 20,
       icon: isScreenLocked ? Icons.lock : Icons.lock_open,
       onPressed: onLockScreenPressed(context, ref),
     );

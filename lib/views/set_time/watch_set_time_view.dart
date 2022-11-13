@@ -3,10 +3,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/components/accidental_interaction_preventer.dart';
 import 'package:regatta_timer/components/controls/settings_button.dart';
 import 'package:regatta_timer/components/controls/time_selector.dart';
-import 'package:regatta_timer/components/layouts/watch_layout.dart';
-import 'package:regatta_timer/providers/app_view_provider.dart';
+import 'package:regatta_timer/components/layouts/watch_layouts/watch_layout.dart';
 import 'package:regatta_timer/providers/boat_speed_provider.dart';
-import 'package:regatta_timer/providers/settings_provider.dart';
+import 'package:regatta_timer/views/set_time/start_button.dart';
+import 'package:regatta_timer/views/set_time/timer_button.dart';
 
 class WatchSetTimeView extends HookConsumerWidget {
   const WatchSetTimeView({super.key});
@@ -19,21 +19,12 @@ class WatchSetTimeView extends HookConsumerWidget {
     return Scaffold(
       body: Stack(
         alignment: AlignmentDirectional.centerStart,
-        children: [
+        children: const [
           WatchLayout(
-            topButton: WatchLayoutTopButton(
-              text: "Timer",
-              onPressed: onTimerTypePressed(context, ref),
-              buttonStyle: TextButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.primary),
-            ),
-            bottomButton: WatchLayoutBottomButton(
-              text: "Start",
-              onPressed: onStartPressed(context, ref),
-              buttonStyle: TextButton.styleFrom(backgroundColor: Theme.of(context).colorScheme.secondary),
-              longPressRequired: ref.watch(settingsProvider).longPressToStart,
-            ),
-            centerWidget: const TimeSelector(),
-            leftButton: const AccidentalInteractionPreventer(
+            topButton: TimerButton(),
+            bottomButton: StartButton(),
+            centerWidget: TimeSelector(),
+            leftButton: AccidentalInteractionPreventer(
               size: Size(50, 60),
               alignment: AlignmentDirectional.centerStart,
               child: SettingsButton(),
@@ -42,15 +33,5 @@ class WatchSetTimeView extends HookConsumerWidget {
         ],
       ),
     );
-  }
-
-  void Function() onTimerTypePressed(BuildContext context, WidgetRef ref) {
-    return () {};
-  }
-
-  void Function() onStartPressed(BuildContext context, WidgetRef ref) {
-    return () {
-      ref.watch(appViewProvider.notifier).enterPreStartState(context);
-    };
   }
 }

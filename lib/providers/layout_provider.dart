@@ -23,15 +23,18 @@ class UIState {
 
     final aspectRatio = width / height;
 
+    /// Watch Constants
     if (aspectRatio == 1) {
       return const UIState(deviceType: DeviceType.watch, displayFontSize: 25, menuFonsSize: 10);
     }
 
+    /// Phone Constants
     if (aspectRatio >= 16 / 9 || aspectRatio <= 9 / 16) {
-      return const UIState(deviceType: DeviceType.phone, displayFontSize: 25, menuFonsSize: 10);
+      return const UIState(deviceType: DeviceType.phone, displayFontSize: 50, menuFonsSize: 20);
     }
 
-    return const UIState(deviceType: DeviceType.tablet, displayFontSize: 25, menuFonsSize: 10);
+    /// Tablet Constants
+    return const UIState(deviceType: DeviceType.tablet, displayFontSize: 50, menuFonsSize: 20);
   }
 }
 
