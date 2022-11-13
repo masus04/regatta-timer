@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/providers/layout_provider.dart';
-import 'package:regatta_timer/views/set_time/mobile_set_time_view.dart';
-import 'package:regatta_timer/views/set_time/watch_set_time_view.dart';
+import 'package:regatta_timer/views/set_time/view_set_time_mobile.dart';
+import 'package:regatta_timer/views/set_time/view_set_time_watch.dart';
 
 class SetTimeView extends HookConsumerWidget {
   const SetTimeView({super.key});

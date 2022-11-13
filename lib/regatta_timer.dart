@@ -3,11 +3,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/providers/app_view_provider.dart';
 import 'package:regatta_timer/providers/layout_provider.dart';
-import 'package:regatta_timer/views/set_time/set_time_view.dart';
-import 'package:regatta_timer/views/settings/settings_view.dart';
-import 'package:regatta_timer/views/settings/start_timer_settings_view.dart';
-import 'package:regatta_timer/views/settings/vibration_pattern_settings_view.dart';
-import 'package:regatta_timer/views/timer/timer_view.dart';
+import 'package:regatta_timer/views/set_time/view_set_time.dart';
+import 'package:regatta_timer/views/settings/view_settings.dart';
+import 'package:regatta_timer/views/settings/view_start_timer_settings.dart';
+import 'package:regatta_timer/views/settings/view_vibration_pattern_settings.dart';
+import 'package:regatta_timer/views/timer/view_timer.dart';
 
 class RegattaTimer extends HookConsumerWidget {
   const RegattaTimer({super.key});

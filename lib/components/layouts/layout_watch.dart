@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:regatta_timer/components/accidental_interaction_preventer.dart';
-import 'package:regatta_timer/components/controls/lock_screen_button.dart';
+import 'package:regatta_timer/components/widget_accidental_interaction_preventer.dart';
+import 'package:regatta_timer/components/controls/button_lock_screen.dart';
 import 'package:regatta_timer/providers/app_lock_provider.dart';
 
 class WatchLayout extends HookConsumerWidget {

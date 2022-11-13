@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
-import 'package:regatta_timer/views/settings/boolean_settings_widget.dart';
+import 'package:regatta_timer/views/settings/widget_boolean_settings.dart';
 
 class SettingsView extends HookConsumerWidget {
   const SettingsView({super.key});
