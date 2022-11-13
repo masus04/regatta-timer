@@ -10,7 +10,7 @@ import 'package:regatta_timer/views/settings/vibration_pattern_settings_view.dar
 import 'package:regatta_timer/views/timer/timer_view.dart';
 
 class RegattaTimer extends HookConsumerWidget {
-  const RegattaTimer({Key? key}) : super(key: key);
+  const RegattaTimer({super.key});
 
   // This widget is the root of your application.
   @override

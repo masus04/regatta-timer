@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class Timer extends StatelessWidget {
   final Duration time;
 
-  const Timer(this.time, {Key? key}) : super(key: key);
+  const Timer(this.time, {super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -9,7 +9,7 @@ class StartTimerSettingsView extends HookConsumerWidget {
   final title = "Start Time Options";
   final description = "Select which start time options should be displayed on the main Timer screen";
 
-  const StartTimerSettingsView({Key? key}) : super(key: key);
+  const StartTimerSettingsView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

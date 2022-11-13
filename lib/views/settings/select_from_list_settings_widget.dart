@@ -7,11 +7,11 @@ class SelectFromListSetting extends StatelessWidget {
   final EdgeInsetsGeometry contentPadding;
 
   const SelectFromListSetting({
-    Key? key,
+    super.key,
     required this.text,
     required this.onPressed,
     this.contentPadding = const EdgeInsets.only(left: 35, right: 10),
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

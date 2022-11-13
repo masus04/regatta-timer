@@ -4,7 +4,7 @@ import 'package:regatta_timer/components/circular_icon_button.dart';
 import 'package:regatta_timer/providers/app_view_provider.dart';
 
 class SettingsButton extends HookConsumerWidget {
-  const SettingsButton({Key? key}) : super(key: key);
+  const SettingsButton({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -4,7 +4,7 @@ import 'package:regatta_timer/components/circular_icon_button.dart';
 import 'package:regatta_timer/providers/app_lock_provider.dart';
 
 class LockScreenButton extends HookConsumerWidget {
-  const LockScreenButton({Key? key}) : super(key: key);
+  const LockScreenButton({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

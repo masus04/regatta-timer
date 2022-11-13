@@ -127,13 +127,7 @@ class WatchLayoutBottomButton extends StatelessWidget {
 
   final bool longPressRequired;
 
-  const WatchLayoutBottomButton({
-    Key? key,
-    required this.text,
-    required this.onPressed,
-    required this.buttonStyle,
-    this.longPressRequired = false,
-  }) : super(key: key);
+  const WatchLayoutBottomButton({super.key, required this.text, required this.onPressed, required this.buttonStyle, this.longPressRequired = false});
 
   @override
   Widget build(BuildContext context) {

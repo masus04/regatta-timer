@@ -8,7 +8,7 @@ import 'package:regatta_timer/providers/settings_provider.dart';
 import 'package:regatta_timer/providers/timer_provider.dart';
 
 class PostStartView extends HookConsumerWidget {
-  const PostStartView({Key? key}) : super(key: key);
+  const PostStartView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

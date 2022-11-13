@@ -33,7 +33,6 @@ class AppViewNotifier extends StateNotifier<AppView> {
     } else {
       Wakelock.disable();
       debugPrint("WakeLock: disabled");
-
     }
   }
 

@@ -4,7 +4,7 @@ import 'package:regatta_timer/providers/settings_provider.dart';
 import 'package:regatta_timer/views/settings/boolean_settings_widget.dart';
 
 class SettingsView extends HookConsumerWidget {
-  const SettingsView({Key? key}) : super(key: key);
+  const SettingsView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

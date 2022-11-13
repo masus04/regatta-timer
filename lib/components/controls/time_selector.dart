@@ -8,7 +8,7 @@ import 'package:regatta_timer/providers/settings_provider.dart';
 class TimeSelector extends HookConsumerWidget {
   final int numOptions;
 
-  const TimeSelector({Key? key, this.numOptions = 3}) : super(key: key);
+  const TimeSelector({super.key, this.numOptions = 3});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

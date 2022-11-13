@@ -8,7 +8,7 @@ class VibrationPatternSettingsView extends HookConsumerWidget {
   final title = "Start Time Options";
   final description = "Time intervals to be displayed in the StartTime selector";
 
-  const VibrationPatternSettingsView({Key? key}) : super(key: key);
+  const VibrationPatternSettingsView({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

@@ -5,7 +5,7 @@ class AccidentalInteractionPreventer extends StatelessWidget {
   final Size size;
   final AlignmentGeometry alignment;
 
-  const AccidentalInteractionPreventer({Key? key, required this.child, required this.size, this.alignment = AlignmentDirectional.center}) : super(key: key);
+  const AccidentalInteractionPreventer({super.key, required this.child, required this.size, this.alignment = AlignmentDirectional.center});
 
   @override
   Widget build(BuildContext context) {
