@@ -22,14 +22,16 @@ class TimerNotifier extends StateNotifier<Duration?> {
     reset();
   }
 
-  void reset() {
+  /// Resets the application for a new start
+  /// If a [duration] is passed, use it as the new start timer duration, else retrieves the new duration from the selected timer.
+  void reset({Duration? duration}) {
     // Read timer parameters
     final DateTime now = DateTime.now();
-    final selectedStartTimer = _ref.watch(selectedStartTimeProvider.notifier).selectedDuration;
-    startTime = now.add(selectedStartTimer);
+    final selectedDuration = duration ?? _ref.watch(selectedStartTimeProvider.notifier).selectedDuration;
+    startTime = now.add(selectedDuration);
     state = now.difference(startTime!);
 
-    debugPrint("selectedStartTimer: ${selectedStartTimer.toString()}, \n"
+    debugPrint("selectedStartTimer: ${selectedDuration.toString()}, \n"
         "state: $state, \n"
         "startTime: ${startTime.toString()}");
 
@@ -48,7 +50,6 @@ class TimerNotifier extends StateNotifier<Duration?> {
         minutes: diff.inMinutes,
         seconds: (diff.inMilliseconds / 1000).round().remainder(60),
       );
-      // debugPrint("Update state: $state, startTime: $startTime, now: {DateTime.now()}");
     });
 
     _initVibrations();

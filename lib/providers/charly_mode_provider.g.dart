@@ -9,6 +9,8 @@ part of 'charly_mode_provider.dart';
 abstract class _$CharlyModeStateCWProxy {
   CharlyModeState enabled(bool enabled);
 
+  CharlyModeState lastDuration(Duration? lastDuration);
+
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `CharlyModeState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
   /// Usage
@@ -17,6 +19,7 @@ abstract class _$CharlyModeStateCWProxy {
   /// ````
   CharlyModeState call({
     bool? enabled,
+    Duration? lastDuration,
   });
 }
 
@@ -30,6 +33,10 @@ class _$CharlyModeStateCWProxyImpl implements _$CharlyModeStateCWProxy {
   CharlyModeState enabled(bool enabled) => this(enabled: enabled);
 
   @override
+  CharlyModeState lastDuration(Duration? lastDuration) =>
+      this(lastDuration: lastDuration);
+
+  @override
 
   /// This function **does support** nullification of nullable fields. All `null` values passed to `non-nullable` fields will be ignored. You can also use `CharlyModeState(...).copyWith.fieldName(...)` to override fields one at a time with nullification support.
   ///
@@ -39,12 +46,17 @@ class _$CharlyModeStateCWProxyImpl implements _$CharlyModeStateCWProxy {
   /// ````
   CharlyModeState call({
     Object? enabled = const $CopyWithPlaceholder(),
+    Object? lastDuration = const $CopyWithPlaceholder(),
   }) {
     return CharlyModeState(
       enabled: enabled == const $CopyWithPlaceholder() || enabled == null
           ? _value.enabled
           // ignore: cast_nullable_to_non_nullable
           : enabled as bool,
+      nextStartDuration: lastDuration == const $CopyWithPlaceholder()
+          ? _value.nextStartDuration
+          // ignore: cast_nullable_to_non_nullable
+          : lastDuration as Duration?,
     );
   }
 }
