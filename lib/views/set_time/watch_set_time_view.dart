@@ -3,7 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/components/accidental_interaction_preventer.dart';
 import 'package:regatta_timer/components/controls/settings_button.dart';
 import 'package:regatta_timer/components/controls/time_selector.dart';
-import 'package:regatta_timer/components/layouts/watch_layouts/watch_layout.dart';
+import 'package:regatta_timer/components/layouts/watch_layout.dart';
 import 'package:regatta_timer/providers/boat_speed_provider.dart';
 import 'package:regatta_timer/views/set_time/start_button.dart';
 import 'package:regatta_timer/views/set_time/timer_button.dart';

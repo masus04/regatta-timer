@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/components/controls/settings_button.dart';
 import 'package:regatta_timer/components/controls/time_selector.dart';
-import 'package:regatta_timer/components/layouts/mobile_layouts/mobile_layout.dart';
+import 'package:regatta_timer/components/layouts/mobile_layout.dart';
 import 'package:regatta_timer/providers/charly_mode_provider.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
 import 'package:regatta_timer/views/set_time/start_button.dart';

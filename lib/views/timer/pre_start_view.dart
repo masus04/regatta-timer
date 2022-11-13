@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:regatta_timer/components/layouts/watch_layouts/watch_layout.dart';
+import 'package:regatta_timer/components/layouts/watch_layout.dart';
 import 'package:regatta_timer/components/timer.dart';
 import 'package:regatta_timer/providers/timer_provider.dart';
 import 'package:regatta_timer/views/timer/reset_button.dart';
