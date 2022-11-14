@@ -3,8 +3,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/components/layouts/layout_mobile.dart';
 import 'package:regatta_timer/components/layouts/layout_watch.dart';
 import 'package:regatta_timer/providers/layout_provider.dart';
+import 'package:regatta_timer/providers/timer_providers.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
-import 'package:regatta_timer/providers/timer_provider.dart';
 
 class SyncButton extends HookConsumerWidget {
   const SyncButton({
@@ -33,7 +33,7 @@ class SyncButton extends HookConsumerWidget {
 
   void Function() onSyncPressed(BuildContext context, WidgetRef ref) {
     return () {
-      ref.watch(timerProvider.notifier).sync();
+      ref.read(timerProvider.notifier).sync();
     };
   }
 }

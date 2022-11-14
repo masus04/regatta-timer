@@ -19,10 +19,9 @@ class BoatSpeed {
 }
 
 class BoatSpeedNotifier extends StateNotifier<AsyncValue<BoatSpeed>> {
-  final Ref ref;
   late StreamSubscription subscription;
 
-  BoatSpeedNotifier({required this.ref}) : super(const AsyncValue.loading()) {
+  BoatSpeedNotifier() : super(const AsyncValue.loading()) {
     try {
       init();
     } catch (err, stacktrace) {
@@ -57,5 +56,5 @@ class BoatSpeedNotifier extends StateNotifier<AsyncValue<BoatSpeed>> {
 }
 
 final boatSpeedProvider = StateNotifierProvider<BoatSpeedNotifier, AsyncValue<BoatSpeed>>((ref) {
-  return BoatSpeedNotifier(ref: ref);
+  return BoatSpeedNotifier();
 });

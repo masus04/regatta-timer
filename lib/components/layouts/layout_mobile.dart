@@ -37,7 +37,7 @@ class MobileLayout extends HookConsumerWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 32),
                 child: Column(
-                  mainAxisSize: MainAxisSize.max,
+                  // mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -60,14 +60,7 @@ class MobileLayout extends HookConsumerWidget {
                           if (primaryButton != null) primaryButton!,
                           if (secondaryButton != null) secondaryButton!,
                           ...additionalButtons,
-                        ]
-                            .expand(
-                              (element) => [
-                                element,
-                                const Spacer(),
-                              ],
-                            )
-                            .toList(),
+                        ].expand((element) => [element, const Spacer()]).toList(),
                       ),
                     ),
                   ],

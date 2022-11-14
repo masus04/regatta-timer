@@ -54,4 +54,8 @@ class RegattaTimerSettings {
     required this.selectedStartTimeOptions,
     required this.selectedVibrations,
   });
+
+  Duration selectedStartTimeDuration(int index) {
+    return selectedStartTimeOptions[index].startTime;
+  }
 }

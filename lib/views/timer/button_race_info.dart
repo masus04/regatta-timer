@@ -16,7 +16,10 @@ class RaceInfoWidget extends HookConsumerWidget {
           text: ref.watch(boatSpeedProvider).when(
                 // TODO: Check settings for unit preference
                 data: (boatSpeed) => "${boatSpeed.knots.toStringAsFixed(1)} kn",
-                error: (err, trace) => "BoatSpeedError",
+                error: (err, trace) {
+                  debugPrintStack(label: "BoatSpeedError", stackTrace: trace);
+                  return "BoatSpeedError";
+                },
                 loading: () => "Racing",
               ),
           onPressed: onInfoPressed(context, ref),
@@ -27,7 +30,10 @@ class RaceInfoWidget extends HookConsumerWidget {
           text: ref.watch(boatSpeedProvider).when(
                 // TODO: Check settings for unit preference
                 data: (boatSpeed) => "BSp: ${boatSpeed.knots.toStringAsFixed(1)} kn",
-                error: (err, trace) => "BoatSpeedError",
+                error: (err, trace) {
+                  debugPrintStack(label: "BoatSpeedError", stackTrace: trace);
+                  return "BoatSpeedError";
+                },
                 loading: () => "Boat Speed Loading",
               ),
           textStyle: Theme.of(context).textTheme.labelMedium?.copyWith(fontSize: 40),

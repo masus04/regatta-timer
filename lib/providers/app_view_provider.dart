@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/providers/app_lock_provider.dart';
+import 'package:regatta_timer/providers/timer_providers.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
-import 'package:regatta_timer/providers/timer_provider.dart';
 import 'package:wakelock/wakelock.dart';
 
 class AppView {
@@ -24,7 +24,7 @@ class AppViewNotifier extends StateNotifier<AppView> {
   AppViewNotifier({required this.ref}) : super(setTimeView);
 
   void enterSetTimeState(BuildContext context) {
-    ref.watch(timerProvider.notifier).abort();
+    // ref.read(timerRunningProvider.notifier).state = false;
     Navigator.pop(context);
 
     if (ref.watch(settingsProvider).timerSelectionWakelockEnabled) {
@@ -41,6 +41,7 @@ class AppViewNotifier extends StateNotifier<AppView> {
     final appLock = ref.read(appLockedProvider);
 
     ref.read(timerProvider.notifier).reset();
+
     Navigator.pushNamed(context, preStartView.route);
 
     if (settings.preStartWakelockEnabled && !appLock) {
