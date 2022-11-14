@@ -7,6 +7,8 @@ class BooleanSetting extends HookConsumerWidget {
 
   final void Function(bool) onChanged;
 
+  final String? toolTipText;
+
   final double switchScale;
   final EdgeInsetsGeometry contentPadding;
 
@@ -15,6 +17,7 @@ class BooleanSetting extends HookConsumerWidget {
     required this.text,
     required this.value,
     required this.onChanged,
+    this.toolTipText,
     this.switchScale = 0.75,
     this.contentPadding = const EdgeInsets.only(left: 35, right: 10),
   });

@@ -4,6 +4,8 @@ import 'package:regatta_timer/providers/settings_provider.dart';
 import 'package:regatta_timer/views/settings/widget_boolean_settings.dart';
 
 class SettingsView extends HookConsumerWidget {
+  final divider = const Divider(color: Colors.white, thickness: 2);
+
   const SettingsView({super.key});
 
   @override
@@ -19,11 +21,13 @@ class SettingsView extends HookConsumerWidget {
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.labelLarge,
             ),
-            const Divider(color: Colors.white),
+            divider,
+            const SettingsText(text: "Enable long press for various buttons in order to prevent accidental presses"),
             BooleanSetting(
               text: "Long Press to Start",
               value: ref.watch(settingsProvider).longPressToStart,
               onChanged: (newValue) => ref.read(settingsProvider.notifier).setLongPressToStart(newValue),
+              toolTipText: "Text",
             ),
             BooleanSetting(
               text: "Long Press to Reset",
@@ -40,9 +44,10 @@ class SettingsView extends HookConsumerWidget {
               value: ref.watch(settingsProvider).longPressToResetPostStart,
               onChanged: (newValue) => ref.read(settingsProvider.notifier).setLongPressToResetPostStart(newValue),
             ),
-            const Divider(color: Colors.white),
+            divider,
+            const SettingsText(text: "Enable WakeLock in order to prevent your device from going to sleep"),
             BooleanSetting(
-              text: "Enable WakeLock on Timer screen",
+              text: "Enable WakeLock on Timer view",
               value: ref.watch(settingsProvider).timerSelectionWakelockEnabled,
               onChanged: (newValue) => ref.read(settingsProvider.notifier).setTimerSelectionWakelockEnabled(newValue),
             ),
@@ -56,13 +61,18 @@ class SettingsView extends HookConsumerWidget {
               value: ref.watch(settingsProvider).postStartWakelockEnabled,
               onChanged: (newValue) => ref.read(settingsProvider.notifier).setPostStartWakelockEnabled(newValue),
             ),
-            const Divider(color: Colors.white),
+            divider,
+            const SettingsText(text: "Enable Location tracking in order to show boat speed"),
             BooleanSetting(
-              text: "Show post start boat speed",
+              text: "Show boat speed",
               value: ref.watch(settingsProvider).showPostStartBoatSpeed,
               onChanged: (newValue) => ref.read(settingsProvider.notifier).setShowPostStartBoatSpeed(newValue),
             ),
-            const Divider(color: Colors.white),
+            divider,
+            const SettingsText(
+              text:
+                  "Charly Mode is a training mode inspired by Charly Fernbach. When activated, after each start the timer is restarted with half the time used for the last start",
+            ),
             BooleanSetting(
               text: "Enable Charly Mode toggle",
               value: ref.read(settingsProvider).charlyModeToggleEnabled,
@@ -70,7 +80,7 @@ class SettingsView extends HookConsumerWidget {
             ),
             // TODO: Add BoatSpeedUnit selector setting
 
-            // const Divider(color: Colors.white),
+            // divider,
             // SelectFromListSetting(
             //   text: "Start Time Options",
             //   onPressed: () => ref.read(appViewProvider.notifier).enterStartTimeSettingsState(context),
@@ -79,7 +89,7 @@ class SettingsView extends HookConsumerWidget {
             //   text: "Vibration Alerts",
             //   onPressed: () => ref.read(appViewProvider.notifier).enterVibrationAlertSettingsState(context),
             // ),
-            const Divider(color: Colors.white),
+            divider,
             IconButton(
               onPressed: onReturnPressed(context),
               icon: const Icon(Icons.check_circle_outline, color: Colors.white),
@@ -94,5 +104,26 @@ class SettingsView extends HookConsumerWidget {
     return () {
       Navigator.of(context).pop();
     };
+  }
+}
+
+class SettingsText extends StatelessWidget {
+  final String text;
+
+  const SettingsText({super.key, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      contentPadding: const EdgeInsets.only(left: 35, right: 35, bottom: 8),
+      // leading: const Icon(
+      //   Icons.info_outline,
+      //   color: Colors.white,
+      // ),
+      title: Text(
+        text,
+        style: Theme.of(context).textTheme.labelMedium,
+      ),
+    );
   }
 }
