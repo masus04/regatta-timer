@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:regatta_timer/providers/charly_mode_provider.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
 import 'package:regatta_timer/types/vibration.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -63,6 +64,8 @@ class TimerState {
 
   final Stream<Duration?> ticker;
 
+  final CharlyModeState charlyModeState;
+
   TimerState({
     required this.startTime,
     required this.nextStartTimer,
@@ -70,6 +73,7 @@ class TimerState {
     required this.selectedVibrations,
     required this.ticker,
     required this.selectedStartTimeDuration,
+    required this.charlyModeState,
   });
 }
 
@@ -78,15 +82,20 @@ class TimerNotifier extends StateNotifier<TimerState> {
 
   TimerNotifier(super.state) {
     _init();
+    _initCharlyMode();
+  }
+
+  Duration get startTimeOffset {
+    return Duration(
+      seconds: (DateTime.now().difference(state.startTime).inMilliseconds / 1000).round(),
+    );
   }
 
   void _init() {
     // Init timer update
-    final subscription = state.ticker.listen((t) {
-      final Duration offset = DateTime.now().difference(state.startTime);
-
+    final subscription = state.ticker.listen((_) {
       state = state.copyWith(
-        nextStartTimer: Duration(seconds: (offset.inMilliseconds / 1000).round()),
+        nextStartTimer: startTimeOffset,
       );
     });
 
@@ -95,13 +104,37 @@ class TimerNotifier extends StateNotifier<TimerState> {
     _initVibrations();
   }
 
+  _initCharlyMode() {
+    if (state.charlyModeState.enabled) {
+      final subscription = state.ticker.where(
+        (_) {
+          return startTimeOffset.inSeconds == 1;
+        },
+      ).listen(
+        (_) {
+          final nextCharlyState = CharlyModeNotifier.nextState(state.charlyModeState);
+
+          if (nextCharlyState.enabled) {
+            state = state.copyWith(
+              startTime: getNewStartTime(nextCharlyState.nextStartDuration),
+              nextStartTimer: -nextCharlyState.nextStartDuration,
+              ticker: TimerNotifier.getTicker(),
+              charlyModeState: nextCharlyState,
+            );
+          }
+        },
+      );
+      streamSubscriptions.add(subscription);
+    }
+  }
+
   void _initVibrations() {
     final subscription = state.ticker
         .where(
-          (t) => state.selectedVibrations.any((vibration) => t == vibration.activationTimeStep),
+          (_) => state.selectedVibrations.any((vibration) => startTimeOffset == vibration.activationTimeStep),
         )
         .map(
-          (t) => state.selectedVibrations.firstWhere((vibration) => t == vibration.activationTimeStep),
+          (_) => state.selectedVibrations.firstWhere((vibration) => startTimeOffset == vibration.activationTimeStep),
         )
         .listen(
           (triggeredVibration) => triggeredVibration.execute(),
@@ -156,6 +189,7 @@ final timerProvider = StateNotifierProvider<TimerNotifier, TimerState>((ref) {
       selectedVibrations: ref.watch(settingsProvider).selectedVibrations,
       ticker: TimerNotifier.getTicker(),
       selectedStartTimeDuration: ref.watch(startOffsetProvider),
+      charlyModeState: ref.watch(charlyModeProvider),
     ),
   );
 });

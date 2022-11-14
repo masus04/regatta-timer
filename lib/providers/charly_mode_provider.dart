@@ -22,6 +22,21 @@ class CharlyModeNotifier extends StateNotifier<CharlyModeState> {
   restart() {
     // state = state.copyWith(nextStartDuration: Duration(minutes: state.nextStartDuration))
   }
+
+  static CharlyModeState nextState(CharlyModeState charlyModeState) {
+    if (charlyModeState.nextStartDuration.inMinutes <= 1) {
+      return charlyModeState.copyWith(
+        enabled: false,
+        // nextStartDuration: const Duration(seconds: -1),
+      );
+    }
+
+    return charlyModeState.copyWith(
+      nextStartDuration: Duration(
+        minutes: (charlyModeState.nextStartDuration.inMinutes / 2).ceil(),
+      ),
+    );
+  }
 }
 
 final charlyModeProvider = StateNotifierProvider<CharlyModeNotifier, CharlyModeState>((ref) {

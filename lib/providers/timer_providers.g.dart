@@ -7,6 +7,8 @@ part of 'timer_providers.dart';
 // **************************************************************************
 
 abstract class _$TimerStateCWProxy {
+  TimerState charlyModeState(CharlyModeState charlyModeState);
+
   TimerState nextStartTimer(Duration nextStartTimer);
 
   TimerState selectedStartTimeDuration(Duration selectedStartTimeDuration);
@@ -26,6 +28,7 @@ abstract class _$TimerStateCWProxy {
   /// TimerState(...).copyWith(id: 12, name: "My name")
   /// ````
   TimerState call({
+    CharlyModeState? charlyModeState,
     Duration? nextStartTimer,
     Duration? selectedStartTimeDuration,
     List<VibrationEvent>? selectedVibrations,
@@ -40,6 +43,10 @@ class _$TimerStateCWProxyImpl implements _$TimerStateCWProxy {
   final TimerState _value;
 
   const _$TimerStateCWProxyImpl(this._value);
+
+  @override
+  TimerState charlyModeState(CharlyModeState charlyModeState) =>
+      this(charlyModeState: charlyModeState);
 
   @override
   TimerState nextStartTimer(Duration nextStartTimer) =>
@@ -72,6 +79,7 @@ class _$TimerStateCWProxyImpl implements _$TimerStateCWProxy {
   /// TimerState(...).copyWith(id: 12, name: "My name")
   /// ````
   TimerState call({
+    Object? charlyModeState = const $CopyWithPlaceholder(),
     Object? nextStartTimer = const $CopyWithPlaceholder(),
     Object? selectedStartTimeDuration = const $CopyWithPlaceholder(),
     Object? selectedVibrations = const $CopyWithPlaceholder(),
@@ -80,6 +88,11 @@ class _$TimerStateCWProxyImpl implements _$TimerStateCWProxy {
     Object? timerRunning = const $CopyWithPlaceholder(),
   }) {
     return TimerState(
+      charlyModeState: charlyModeState == const $CopyWithPlaceholder() ||
+              charlyModeState == null
+          ? _value.charlyModeState
+          // ignore: cast_nullable_to_non_nullable
+          : charlyModeState as CharlyModeState,
       nextStartTimer: nextStartTimer == const $CopyWithPlaceholder() ||
               nextStartTimer == null
           ? _value.nextStartTimer
