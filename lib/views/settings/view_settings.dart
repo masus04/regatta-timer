@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:regatta_timer/providers/layout_provider.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
 import 'package:regatta_timer/views/settings/widget_boolean_settings.dart';
 
@@ -61,13 +62,15 @@ class SettingsView extends HookConsumerWidget {
               value: ref.watch(settingsProvider).postStartWakelockEnabled,
               onChanged: (newValue) => ref.read(settingsProvider.notifier).setPostStartWakelockEnabled(newValue),
             ),
-            divider,
-            const SettingsText(text: "Enable Location tracking in order to show boat speed"),
-            BooleanSetting(
-              text: "Show boat speed",
-              value: ref.watch(settingsProvider).showPostStartBoatSpeed,
-              onChanged: (newValue) => ref.read(settingsProvider.notifier).setShowPostStartBoatSpeed(newValue),
-            ),
+            if (ref.watch(uiProvider).deviceType != DeviceType.watch) ...[
+              divider,
+              const SettingsText(text: "Enable Location tracking in order to show boat speed"),
+              BooleanSetting(
+                text: "Show boat speed",
+                value: ref.watch(settingsProvider).displayBoatSpeed,
+                onChanged: (newValue) => ref.read(settingsProvider.notifier).setDisplayBoatSpeed(newValue),
+              ),
+            ],
             divider,
             const SettingsText(
               text:

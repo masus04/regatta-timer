@@ -150,6 +150,9 @@ class TimerNotifier extends StateNotifier<TimerState> {
       nextStartTimer: -state.selectedStartTimeDuration,
       ticker: TimerNotifier.getTicker(),
     );
+
+    stop();
+    _init();
   }
 
   void sync() {
@@ -167,12 +170,15 @@ class TimerNotifier extends StateNotifier<TimerState> {
     _init();
   }
 
-  @override
-  void dispose() {
+  void stop() {
     for (final subscription in streamSubscriptions) {
       subscription.cancel();
     }
+  }
 
+  @override
+  void dispose() {
+    stop();
     super.dispose();
   }
 

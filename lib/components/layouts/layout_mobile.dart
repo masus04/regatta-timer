@@ -75,31 +75,31 @@ class MobileLayout extends HookConsumerWidget {
   }
 }
 
-class MobileLayoutButton extends StatelessWidget {
-  final String text;
-  final void Function() onPressed;
-
-  final bool longPressRequired;
-
-  final ButtonStyle buttonStyle;
-  final TextStyle? textStyle;
-
-  const MobileLayoutButton({
-    super.key,
-    required this.text,
-    required this.onPressed,
-    required this.longPressRequired,
-    required this.buttonStyle,
-    this.textStyle,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      onLongPress: onPressed,
-      onPressed: longPressRequired ? () {} : onPressed,
-      style: buttonStyle,
-      child: Text(text, style: textStyle ?? Theme.of(context).textTheme.labelLarge),
-    );
-  }
-}
+// class MobileLayoutButton extends StatelessWidget {
+//   final String text;
+//   final void Function() onPressed;
+//
+//   final bool longPressRequired;
+//
+//   final ButtonStyle buttonStyle;
+//   final TextStyle? textStyle;
+//
+//   const MobileLayoutButton({
+//     super.key,
+//     required this.text,
+//     required this.onPressed,
+//     required this.longPressRequired,
+//     required this.buttonStyle,
+//     this.textStyle,
+//   });
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return TextButton(
+//       onLongPress: onPressed,
+//       onPressed: longPressRequired ? () {} : onPressed,
+//       style: buttonStyle,
+//       child: Text(text, style: textStyle ?? Theme.of(context).textTheme.labelLarge),
+//     );
+//   }
+// }

@@ -30,7 +30,7 @@ class RegattaTimerSettings {
   final bool postStartWakelockEnabled;
 
   // Boat Speed settings
-  final bool showPostStartBoatSpeed;
+  final bool displayBoatSpeed;
   final BoatSpeedUnit boatSpeedUnit;
 
   // Timer Options
@@ -48,7 +48,7 @@ class RegattaTimerSettings {
     required this.timerSelectionWakelockEnabled,
     required this.preStartWakelockEnabled,
     required this.postStartWakelockEnabled,
-    required this.showPostStartBoatSpeed,
+    required this.displayBoatSpeed,
     required this.boatSpeedUnit,
     required this.charlyModeToggleEnabled,
     required this.selectedStartTimeOptions,

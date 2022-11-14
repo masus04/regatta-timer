@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:regatta_timer/providers/settings_provider.dart';
 
 class BoatSpeed {
   final double metersPerSecond;
@@ -20,16 +21,19 @@ class BoatSpeed {
 
 class BoatSpeedNotifier extends StateNotifier<AsyncValue<BoatSpeed>> {
   late StreamSubscription subscription;
+  final bool enabled;
 
-  BoatSpeedNotifier() : super(const AsyncValue.loading()) {
-    try {
-      init();
-    } catch (err, stacktrace) {
-      state = AsyncValue.error(err, stacktrace);
+  BoatSpeedNotifier({required this.enabled}) : super(const AsyncValue.loading()) {
+    if (enabled) {
+      try {
+        _init();
+      } catch (err, stacktrace) {
+        state = AsyncValue.error(err, stacktrace);
+      }
     }
   }
 
-  void init() async {
+  void _init() async {
     debugPrint("Initializing boatSpeedProvider");
     if (![LocationPermission.whileInUse, LocationPermission.always].contains(await Geolocator.checkPermission())) {
       if (![LocationPermission.whileInUse, LocationPermission.always].contains(await Geolocator.requestPermission())) {
@@ -49,12 +53,8 @@ class BoatSpeedNotifier extends StateNotifier<AsyncValue<BoatSpeed>> {
       },
     );
   }
-
-  void stop() async {
-    await subscription.cancel();
-  }
 }
 
 final boatSpeedProvider = StateNotifierProvider<BoatSpeedNotifier, AsyncValue<BoatSpeed>>((ref) {
-  return BoatSpeedNotifier();
+  return BoatSpeedNotifier(enabled: ref.watch(settingsProvider).displayBoatSpeed);
 });

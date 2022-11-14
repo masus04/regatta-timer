@@ -11,6 +11,8 @@ abstract class _$RegattaTimerSettingsCWProxy {
 
   RegattaTimerSettings charlyModeToggleEnabled(bool charlyModeToggleEnabled);
 
+  RegattaTimerSettings displayBoatSpeed(bool displayBoatSpeed);
+
   RegattaTimerSettings longPressToResetPostStart(
       bool longPressToResetPostStart);
 
@@ -30,8 +32,6 @@ abstract class _$RegattaTimerSettingsCWProxy {
   RegattaTimerSettings selectedVibrations(
       List<VibrationEvent> selectedVibrations);
 
-  RegattaTimerSettings showPostStartBoatSpeed(bool showPostStartBoatSpeed);
-
   RegattaTimerSettings timerSelectionWakelockEnabled(
       bool timerSelectionWakelockEnabled);
 
@@ -44,6 +44,7 @@ abstract class _$RegattaTimerSettingsCWProxy {
   RegattaTimerSettings call({
     BoatSpeedUnit? boatSpeedUnit,
     bool? charlyModeToggleEnabled,
+    bool? displayBoatSpeed,
     bool? longPressToResetPostStart,
     bool? longPressToResetPreStart,
     bool? longPressToStart,
@@ -52,7 +53,6 @@ abstract class _$RegattaTimerSettingsCWProxy {
     bool? preStartWakelockEnabled,
     List<StartTimeOption>? selectedStartTimeOptions,
     List<VibrationEvent>? selectedVibrations,
-    bool? showPostStartBoatSpeed,
     bool? timerSelectionWakelockEnabled,
   });
 }
@@ -71,6 +71,10 @@ class _$RegattaTimerSettingsCWProxyImpl
   @override
   RegattaTimerSettings charlyModeToggleEnabled(bool charlyModeToggleEnabled) =>
       this(charlyModeToggleEnabled: charlyModeToggleEnabled);
+
+  @override
+  RegattaTimerSettings displayBoatSpeed(bool displayBoatSpeed) =>
+      this(displayBoatSpeed: displayBoatSpeed);
 
   @override
   RegattaTimerSettings longPressToResetPostStart(
@@ -110,10 +114,6 @@ class _$RegattaTimerSettingsCWProxyImpl
       this(selectedVibrations: selectedVibrations);
 
   @override
-  RegattaTimerSettings showPostStartBoatSpeed(bool showPostStartBoatSpeed) =>
-      this(showPostStartBoatSpeed: showPostStartBoatSpeed);
-
-  @override
   RegattaTimerSettings timerSelectionWakelockEnabled(
           bool timerSelectionWakelockEnabled) =>
       this(timerSelectionWakelockEnabled: timerSelectionWakelockEnabled);
@@ -129,6 +129,7 @@ class _$RegattaTimerSettingsCWProxyImpl
   RegattaTimerSettings call({
     Object? boatSpeedUnit = const $CopyWithPlaceholder(),
     Object? charlyModeToggleEnabled = const $CopyWithPlaceholder(),
+    Object? displayBoatSpeed = const $CopyWithPlaceholder(),
     Object? longPressToResetPostStart = const $CopyWithPlaceholder(),
     Object? longPressToResetPreStart = const $CopyWithPlaceholder(),
     Object? longPressToStart = const $CopyWithPlaceholder(),
@@ -137,7 +138,6 @@ class _$RegattaTimerSettingsCWProxyImpl
     Object? preStartWakelockEnabled = const $CopyWithPlaceholder(),
     Object? selectedStartTimeOptions = const $CopyWithPlaceholder(),
     Object? selectedVibrations = const $CopyWithPlaceholder(),
-    Object? showPostStartBoatSpeed = const $CopyWithPlaceholder(),
     Object? timerSelectionWakelockEnabled = const $CopyWithPlaceholder(),
   }) {
     return RegattaTimerSettings(
@@ -152,6 +152,11 @@ class _$RegattaTimerSettingsCWProxyImpl
               ? _value.charlyModeToggleEnabled
               // ignore: cast_nullable_to_non_nullable
               : charlyModeToggleEnabled as bool,
+      displayBoatSpeed: displayBoatSpeed == const $CopyWithPlaceholder() ||
+              displayBoatSpeed == null
+          ? _value.displayBoatSpeed
+          // ignore: cast_nullable_to_non_nullable
+          : displayBoatSpeed as bool,
       longPressToResetPostStart:
           longPressToResetPostStart == const $CopyWithPlaceholder() ||
                   longPressToResetPostStart == null
@@ -197,12 +202,6 @@ class _$RegattaTimerSettingsCWProxyImpl
           ? _value.selectedVibrations
           // ignore: cast_nullable_to_non_nullable
           : selectedVibrations as List<VibrationEvent>,
-      showPostStartBoatSpeed:
-          showPostStartBoatSpeed == const $CopyWithPlaceholder() ||
-                  showPostStartBoatSpeed == null
-              ? _value.showPostStartBoatSpeed
-              // ignore: cast_nullable_to_non_nullable
-              : showPostStartBoatSpeed as bool,
       timerSelectionWakelockEnabled:
           timerSelectionWakelockEnabled == const $CopyWithPlaceholder() ||
                   timerSelectionWakelockEnabled == null

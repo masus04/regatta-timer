@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:regatta_timer/providers/layout_provider.dart';
 import 'package:regatta_timer/types/settings_types.dart';
 import 'package:regatta_timer/types/vibration.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,7 +20,7 @@ class SettingsNotifier extends StateNotifier<RegattaTimerSettings> {
       longPressToResetPostStart: preferences.getBool(_SharedPreferenceKeys.longPressToResetPostStart.name),
       longPressToSync: preferences.getBool(_SharedPreferenceKeys.longPressToSync.name),
       timerSelectionWakelockEnabled: preferences.getBool(_SharedPreferenceKeys.timerSelectionWakelockEnabled.name),
-      showPostStartBoatSpeed: preferences.getBool(_SharedPreferenceKeys.showPostStartBoatSpeed.name),
+      displayBoatSpeed: preferences.getBool(_SharedPreferenceKeys.displayBoatSpeed.name),
       boatSpeedUnit: boatSpeedUnitFromString(preferences.getString(_SharedPreferenceKeys.boatSpeedUnit.name)),
       charlyModeToggleEnabled: preferences.getBool(_SharedPreferenceKeys.charlyModeToggleEnabled.name),
       preStartWakelockEnabled: preferences.getBool(_SharedPreferenceKeys.preStartWakelockEnabled.name),
@@ -91,12 +92,12 @@ class SettingsNotifier extends StateNotifier<RegattaTimerSettings> {
     _setBoolToSharedPrefs(_SharedPreferenceKeys.postStartWakelockEnabled, newValue);
   }
 
-  setShowPostStartBoatSpeed(bool newValue) {
+  setDisplayBoatSpeed(bool newValue) {
     state = state.copyWith(
-      showPostStartBoatSpeed: newValue,
+      displayBoatSpeed: newValue,
     );
 
-    _setBoolToSharedPrefs(_SharedPreferenceKeys.showPostStartBoatSpeed, newValue);
+    _setBoolToSharedPrefs(_SharedPreferenceKeys.displayBoatSpeed, newValue);
   }
 
   setBoatSpeedUnit(BoatSpeedUnit newValue) {
@@ -158,7 +159,7 @@ final settingsProvider = StateNotifierProvider<SettingsNotifier, RegattaTimerSet
       postStartWakelockEnabled: false,
 
       // Boat Speed Settings
-      showPostStartBoatSpeed: true,
+      displayBoatSpeed: ref.watch(uiProvider).deviceType != DeviceType.watch,
       boatSpeedUnit: BoatSpeedUnit.knots,
 
       // Charly Mode
@@ -293,7 +294,7 @@ enum _SharedPreferenceKeys {
   postStartWakelockEnabled,
 
   // BoatSpeed
-  showPostStartBoatSpeed,
+  displayBoatSpeed,
   boatSpeedUnit,
 
   // Charly Mode
