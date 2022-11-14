@@ -23,3 +23,26 @@ class CharlyModeWidget extends HookConsumerWidget {
     };
   }
 }
+
+class CharlyModeEnabledHint extends HookConsumerWidget {
+  const CharlyModeEnabledHint({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    if (ref.watch(charlyModeProvider).enabled) {
+      return ListTile(
+        title: Text(
+          "Charly mode enabled",
+          style: Theme.of(context).textTheme.displayMedium?.copyWith(color: Colors.green),
+          textAlign: TextAlign.right,
+        ),
+        trailing: const Icon(
+          Icons.check_circle_outline,
+          color: Colors.green,
+        ),
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
+}

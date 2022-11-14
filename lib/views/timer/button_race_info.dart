@@ -28,7 +28,7 @@ class RaceInfoWidget extends HookConsumerWidget {
                 // TODO: Check settings for unit preference
                 data: (boatSpeed) => "BSp: ${boatSpeed.knots.toStringAsFixed(1)} kn",
                 error: (err, trace) => "BoatSpeedError",
-                loading: () => "Racing",
+                loading: () => "Boat Speed Loading",
               ),
           textStyle: Theme.of(context).textTheme.labelMedium?.copyWith(fontSize: 40),
           onPressed: onInfoPressed(context, ref),

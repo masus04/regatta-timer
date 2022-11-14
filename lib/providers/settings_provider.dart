@@ -21,6 +21,7 @@ class SettingsNotifier extends StateNotifier<RegattaTimerSettings> {
       timerSelectionWakelockEnabled: preferences.getBool(_SharedPreferenceKeys.timerSelectionWakelockEnabled.name),
       showPostStartBoatSpeed: preferences.getBool(_SharedPreferenceKeys.showPostStartBoatSpeed.name),
       boatSpeedUnit: boatSpeedUnitFromString(preferences.getString(_SharedPreferenceKeys.boatSpeedUnit.name)),
+      charlyModeToggleEnabled: preferences.getBool(_SharedPreferenceKeys.charlyModeToggleEnabled.name),
       preStartWakelockEnabled: preferences.getBool(_SharedPreferenceKeys.preStartWakelockEnabled.name),
       postStartWakelockEnabled: preferences.getBool(_SharedPreferenceKeys.postStartWakelockEnabled.name),
     );

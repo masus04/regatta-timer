@@ -3,9 +3,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 /// Provides a boolean, representing whether the app screen is locked and all buttons should be disabled
 class AppLockedNotifier extends StateNotifier<bool> {
-  final Ref ref;
-
-  AppLockedNotifier(this.ref) : super(false);
+  AppLockedNotifier() : super(false);
 
   void toggle() {
     state = !state;
@@ -14,5 +12,5 @@ class AppLockedNotifier extends StateNotifier<bool> {
 }
 
 final appLockedProvider = StateNotifierProvider<AppLockedNotifier, bool>((ref) {
-  return AppLockedNotifier(ref);
+  return AppLockedNotifier();
 });

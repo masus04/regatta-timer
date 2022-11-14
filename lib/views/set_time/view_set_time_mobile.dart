@@ -14,9 +14,9 @@ class MobileSetTimeView extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return MobileLayout(
       title: Image.asset("assets/icons/regatta_timer.png"),
+      centerWidget: const TimeSelector(),
       primaryButton: ref.watch(settingsProvider).charlyModeToggleEnabled ? const CharlyModeWidget() : null,
       secondaryButton: const Expanded(flex: 10, child: StartButton()),
-      centerWidget: const TimeSelector(),
       additionalButtons: const [
         SettingsButton(),
       ],

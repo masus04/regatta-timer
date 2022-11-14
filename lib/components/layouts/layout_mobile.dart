@@ -5,25 +5,26 @@ import 'package:regatta_timer/providers/app_lock_provider.dart';
 
 class MobileLayout extends HookConsumerWidget {
   final Widget? title;
+  final Widget centerWidget;
+  final Widget? subtitle;
   final Widget? primaryButton;
   final Widget? secondaryButton;
-  final Widget centerWidget;
 
   final Iterable<Widget> additionalButtons;
 
   const MobileLayout({
     super.key,
     this.title,
+    required this.centerWidget,
+    this.subtitle,
     this.primaryButton,
     this.secondaryButton,
-    required this.centerWidget,
     this.additionalButtons = const [],
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final screenLocked = ref.watch(appLockedProvider);
-    // final numButtons = additionalButtons.length + (primaryButton == null ? 1 : 0) * 2 + (secondaryButton == null ? 1 : 0) * 2;
 
     return Material(
       color: Colors.white,
@@ -48,6 +49,7 @@ class MobileLayout extends HookConsumerWidget {
                       decoration: BoxDecoration(border: Border.all(color: Colors.indigo, width: 4)),
                       child: centerWidget,
                     ),
+                    if (subtitle != null) subtitle!,
                     Expanded(
                       child: Column(
                         mainAxisSize: MainAxisSize.max,

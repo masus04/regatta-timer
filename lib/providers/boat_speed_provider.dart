@@ -38,7 +38,7 @@ class BoatSpeedNotifier extends StateNotifier<AsyncValue<BoatSpeed>> {
       }
     }
 
-    debugPrint("current speed: ${(await Geolocator.getCurrentPosition()).speed}");
+    debugPrint("Boat speed: ${(await Geolocator.getCurrentPosition()).speed}");
 
     subscription = Geolocator.getPositionStream(locationSettings: const LocationSettings(distanceFilter: 1)).listen(
       (updatedPosition) {

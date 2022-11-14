@@ -1,6 +1,5 @@
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:regatta_timer/providers/selected_start_time_provider.dart';
 import 'package:regatta_timer/providers/timer_provider.dart';
 
 part 'charly_mode_provider.g.dart';
@@ -8,27 +7,23 @@ part 'charly_mode_provider.g.dart';
 @CopyWith()
 class CharlyModeState {
   final bool enabled;
-  final Duration? nextStartDuration;
+  final Duration nextStartDuration;
 
-  CharlyModeState({required this.enabled, this.nextStartDuration});
+  CharlyModeState({this.enabled = false, required this.nextStartDuration});
 }
 
 class CharlyModeNotifier extends StateNotifier<CharlyModeState> {
   Ref ref;
 
-  CharlyModeNotifier({required this.ref}) : super(CharlyModeState(enabled: false, nextStartDuration: Duration.zero)) {
-    ref.listen<Duration?>(
+  CharlyModeNotifier({required Duration nextStartDuration, required this.ref}) : super(CharlyModeState(nextStartDuration: nextStartDuration)) {
+    ref.listen<TimerNotifierState?>(
       timerProvider,
       (previous, next) {
-        if (state.nextStartDuration == null) {
-          state = state.copyWith(lastDuration: ref.watch(selectedStartTimeProvider.notifier).selectedDuration);
-        } else {
-          state = state.copyWith(lastDuration: Duration(minutes: (state.nextStartDuration!.inMinutes / 2).round()));
-        }
-
-        if (next == const Duration(seconds: 1)) {
-          if (state.nextStartDuration! >= const Duration(minutes: 1)) {
-            ref.read(timerProvider.notifier).reset(duration: state.nextStartDuration);
+        // Listen to next tick after zero, because otherwise this might interfere with vibrations etc.
+        if (next!.nextStartDuration == const Duration(seconds: 1)) {
+          state = state.copyWith(nextStartDuration: Duration(seconds: (state.nextStartDuration.inMilliseconds / 2000).round()));
+          if (state.nextStartDuration > Duration.zero) {
+            ref.read(timerProvider.notifier).reset(nextStartDuration: state.nextStartDuration);
           }
         }
       },
@@ -41,5 +36,8 @@ class CharlyModeNotifier extends StateNotifier<CharlyModeState> {
 }
 
 final charlyModeProvider = StateNotifierProvider<CharlyModeNotifier, CharlyModeState>((ref) {
-  return CharlyModeNotifier(ref: ref);
+  return CharlyModeNotifier(
+    nextStartDuration: ref.watch(timerProvider)!.nextStartDuration,
+    ref: ref,
+  );
 });

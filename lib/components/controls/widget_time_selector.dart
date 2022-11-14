@@ -4,6 +4,7 @@ import 'package:numberpicker/numberpicker.dart';
 import 'package:regatta_timer/providers/layout_provider.dart';
 import 'package:regatta_timer/providers/selected_start_time_provider.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
+import 'package:regatta_timer/providers/timer_provider.dart';
 
 class TimeSelector extends HookConsumerWidget {
   final int numOptions;
@@ -12,7 +13,7 @@ class TimeSelector extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final numberPickerIndex = ref.watch(selectedStartTimeProvider);
+    final numberPickerIndex = ref.watch(timerProvider)!.selectedStartTimeIndex;
     final startTimeOptions = ref.watch(settingsProvider).selectedStartTimeOptions;
 
     final fontSize = ref.read(uiProvider).displayFontSize;
@@ -46,7 +47,7 @@ class TimeSelector extends HookConsumerWidget {
 
   onChange(WidgetRef ref) {
     return (int newValue) {
-      ref.watch(selectedStartTimeProvider.notifier).setSelectedTimeIndex(newValue);
+      ref.watch(timerProvider.notifier).setSelectedTimeIndex(newValue);
     };
   }
 

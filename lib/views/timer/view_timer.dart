@@ -12,7 +12,7 @@ class TimerView extends HookConsumerWidget {
     final currentTime = ref.watch(timerProvider);
 
     return Scaffold(
-      body: currentTime!.isNegative ? const PreStartTimerView() : const PostStartTimerView(),
+      body: currentTime!.nextStartDuration.isNegative ? const PreStartTimerView() : const PostStartTimerView(),
     );
   }
 }
