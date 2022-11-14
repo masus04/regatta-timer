@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/providers/charly_mode_provider.dart';
 
-class CharlyModeWidget extends HookConsumerWidget {
-  const CharlyModeWidget({super.key});
+class CharlyModeToggleWidget extends HookConsumerWidget {
+  const CharlyModeToggleWidget({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -19,7 +19,7 @@ class CharlyModeWidget extends HookConsumerWidget {
 
   void Function(bool) onCharlyModeToggled(BuildContext context, WidgetRef ref) {
     return (bool newValue) {
-      ref.read(charlyModeProvider.notifier).charlyModeEnabled = newValue;
+      ref.read(charlyModeEnabledProvider.notifier).state = newValue;
     };
   }
 }

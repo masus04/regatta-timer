@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:copy_with_extension/copy_with_extension.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/providers/charly_mode_provider.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
@@ -83,6 +84,7 @@ class TimerNotifier extends StateNotifier<TimerState> {
   TimerNotifier(super.state) {
     _init();
     _initCharlyMode();
+    _initVibrations();
   }
 
   Duration get startTimeOffset {
@@ -100,8 +102,6 @@ class TimerNotifier extends StateNotifier<TimerState> {
     });
 
     streamSubscriptions.add(subscription);
-
-    _initVibrations();
   }
 
   _initCharlyMode() {
@@ -112,9 +112,10 @@ class TimerNotifier extends StateNotifier<TimerState> {
         },
       ).listen(
         (_) {
-          final nextCharlyState = CharlyModeNotifier.nextState(state.charlyModeState);
+          final nextCharlyState = state.charlyModeState.nextState();
 
           if (nextCharlyState.enabled) {
+            debugPrint("Timer reset due to Charly Mode. New start time: ${nextCharlyState.nextStartDuration}");
             state = state.copyWith(
               startTime: getNewStartTime(nextCharlyState.nextStartDuration),
               nextStartTimer: -nextCharlyState.nextStartDuration,

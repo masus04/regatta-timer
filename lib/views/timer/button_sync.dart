@@ -3,13 +3,11 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/components/layouts/layout_mobile.dart';
 import 'package:regatta_timer/components/layouts/layout_watch.dart';
 import 'package:regatta_timer/providers/layout_provider.dart';
-import 'package:regatta_timer/providers/timer_providers.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
+import 'package:regatta_timer/providers/timer_providers.dart';
 
 class SyncButton extends HookConsumerWidget {
-  const SyncButton({
-    Key? key,
-  }) : super(key: key);
+  const SyncButton({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

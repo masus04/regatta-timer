@@ -43,34 +43,4 @@ class PreStartTimerView extends HookConsumerWidget {
         );
     }
   }
-
-  Widget Function(Duration currentTimer) onData(BuildContext context, WidgetRef ref) {
-    return (Duration currentTime) {
-      switch (ref.read(uiProvider).deviceType) {
-        case DeviceType.watch:
-          return WatchLayout(
-            topButton: const ResetButton(),
-            bottomButton: const SyncButton(),
-            centerWidget: TimerWidget(currentTime),
-          );
-        default:
-          return MobileLayout(
-            title: const Padding(
-              padding: EdgeInsets.only(bottom: 16),
-              child: RaceInfoWidget(),
-            ),
-            subtitle: const CharlyModeEnabledHint(),
-            primaryButton: const Expanded(
-              flex: 10,
-              child: ResetButton(),
-            ),
-            secondaryButton: const Expanded(
-              flex: 10,
-              child: SyncButton(),
-            ),
-            centerWidget: TimerWidget(currentTime),
-          );
-      }
-    };
-  }
 }
