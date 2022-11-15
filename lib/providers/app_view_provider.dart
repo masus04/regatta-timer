@@ -5,25 +5,29 @@ import 'package:regatta_timer/providers/settings_provider.dart';
 import 'package:regatta_timer/providers/timer_providers.dart';
 import 'package:wakelock/wakelock.dart';
 
-class AppView {
+enum AppView {
+  setTimeView(route: "/setTime"),
+  preStartView(route: "/timer"),
+  postStartView(route: "/timer"),
+  settingsView(route: "/settings"),
+  startTimeSettingsView(route: "/startTimeSettings"),
+  vibrationAlertSettingsView(route: "/vibrationAlertSettings");
+
   final String route;
 
-  AppView(this.route);
+  const AppView({
+    required this.route,
+  });
 }
 
 class AppViewNotifier extends StateNotifier<AppView> {
   final Ref ref;
 
-  static AppView setTimeView = AppView("/setTime");
-  static AppView preStartView = AppView("/timer");
-  static AppView postStartView = AppView("/timer");
-  static AppView settingsView = AppView("/settings");
-  static AppView startTimeSettingsView = AppView("/startTimeSettings");
-  static AppView vibrationAlertSettingsView = AppView("/vibrationAlertSettings");
-
-  AppViewNotifier({required this.ref}) : super(setTimeView);
+  AppViewNotifier({required this.ref}) : super(AppView.setTimeView);
 
   void enterSetTimeState(BuildContext context) {
+    // state = AppView.setTimeView;
+
     Navigator.pop(context);
     ref.watch(timerProvider.notifier).stop();
 
@@ -37,12 +41,14 @@ class AppViewNotifier extends StateNotifier<AppView> {
   }
 
   void enterPreStartState(BuildContext context) {
+    // state = AppView.preStartView;
+
     final settings = ref.watch(settingsProvider);
     final appLock = ref.read(appLockedProvider);
 
     ref.read(timerProvider.notifier).reset();
 
-    Navigator.pushNamed(context, preStartView.route);
+    Navigator.pushNamed(context, AppView.preStartView.route);
 
     if (settings.preStartWakelockEnabled && !appLock) {
       Wakelock.enable();
@@ -54,6 +60,8 @@ class AppViewNotifier extends StateNotifier<AppView> {
   }
 
   void enterPostStartState(BuildContext context) {
+    // state = AppView.postStartView;
+
     final settings = ref.watch(settingsProvider);
     final appLock = ref.read(appLockedProvider);
 
@@ -67,15 +75,21 @@ class AppViewNotifier extends StateNotifier<AppView> {
   }
 
   void enterSettingsState(BuildContext context) {
-    Navigator.pushNamed(context, settingsView.route);
+    // state = AppView.settingsView;
+
+    Navigator.pushNamed(context, AppView.settingsView.route);
   }
 
   void enterStartTimeSettingsState(BuildContext context) {
-    Navigator.pushNamed(context, startTimeSettingsView.route);
+    // state = AppView.startTimeSettingsView;
+
+    Navigator.pushNamed(context, AppView.startTimeSettingsView.route);
   }
 
   void enterVibrationAlertSettingsState(BuildContext context) {
-    Navigator.pushNamed(context, vibrationAlertSettingsView.route);
+    // state = AppView.vibrationAlertSettingsView;
+
+    Navigator.pushNamed(context, AppView.vibrationAlertSettingsView.route);
   }
 }
 

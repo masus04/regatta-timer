@@ -38,13 +38,13 @@ class RegattaTimer extends HookConsumerWidget {
           ),
         ),
       ),
-      initialRoute: AppViewNotifier.setTimeView.route,
+      initialRoute: AppView.setTimeView.route,
       routes: {
-        AppViewNotifier.setTimeView.route: (context) => const SetTimeView(),
-        AppViewNotifier.preStartView.route: (context) => const TimerView(),
-        AppViewNotifier.settingsView.route: (context) => const SettingsView(),
-        AppViewNotifier.startTimeSettingsView.route: (context) => const StartTimerSettingsView(),
-        AppViewNotifier.vibrationAlertSettingsView.route: (context) => const VibrationPatternSettingsView(),
+        AppView.setTimeView.route: (context) => const SetTimeView(),
+        AppView.preStartView.route: (context) => const TimerView(),
+        AppView.settingsView.route: (context) => const SettingsView(),
+        AppView.startTimeSettingsView.route: (context) => const StartTimerSettingsView(),
+        AppView.vibrationAlertSettingsView.route: (context) => const VibrationPatternSettingsView(),
       },
     );
   }
