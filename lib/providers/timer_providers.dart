@@ -83,8 +83,6 @@ class TimerNotifier extends StateNotifier<TimerState> {
 
   TimerNotifier(super.state) {
     _init();
-    _initCharlyMode();
-    _initVibrations();
   }
 
   Duration get startTimeOffset {
@@ -102,6 +100,9 @@ class TimerNotifier extends StateNotifier<TimerState> {
     });
 
     streamSubscriptions.add(subscription);
+
+    _initCharlyMode();
+    _initVibrations();
   }
 
   _initCharlyMode() {

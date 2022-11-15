@@ -9,9 +9,11 @@ class RaceInfoWidget extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return LayoutButton(
-      text: ref.watch(boatSpeedProvider).when(
+      text: ref.watch(positionProvider).when(
             // TODO: Check settings for unit preference
-            data: (boatSpeed) => "${boatSpeed.knots.toStringAsFixed(1)} kn",
+            data: (boatSpeed) {
+              return "${boatSpeed.knots.toStringAsFixed(1)} kn";
+            },
             error: (err, trace) {
               debugPrintStack(label: "BoatSpeedError", stackTrace: trace);
               return "BoatSpeedError";
