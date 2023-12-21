@@ -15,8 +15,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-    <!-- Flags the app as a Wear app - disabled on master -->
-    <!-- <uses-feature android:name="android.hardware.type.watch" /> -->
+    <!-- Flags the app as a Wear app -->
+    <uses-feature android:name="android.hardware.type.watch" />
 
     <application
         android:name="${applicationName}"
@@ -57,8 +57,8 @@
             android:stopWithTask="true" />
 
         <!-- WearOS: Flags that the app doesn't require a companion phone app - disabled on master -->
-        <!-- <meta-data
+        <meta-data
             android:name="com.google.android.wearable.standalone"
-            android:value="true" /> -->
+            android:value="true" />
     </application>
 </manifest>
