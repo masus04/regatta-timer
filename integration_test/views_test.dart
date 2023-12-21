@@ -1,8 +1,8 @@
-/// In order to run these tests, use the following command from the apps base directory:
-/// flutter drive --driver=test_driver/integration_test.dart --target=integration_test/views_test.dart
-/// or use the alias ftest --target=integration_test/views_test.dart
-
 void main() {
+  /// In order to run these tests, use the following command from the apps base directory:
+  /// flutter drive --driver=test_driver/integration_test.dart --target=integration_test/views_test.dart
+  /// or use the alias ftest --target=integration_test/views_test.dart
+
   // final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   // testWidgets("Test SetTimer View", (WidgetTester tester) async {
