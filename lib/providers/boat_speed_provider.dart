@@ -26,6 +26,7 @@ final positionProvider = StreamProvider<BoatPosition>((ref) async* {
 });
 
 Future<void> checkLocationPermissions() async {
+  // TODO: Show permission dialog
   var permission = await Geolocator.checkPermission();
   if (permission == LocationPermission.denied) {
     permission = await Geolocator.requestPermission();

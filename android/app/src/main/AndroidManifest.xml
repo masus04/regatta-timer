@@ -4,6 +4,9 @@
     <!-- Allows access to the VIBRATE api -->
     <uses-permission android:name="android.permission.VIBRATE" />
 
+    <!-- Required by Awesome Notifications Plugin -->
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
     <!-- Allows access to use the GPS location api -->
     <uses-permission android:name="android.hardware.location" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />

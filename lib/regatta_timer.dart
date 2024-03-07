@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/controllers/app_view_controller.dart';
@@ -10,13 +11,22 @@ import 'package:regatta_timer/views/settings/view_settings.dart';
 import 'package:regatta_timer/views/settings/view_vibration_pattern_settings.dart';
 import 'package:regatta_timer/views/timer/view_timer.dart';
 
+import 'controllers/notification_controller.dart';
+
 class RegattaTimer extends HookConsumerWidget {
+  static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
   const RegattaTimer({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    checkLocationPermissions();
+    useEffect(() {
+      checkLocationPermissions();
+      NotificationController.setListeners();
+      NotificationController.requestPermissions();
+      return null;
+    }, []);
 
     final uiState = UiUtils(context);
 
@@ -28,6 +38,7 @@ class RegattaTimer extends HookConsumerWidget {
       canPop: ref.watch(settingsProvider).lockPreventPopBack,
       child: MaterialApp(
         title: 'Regatta Timer',
+        navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(

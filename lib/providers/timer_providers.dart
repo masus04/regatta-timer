@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:regatta_timer/controllers/notification_controller.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
 import 'package:regatta_timer/providers/timer_extensions.dart';
 import 'package:regatta_timer/types/sound_events.dart';
@@ -58,6 +59,9 @@ final timeToStartProvider = StreamProvider<Duration>((ref) async* {
       SoundExtension().ticker(timeToStart: timeToStart, soundEvents: SoundEvent.values);
     }
 
+    // Update Notification
+    NotificationExtension.ticker(timeToStart: timeToStart);
+
     yield timeToStart;
   }
 });
@@ -79,6 +83,7 @@ class TimerController extends Notifier<void> {
   static void stopTimer(WidgetRef ref) {
     // debugPrint("Stopping Timer");
     ref.read(_timerRunningProvider.notifier).state = false;
+    NotificationController.cancelTimerNotification();
   }
 
   static void resetTimer(WidgetRef ref) {

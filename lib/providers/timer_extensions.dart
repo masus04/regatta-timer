@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:regatta_timer/controllers/notification_controller.dart';
 import 'package:regatta_timer/types/sound_events.dart';
 import 'package:regatta_timer/types/vibration_events.dart';
 
@@ -49,5 +50,11 @@ class SoundExtension {
       await audioPlayer.play();
       debugPrint("Playing sound: ${SoundEvent.values[selectIndex].assetName} with index: $selectIndex");
     }
+  }
+}
+
+class NotificationExtension {
+  static Future<void> ticker({required Duration timeToStart}) async {
+    NotificationController.showTimerNotification(timeToStart: timeToStart);
   }
 }

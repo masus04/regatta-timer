@@ -10,6 +10,8 @@ environment:
   flutter: ^3.19.2
 
 dependencies:
+  awesome_notifications: ^0.9.2
+  awesome_notifications_core: ^0.9.1
   copy_with_extension: ^5.0.4
   copy_with_extension_gen: ^5.0.4
   flutter:
@@ -50,12 +52,12 @@ flutter_launcher_icons:
   ios: false
   image_path: "assets/icons/regatta_timer_with_border.png"
   image_path_android: "assets/icons/regatta_timer_with_border.png"
-  adaptie_icon_foreground: "assets/icons/regatta_timer_with_border.png"
+  adaptive_icon_foreground: "assets/icons/regatta_timer_with_border.png"
   adaptive_icon_background: "#ffffff"
 
 flutter_native_splash:
   color: "#000000"
-  image: "assets/icons/regatta_timer_with_border.png"
+  image: "assets/icons/regatta_timer_icon_only.png"
   color_dark: "#000000"
   image_dark: "assets/icons/regatta_timer_with_border.png"
   android_12:

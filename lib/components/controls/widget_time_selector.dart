@@ -48,7 +48,7 @@ class TimeSelector extends HookConsumerWidget {
       return () {
         rotarySubscription.cancel();
       };
-    });
+    }, []);
 
     final timer = ref.watch(startOffsetProvider);
     final minutes = timer.inMinutes;
