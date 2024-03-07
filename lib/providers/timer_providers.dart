@@ -8,12 +8,12 @@ final _timerRunningProvider = StateProvider<bool>((ref) {
   return false;
 });
 
-final _startOffsetProvider = StateProvider<Duration>((ref) {
+final startOffsetProvider = StateProvider<Duration>((ref) {
   return const Duration(minutes: 5);
 });
 
 final startDateProvider = StateProvider<DateTime>((ref) {
-  return DateTime.now().add(ref.watch(_startOffsetProvider));
+  return DateTime.now().add(ref.watch(startOffsetProvider));
 });
 
 final charlyModeEnabledProvider = StateProvider<bool>((ref) {
@@ -34,7 +34,7 @@ final timeToStartProvider = StreamProvider<Duration>((ref) async* {
 
     // Charly Mode
     if (ref.read(settingsProvider).charlyModeToggleEnabled && ref.read(charlyModeEnabledProvider)) {
-      timeToStart = CharlyMode.ticker(timeToStart: timeToStart, offset: CharlyMode.halfRoundDown(duration: ref.read(_startOffsetProvider)));
+      timeToStart = CharlyMode.ticker(timeToStart: timeToStart, offset: CharlyMode.halfRoundDown(duration: ref.read(startOffsetProvider)));
     }
 
     // Correct for rounding down
@@ -67,22 +67,22 @@ class TimerController extends Notifier<void> {
   void build() {}
 
   static void setTimer(WidgetRef ref, Duration timer) {
-    debugPrint("Setting timer to $timer");
-    ref.read(_startOffsetProvider.notifier).state = timer;
+    // debugPrint("Setting timer to $timer");
+    ref.read(startOffsetProvider.notifier).state = timer;
   }
 
   static void startTimer(WidgetRef ref) {
-    debugPrint("Starting Timer");
+    // debugPrint("Starting Timer");
     ref.read(_timerRunningProvider.notifier).state = true;
   }
 
   static void stopTimer(WidgetRef ref) {
-    debugPrint("Stopping Timer");
+    // debugPrint("Stopping Timer");
     ref.read(_timerRunningProvider.notifier).state = false;
   }
 
   static void resetTimer(WidgetRef ref) {
-    debugPrint("Resetting Timer");
+    // debugPrint("Resetting Timer");
     ref.invalidate(startDateProvider);
   }
 
