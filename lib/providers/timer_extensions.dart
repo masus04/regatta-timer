@@ -1,5 +1,5 @@
-import 'package:audioplayers/audioplayers.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:regatta_timer/types/sound_events.dart';
 import 'package:regatta_timer/types/vibration_events.dart';
 
@@ -39,17 +39,14 @@ class VibrationsExtension {
 }
 
 class SoundExtension {
-  final AudioPlayer audioPlayer = AudioPlayer()
-    ..setPlayerMode(PlayerMode.lowLatency)
-    ..setReleaseMode(ReleaseMode.release);
+  final AudioPlayer audioPlayer = AudioPlayer();
 
   Future<void> ticker({required Duration timeToStart, List<SoundEvent> soundEvents = SoundEvent.values}) async {
     final selectIndex = SoundEvent.values.indexWhere((soundEvent) => soundEvent.activationTimeStep == timeToStart);
 
-    // await audioPlayer.play(AssetSource(SoundEvent.values[4].assetName));
-
     if (selectIndex >= 0) {
-      await audioPlayer.play(AssetSource(SoundEvent.values[selectIndex].assetName), volume: 1);
+      await audioPlayer.setUrl("asset:${SoundEvent.values[selectIndex].assetName}");
+      await audioPlayer.play();
       debugPrint("Playing sound: ${SoundEvent.values[selectIndex].assetName} with index: $selectIndex");
     }
   }

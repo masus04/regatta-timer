@@ -6,24 +6,26 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.7+52
 
 environment:
-  sdk: ">=2.17.0 <3.0.0"
+  sdk: ^3.3.0
+  flutter: ^3.19.2
 
 dependencies:
-  audioplayers: ^5.2.1
   copy_with_extension: ^5.0.4
   copy_with_extension_gen: ^5.0.4
   flutter:
     sdk: flutter
-  flutter_hooks: ^0.20.3
-  flutter_native_splash: ^2.3.8
-  flutter_svg: ^2.0.9
-  geolocator: ^10.1.0
-  google_fonts: ^6.1.0
-  hooks_riverpod: ^2.4.9
+  flutter_hooks: ^0.20.5
+  flutter_svg: ^2.0.10+1
+  geolocator: ^11.0.0
+  google_fonts: ^6.2.1
+  hooks_riverpod: ^2.4.10
+  just_audio: ^0.9.36
   numberpicker: ^2.1.2
   shared_preferences: ^2.2.2
   vibration: ^1.8.4
-  wakelock_plus: ^1.1.4
+  wakelock_plus: ^1.1.6
+  # wear: ^1.1.0
+  wearable_rotary: ^2.0.2
 
 dev_dependencies:
   flutter_test:
@@ -31,8 +33,9 @@ dev_dependencies:
   integration_test:
     sdk: flutter
   flutter_lints: ^3.0.1
-  build_runner: ^2.4.7
+  build_runner: ^2.4.8
   flutter_launcher_icons: ^0.13.1
+  flutter_native_splash: ^2.3.13
 
 flutter:
   uses-material-design: true
@@ -47,7 +50,7 @@ flutter_launcher_icons:
   ios: false
   image_path: "assets/icons/regatta_timer_with_border.png"
   image_path_android: "assets/icons/regatta_timer_with_border.png"
-  adaptive_icon_foreground: "assets/icons/regatta_timer_with_border.png"
+  adaptie_icon_foreground: "assets/icons/regatta_timer_with_border.png"
   adaptive_icon_background: "#ffffff"
 
 flutter_native_splash:
