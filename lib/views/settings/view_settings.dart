@@ -9,7 +9,7 @@ class SettingsView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final divider = Divider(color: Theme.of(context).colorScheme.onPrimary, thickness: 2);
+    final divider = Divider(color: Theme.of(context).colorScheme.onBackground, thickness: 2);
 
     return SafeArea(
       child: Semantics(
