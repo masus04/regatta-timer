@@ -32,16 +32,16 @@ class BooleanSetting extends HookConsumerWidget {
         child: Switch(
           value: value,
           onChanged: onChanged,
-          activeTrackColor: Colors.indigo.shade200,
-          inactiveTrackColor: Colors.indigo.shade400,
+          activeColor: Colors.white,
+          inactiveTrackColor: Theme.of(context).colorScheme.onPrimary.withAlpha(150),
+          activeTrackColor: Theme.of(context).colorScheme.onPrimary.withAlpha(200),
           thumbColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onPrimary),
           trackOutlineColor: MaterialStateProperty.all(Colors.transparent),
           thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
             (Set<MaterialState> states) {
               if (states.contains(MaterialState.selected)) {
-                return Icon(
+                return const Icon(
                   Icons.check,
-                  color: Theme.of(context).colorScheme.primary,
                 );
               }
               return null;

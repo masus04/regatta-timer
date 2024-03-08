@@ -16,7 +16,7 @@ class SettingsView extends HookConsumerWidget {
         label: "App Settings",
         hint: "Configure App settings such as controls, screen saver and available times",
         child: Scaffold(
-          backgroundColor: Theme.of(context).primaryColor,
+          backgroundColor: Colors.black,
           body: Scrollbar(
             child: ListView(
               padding: const EdgeInsets.only(top: 15),
@@ -97,7 +97,7 @@ class SettingsView extends HookConsumerWidget {
                   divider,
                   const SettingsTitle(
                     title: "Location",
-                    helpText: "Enable Location tracking in order to show boat speed and support additional Location features",
+                    helpText: "Enable Location tracking in order to show boat speed and support additional Location features.",
                   ),
                   BooleanSetting(
                     text: "Show boat speed",
@@ -108,7 +108,7 @@ class SettingsView extends HookConsumerWidget {
                 divider,
                 const SettingsTitle(
                   title: "Voice Notifications",
-                  helpText: "If enabled and supported by the device, voice notifications will announce the state of the timer at regular intervals.",
+                  helpText: "Announce the state of the timer at regular intervals using voice notifications.",
                 ),
                 BooleanSetting(
                   text: "Enable Voice Notifications",
@@ -118,9 +118,9 @@ class SettingsView extends HookConsumerWidget {
                 divider,
                 const SettingsTitle(
                   title: "Charly Mode",
-                  helpText: "Charly Mode is a training mode inspired by Charly Fernbach."
-                      "When activated, after each start the timer is restarted with half the time used for the previous start."
-                      "When Charly mode is enabled in the setting, it can be engaged in the Timer view",
+                  helpText: "Charly Mode is a training mode inspired by Charly Fernbach.\n"
+                      "When activated, after each start the timer is restarted with half the time used for the previous start.\n"
+                      "When Charly mode is enabled in the setting, it can be engaged in the Timer view.",
                 ),
                 BooleanSetting(
                   text: "Enable Charly Mode toggle",
@@ -170,19 +170,53 @@ class SettingsTitle extends StatelessWidget {
       contentPadding: const EdgeInsets.only(left: 35, right: 35, bottom: 8),
       title: Text(
         title,
+        textAlign: TextAlign.left,
         style: Theme.of(context).textTheme.labelMedium?.copyWith(
               fontWeight: FontWeight.bold,
             ),
       ),
-      trailing: Tooltip(
-        message: helpText,
-        triggerMode: TooltipTriggerMode.tap,
-        showDuration: const Duration(seconds: 4),
-        child: const Icon(
+      trailing: GestureDetector(
+        child: Icon(
           Icons.info_outline,
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
+        onTap: () => showDialog(
+          context: context,
+          builder: (context) => SimpleDialog(
+            title: FittedBox(
+              child: Text(
+                title,
+                style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+              ),
+            ),
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8),
+                child: Text(
+                  helpText,
+                  style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+                ),
+              ),
+              IconButton(
+                onPressed: () => Navigator.of(context).pop(),
+                icon: Icon(
+                  Icons.check_circle_outline,
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
+      // Tooltip(
+      //   message: helpText,
+      //   // decoration: const BoxDecoration(),
+      //   padding: const EdgeInsets.symmetric(horizontal: 36),
+      //   // margin: const EdgeInsets.symmetric(horizontal: 20),
+      //   triggerMode: TooltipTriggerMode.tap,
+      //   showDuration: const Duration(seconds: 4),
+      //   child: Placeholder()
+      // ),
     );
   }
 }
