@@ -13,20 +13,28 @@ class LockScreenButton extends HookConsumerWidget {
 
     switch (UiUtils(context).deviceType) {
       case DeviceType.watch:
-        return CircularIconButton(
-          borderRadius: 20,
-          icon: isScreenLocked ? Icons.lock : Icons.lock_open,
-          backgroundColor: Theme.of(context).colorScheme.background,
-          iconColor: Theme.of(context).colorScheme.onBackground,
-          onPressed: onLockScreenPressed(context, ref),
+        return Semantics(
+          label: "App Lock Button",
+          hint: "Lock the app in order to prevent accidental interactions during sailing",
+          child: CircularIconButton(
+            borderRadius: 20,
+            icon: isScreenLocked ? Icons.lock : Icons.lock_open,
+            backgroundColor: Theme.of(context).colorScheme.background,
+            iconColor: Theme.of(context).colorScheme.onBackground,
+            onPressed: onLockScreenPressed(context, ref),
+          ),
         );
       default:
-        return CircularIconButton(
-          borderRadius: 30,
-          icon: isScreenLocked ? Icons.lock : Icons.lock_open,
-          backgroundColor: Theme.of(context).colorScheme.background,
-          iconColor: Theme.of(context).colorScheme.onBackground,
-          onPressed: onLockScreenPressed(context, ref),
+        return Semantics(
+          label: "App Lock Button",
+          hint: "Lock the app in order to prevent accidental interactions during sailing",
+          child: CircularIconButton(
+            borderRadius: 30,
+            icon: isScreenLocked ? Icons.lock : Icons.lock_open,
+            backgroundColor: Theme.of(context).colorScheme.background,
+            iconColor: Theme.of(context).colorScheme.onBackground,
+            onPressed: onLockScreenPressed(context, ref),
+          ),
         );
     }
   }
