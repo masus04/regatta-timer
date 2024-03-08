@@ -24,7 +24,7 @@ class SelectFromListSetting extends StatelessWidget {
       ),
       trailing: IconButton(
         onPressed: onPressed,
-        icon: const Icon(Icons.list, color: Colors.white),
+        icon: Icon(Icons.list, color: Theme.of(context).colorScheme.onPrimary),
       ),
       dense: true,
       visualDensity: VisualDensity.compact,

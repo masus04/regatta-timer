@@ -25,16 +25,16 @@ class BooleanSetting extends HookConsumerWidget {
       title: Text(
         text,
         textAlign: TextAlign.left,
-        style: Theme.of(context).textTheme.labelMedium,
+        style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Theme.of(context).colorScheme.onBackground),
       ),
       trailing: Transform.scale(
         scale: UiUtils(context).switchScaleFactor,
         child: Switch(
           value: value,
           onChanged: onChanged,
-          activeColor: Colors.white,
-          inactiveTrackColor: Theme.of(context).colorScheme.onPrimary.withAlpha(150),
-          activeTrackColor: Theme.of(context).colorScheme.onPrimary.withAlpha(200),
+          activeColor: Theme.of(context).colorScheme.onBackground,
+          inactiveTrackColor: Theme.of(context).colorScheme.onBackground.withAlpha(100),
+          activeTrackColor: Theme.of(context).colorScheme.onBackground.withAlpha(200),
           thumbColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onPrimary),
           trackOutlineColor: MaterialStateProperty.all(Colors.transparent),
           thumbIcon: MaterialStateProperty.resolveWith<Icon?>(

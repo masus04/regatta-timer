@@ -60,6 +60,7 @@ class RegattaTimer extends HookConsumerWidget {
               displayLarge: TextStyle(color: onBackground, fontSize: uiState.displayFontSize, fontWeight: FontWeight.bold),
               displayMedium: TextStyle(color: onBackground, fontSize: uiState.menuFontSize, fontWeight: FontWeight.bold),
               displaySmall: TextStyle(color: onBackground, fontSize: uiState.menuFontSize, fontWeight: FontWeight.bold),
+
             ),
           ),
         ),

@@ -5,18 +5,18 @@ import 'package:regatta_timer/providers/settings_provider.dart';
 import 'package:regatta_timer/views/settings/widget_boolean_settings.dart';
 
 class SettingsView extends HookConsumerWidget {
-  final divider = const Divider(color: Colors.white, thickness: 2);
-
   const SettingsView() : super(key: const Key("SettingsView"));
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final divider = Divider(color: Theme.of(context).colorScheme.onPrimary, thickness: 2);
+
     return SafeArea(
       child: Semantics(
         label: "App Settings",
         hint: "Configure App settings such as controls, screen saver and available times",
         child: Scaffold(
-          backgroundColor: Colors.black,
+          backgroundColor: Theme.of(context).colorScheme.background,
           body: Scrollbar(
             child: ListView(
               padding: const EdgeInsets.only(top: 15),
@@ -83,7 +83,7 @@ class SettingsView extends HookConsumerWidget {
                 ),
                 divider,
                 const SettingsTitle(
-                  title: "Start Procedure Flags",
+                  title: "Start Flags",
                   helpText: "The Start Procedure Flags feature shows the expected flags for the current time underneath the timer.",
                 ),
                 BooleanSetting(
@@ -141,7 +141,10 @@ class SettingsView extends HookConsumerWidget {
                 divider,
                 IconButton(
                   onPressed: onReturnPressed(context),
-                  icon: const Icon(Icons.check_circle_outline, color: Colors.white),
+                  icon: Icon(
+                    Icons.check_circle_outline,
+                    color: Theme.of(context).colorScheme.onBackground,
+                  ),
                 )
               ],
             ),
@@ -173,50 +176,39 @@ class SettingsTitle extends StatelessWidget {
         textAlign: TextAlign.left,
         style: Theme.of(context).textTheme.labelMedium?.copyWith(
               fontWeight: FontWeight.bold,
+              color: Theme.of(context).colorScheme.onBackground,
             ),
       ),
       trailing: GestureDetector(
         child: Icon(
           Icons.info_outline,
-          color: Theme.of(context).colorScheme.onPrimary,
+          color: Theme.of(context).colorScheme.onBackground,
         ),
         onTap: () => showDialog(
           context: context,
           builder: (context) => SimpleDialog(
-            title: FittedBox(
-              child: Text(
-                title,
-                style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-              ),
+            contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+            titlePadding: const EdgeInsets.all(8),
+            title: Text(
+              title,
+              style: Theme.of(context).textTheme.displayLarge?.copyWith(color: Theme.of(context).colorScheme.onBackground),
             ),
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: Text(
-                  helpText,
-                  style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-                ),
+              Text(
+                helpText,
+                style: TextStyle(color: Theme.of(context).colorScheme.onBackground),
               ),
               IconButton(
                 onPressed: () => Navigator.of(context).pop(),
                 icon: Icon(
                   Icons.check_circle_outline,
-                  color: Theme.of(context).colorScheme.onPrimary,
+                  color: Theme.of(context).colorScheme.onBackground,
                 ),
               ),
             ],
           ),
         ),
       ),
-      // Tooltip(
-      //   message: helpText,
-      //   // decoration: const BoxDecoration(),
-      //   padding: const EdgeInsets.symmetric(horizontal: 36),
-      //   // margin: const EdgeInsets.symmetric(horizontal: 20),
-      //   triggerMode: TooltipTriggerMode.tap,
-      //   showDuration: const Duration(seconds: 4),
-      //   child: Placeholder()
-      // ),
     );
   }
 }
