@@ -81,7 +81,7 @@ class TimeSelector extends HookConsumerWidget {
                 .textTheme
                 .displayLarge,
             itemCount: 3,
-            itemHeight: fontSize,
+            itemHeight: fontSize*1.2,
             itemWidth: fontSize * 2,
           ),
           Text(
@@ -116,7 +116,7 @@ class TimeSelector extends HookConsumerWidget {
                 .displayLarge,
             textMapper: (numberText) => numberText.length == 1 ? "0$numberText" : numberText,
             itemCount: 3,
-            itemHeight: fontSize,
+            itemHeight: fontSize*1.2,
             itemWidth: fontSize * 2,
           ),
         ],

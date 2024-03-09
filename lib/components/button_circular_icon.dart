@@ -29,9 +29,9 @@ class CircularIconButton extends StatelessWidget {
 
     return SizedBox.square(
       dimension: borderRadius * 2,
-      child: ElevatedButton(
+      child: TextButton(
         onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
+        style: TextButton.styleFrom(
           elevation: elevation,
           padding: EdgeInsets.zero,
           backgroundColor: backgroundColor,
@@ -45,7 +45,7 @@ class CircularIconButton extends StatelessWidget {
                 color: iconColor ?? Colors.blueGrey.shade900,
                 size: borderRadius,
               )
-            : child,
+            : child!,
       ),
     );
   }

@@ -45,7 +45,7 @@ class LayoutButton extends HookConsumerWidget {
               child: child ??
                   Text(
                     text!,
-                    style: Theme.of(context).textTheme.labelLarge,
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(color: buttonColor),
                   ),
             );
           case WatchLayoutButtonType.bottomButton:
@@ -57,7 +57,7 @@ class LayoutButton extends HookConsumerWidget {
               child: child ??
                   Text(
                     text!,
-                    style: Theme.of(context).textTheme.labelLarge,
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(color: buttonColor),
                   ),
             );
         }
@@ -132,11 +132,11 @@ class WatchLayoutTopButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return TextButton(
       onLongPress: onPressed,
       onPressed: longPressRequired ? () {} : onPressed,
       style: TextButton.styleFrom(
-        backgroundColor: buttonColor,
+        backgroundColor: Theme.of(context).colorScheme.background,
         elevation: 8,
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
       ),
@@ -179,11 +179,11 @@ class WatchLayoutBottomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return TextButton(
       onLongPress: onPressed,
       onPressed: longPressRequired ? () {} : onPressed,
       style: TextButton.styleFrom(
-        backgroundColor: buttonColor,
+        backgroundColor: Theme.of(context).colorScheme.background,
         elevation: 8,
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
       ),
