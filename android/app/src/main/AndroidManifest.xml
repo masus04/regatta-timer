@@ -6,6 +6,7 @@
 
     <!-- Required by Awesome Notifications Plugin -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <!-- Allows access to use the GPS location api -->
     <uses-permission android:name="android.hardware.location" />
@@ -45,9 +46,18 @@
             android:name="flutterEmbedding"
             android:value="2" />
 
+        <service
+            android:name="me.carda.awesome_notifications.core.services.ForegroundService"
+            android:enabled="true"
+            android:exported="false"
+            android:stopWithTask="true"
+            android:foregroundServiceType="dataSync"
+            />
+
         <!-- WearOS: Flags that the app doesn't require a companion phone app - disabled on master -->
         <!-- <meta-data
             android:name="com.google.android.wearable.standalone"
             android:value="true" /> -->
+
     </application>
 </manifest>

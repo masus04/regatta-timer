@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/android_foreground_service.dart';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 
@@ -6,7 +7,8 @@ enum NotificationChannelIdentifier {
   channelName(value: "Base Notifications"),
   channelGroupKey(value: "base_channel_group"),
   channelGroupName(value: "Base Channel Group"),
-  channelDescription(value: "Notification Channel for Base Notifications");
+  channelDescription(value: "Notification Channel for Base Notifications"),
+  showAppNotificationActionButton(value: "showAppNotificationActionButton");
 
   const NotificationChannelIdentifier({
     required this.value,
@@ -77,21 +79,43 @@ class NotificationController {
   static Future<void> onDismissActionReceivedMethod(ReceivedAction receivedAction) async {}
 
   static showTimerNotification({required Duration timeToStart}) {
-    AwesomeNotifications().createNotification(
-      content: NotificationContent(
-        id: timerId,
-        channelKey: NotificationChannelIdentifier.channelKey.value,
-        actionType: ActionType.Default,
-        category: NotificationCategory.StopWatch,
-        autoDismissible: false,
-        title: "Regatta Timer",
-        body: "Race starts in ${-timeToStart.inMinutes}:${-timeToStart.inSeconds % 60}",
-        locked: true,
-      ),
-    );
+    AndroidForegroundService.startAndroidForegroundService(
+        foregroundStartMode: ForegroundStartMode.stick,
+        foregroundServiceType: ForegroundServiceType.phoneCall,
+        content: NotificationContent(
+          id: timerId,
+          title: "Regatta Timer",
+          body: "Race starts in ${-timeToStart.inMinutes}:${-timeToStart.inSeconds % 60}",
+          channelKey: NotificationChannelIdentifier.channelKey.value,
+          notificationLayout: NotificationLayout.Default,
+          category: NotificationCategory.Alarm,
+          locked: true,
+          autoDismissible: false,
+          actionType: ActionType.Default,
+        ),
+        actionButtons: [
+          NotificationActionButton(
+            key: NotificationChannelIdentifier.showAppNotificationActionButton.value,
+            label: "Open Regatta Timer",
+          )
+        ]);
+
+    // AwesomeNotifications().createNotification(
+    //   content: NotificationContent(
+    //     id: timerId,
+    //     channelKey: NotificationChannelIdentifier.channelKey.value,
+    //     actionType: ActionType.Default,
+    //     category: NotificationCategory.StopWatch,
+    //     autoDismissible: false,
+    //     title: "Regatta Timer",
+    //     body: "Race starts in ${-timeToStart.inMinutes}:${-timeToStart.inSeconds % 60}",
+    //     locked: true,
+    //   ),
+    // );
   }
 
   static cancelTimerNotification() {
-    AwesomeNotifications().cancel(timerId);
+    AndroidForegroundService.stopForeground(timerId);
+    // AwesomeNotifications().cancel(timerId);
   }
 }
