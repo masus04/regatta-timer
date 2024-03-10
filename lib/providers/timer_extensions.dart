@@ -46,7 +46,8 @@ class SoundExtension {
     final selectIndex = SoundEvent.values.indexWhere((soundEvent) => soundEvent.activationTimeStep == timeToStart);
 
     if (selectIndex >= 0) {
-      await audioPlayer.setUrl("asset:${SoundEvent.values[selectIndex].assetName}");
+      debugPrint("Playing audio: ${SoundEvent.values[selectIndex].assetName}");
+      await audioPlayer.setUrl("asset:assets/${SoundEvent.values[selectIndex].assetName}");
       await audioPlayer.play();
       debugPrint("Playing sound: ${SoundEvent.values[selectIndex].assetName} with index: $selectIndex");
     }
