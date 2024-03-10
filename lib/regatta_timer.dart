@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/controllers/app_view_controller.dart';
 import 'package:regatta_timer/controllers/ui_utils.dart';
-import 'package:regatta_timer/providers/boat_speed_provider.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
 import 'package:regatta_timer/views/set_time/view_set_time.dart';
 import 'package:regatta_timer/views/settings/view_settings.dart';
 import 'package:regatta_timer/views/settings/view_vibration_pattern_settings.dart';
 import 'package:regatta_timer/views/timer/view_timer.dart';
-
-import 'controllers/notification_controller.dart';
 
 class RegattaTimer extends HookConsumerWidget {
   static final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -21,11 +17,6 @@ class RegattaTimer extends HookConsumerWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    useEffect(() {
-      NotificationController.setListeners();
-      return null;
-    }, []);
-
     final uiState = UiUtils(context);
 
     final background = UiUtils(context).deviceType == DeviceType.watch ? Colors.black : Colors.white;
@@ -58,7 +49,6 @@ class RegattaTimer extends HookConsumerWidget {
               displayLarge: TextStyle(color: onBackground, fontSize: uiState.displayFontSize, fontWeight: FontWeight.bold),
               displayMedium: TextStyle(color: onBackground, fontSize: uiState.menuFontSize, fontWeight: FontWeight.bold),
               displaySmall: TextStyle(color: onBackground, fontSize: uiState.menuFontSize, fontWeight: FontWeight.bold),
-
             ),
           ),
         ),

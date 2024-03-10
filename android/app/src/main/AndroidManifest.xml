@@ -7,6 +7,9 @@
     <!-- Required by Awesome Notifications Plugin -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
+    <!-- Required permissions by wear_ongoing_activity Plugin -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
     <!-- Allows access to use the GPS location api -->
     <uses-permission android:name="android.hardware.location" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -45,6 +48,13 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+        <!-- Required by wear_ongoing_activity Plugin -->
+        <service
+            android:name="dev.rexios.wear_ongoing_activity.OngoingActivityService"
+            android:exported="false"
+            android:foregroundServiceType=""
+            android:stopWithTask="true" />
 
         <!-- WearOS: Flags that the app doesn't require a companion phone app - disabled on master -->
         <!-- <meta-data

@@ -56,6 +56,6 @@ class SoundExtension {
 
 class NotificationExtension {
   static Future<void> ticker({required Duration timeToStart}) async {
-    NotificationController.showTimerNotification(timeToStart: timeToStart);
+    NotificationController.updateOngoingActivity(timeToStart: timeToStart);
   }
 }

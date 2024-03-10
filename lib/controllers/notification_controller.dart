@@ -1,5 +1,5 @@
-import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:wear_ongoing_activity/wear_ongoing_activity.dart';
 
 enum NotificationChannelIdentifier {
   channelKey(value: "base_channel"),
@@ -19,77 +19,54 @@ class NotificationController {
   static const timerId = 32;
 
   static Future<void> init() async {
-    await AwesomeNotifications().initialize(
-      "resource://drawable/splash",
-      [
-        NotificationChannel(
-          channelKey: NotificationChannelIdentifier.channelKey.value,
-          channelGroupKey: NotificationChannelIdentifier.channelGroupKey.value,
-          channelName: NotificationChannelIdentifier.channelName.value,
-          channelDescription: NotificationChannelIdentifier.channelDescription.value,
-          defaultColor: const Color(0xFF0000A0),
-          ledColor: Colors.white,
-          importance: NotificationImportance.Default,
-          enableLights: false,
-          enableVibration: false,
-          playSound: false,
-        )
-      ],
-      // Channel groups are only visual and are not required
-      channelGroups: [
-        NotificationChannelGroup(
-          channelGroupKey: NotificationChannelIdentifier.channelGroupKey.value,
-          channelGroupName: NotificationChannelIdentifier.channelGroupName.value,
-        )
-      ],
-      debug: false,
-    );
-  }
-
-  static setListeners() {
-    AwesomeNotifications().setListeners(
-      onActionReceivedMethod: NotificationController.onActionReceivedMethod,
-      onNotificationCreatedMethod: NotificationController.onNotificationCreatedMethod,
-      onNotificationDisplayedMethod: NotificationController.onNotificationDisplayedMethod,
-      onDismissActionReceivedMethod: NotificationController.onDismissActionReceivedMethod,
-    );
+    requestPermissions();
   }
 
   static requestPermissions() async {
-    // TODO: Show permission dialog
-    if (!await AwesomeNotifications().isNotificationAllowed()) {
-      await AwesomeNotifications().requestPermissionToSendNotifications();
-    }
+    // // TODO: Show permission dialog
+    await Permission.notification.request();
   }
 
-  @pragma("vm:entry-point")
-  static Future<void> onActionReceivedMethod(ReceivedAction receivedAction) async {}
+  static startOngoingActivity({required Duration timeToStart}) {
+    WearOngoingActivity.start(
+      channelId: NotificationChannelIdentifier.channelKey.value,
+      channelName: NotificationChannelIdentifier.channelName.value,
+      notificationId: timerId,
+      category: NotificationCategory.alarm,
+      foregroundServiceTypes: {
+        // Currently not required
+        // ForegroundServiceType.location,
+      },
+      smallIcon: 'icons/regatta_timer_icon_only.png',
+      staticIcon: 'icons/regatta_timer_icon_only.png',
+      status: OngoingTimerActivityStatus(
+        timeToStart: timeToStart,
+      ),
+    );
+  }
 
-  @pragma("vm:entry-point")
-  static Future<void> onNotificationCreatedMethod(ReceivedNotification receivedAction) async {}
-
-  @pragma("vm:entry-point")
-  static Future<void> onNotificationDisplayedMethod(ReceivedNotification receivedAction) async {}
-
-  @pragma("vm:entry-point")
-  static Future<void> onDismissActionReceivedMethod(ReceivedAction receivedAction) async {}
-
-  static showTimerNotification({required Duration timeToStart}) {
-    AwesomeNotifications().createNotification(
-      content: NotificationContent(
-        id: timerId,
-        channelKey: NotificationChannelIdentifier.channelKey.value,
-        actionType: ActionType.Default,
-        category: NotificationCategory.StopWatch,
-        autoDismissible: false,
-        title: "Regatta Timer",
-        body: "Race starts in ${-timeToStart.inMinutes}:${-timeToStart.inSeconds % 60}",
-        locked: true,
+  static updateOngoingActivity({required Duration timeToStart}) {
+    WearOngoingActivity.update(
+      OngoingTimerActivityStatus(
+        timeToStart: timeToStart,
       ),
     );
   }
 
   static cancelTimerNotification() {
-    AwesomeNotifications().cancel(timerId);
+    // AwesomeNotifications().cancel(timerId);
+    WearOngoingActivity.stop();
   }
+}
+
+class OngoingTimerActivityStatus extends OngoingActivityStatus {
+  OngoingTimerActivityStatus({required Duration timeToStart})
+      : super(
+          templates: [
+            "Starts in: #time#",
+          ],
+          parts: [
+            TextPart(name: "time", text: "${-timeToStart.inMinutes}:${-timeToStart.inSeconds % 60}"),
+          ],
+        );
 }
