@@ -22,9 +22,7 @@ class RegattaTimer extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     useEffect(() {
-      checkLocationPermissions();
       NotificationController.setListeners();
-      NotificationController.requestPermissions();
       return null;
     }, []);
 

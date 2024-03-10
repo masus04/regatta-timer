@@ -18,8 +18,8 @@ enum NotificationChannelIdentifier {
 class NotificationController {
   static const timerId = 32;
 
-  static void init() {
-    AwesomeNotifications().initialize(
+  static Future<void> init() async {
+    await AwesomeNotifications().initialize(
       "resource://drawable/splash",
       [
         NotificationChannel(
@@ -55,13 +55,11 @@ class NotificationController {
     );
   }
 
-  static requestPermissions() {
+  static requestPermissions() async {
     // TODO: Show permission dialog
-    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
-      if (!isAllowed) {
-        AwesomeNotifications().requestPermissionToSendNotifications();
-      }
-    });
+    if (!await AwesomeNotifications().isNotificationAllowed()) {
+      await AwesomeNotifications().requestPermissionToSendNotifications();
+    }
   }
 
   @pragma("vm:entry-point")
