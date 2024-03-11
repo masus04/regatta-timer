@@ -39,7 +39,7 @@ class MobileSettingsButton extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ElevatedButton(
-      onPressed: () => ref.read(appViewController.notifier).enterPreStartState(context),
+      onPressed: () => ref.read(appViewController.notifier).enterSettingsState(context),
       style: ElevatedButton.styleFrom(
         backgroundColor: Theme.of(context).primaryColor,
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
