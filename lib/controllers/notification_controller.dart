@@ -1,4 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:regatta_timer/controllers/fallback_notification_controller.dart';
 import 'package:regatta_timer/controllers/ongoing_notification_controller.dart';
 
 enum NotificationChannelIdentifier {
@@ -30,4 +31,4 @@ abstract class NotificationController extends Notifier<bool> {
   Future<void> cancelTimerNotification();
 }
 
-final notificationController = NotifierProvider<OngoingNotificationController, bool>(OngoingNotificationController.new);
+final notificationController = NotifierProvider<FallbackNotificationController, bool>(FallbackNotificationController.new);
