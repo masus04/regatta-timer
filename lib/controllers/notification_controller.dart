@@ -19,16 +19,17 @@ class NotificationController {
   static const timerId = 32;
 
   static Future<void> init() async {
-    requestPermissions();
+    await requestPermissions();
+    await startOngoingActivity(timeToStart: Duration.zero);
   }
 
-  static requestPermissions() async {
+  static Future<void> requestPermissions() async {
     // // TODO: Show permission dialog
     await Permission.notification.request();
   }
 
-  static startOngoingActivity({required Duration timeToStart}) {
-    WearOngoingActivity.start(
+  static Future<void> startOngoingActivity({required Duration timeToStart}) async {
+    await WearOngoingActivity.start(
       channelId: NotificationChannelIdentifier.channelKey.value,
       channelName: NotificationChannelIdentifier.channelName.value,
       notificationId: timerId,
@@ -37,25 +38,25 @@ class NotificationController {
         // Currently not required
         // ForegroundServiceType.location,
       },
-      smallIcon: 'icons/regatta_timer_icon_only.png',
-      staticIcon: 'icons/regatta_timer_icon_only.png',
+      smallIcon: 'splash',
+      staticIcon: 'splash',
       status: OngoingTimerActivityStatus(
         timeToStart: timeToStart,
       ),
     );
   }
 
-  static updateOngoingActivity({required Duration timeToStart}) {
-    WearOngoingActivity.update(
+  static Future<void> updateOngoingActivity({required Duration timeToStart}) async {
+    await WearOngoingActivity.update(
       OngoingTimerActivityStatus(
         timeToStart: timeToStart,
       ),
     );
   }
 
-  static cancelTimerNotification() {
-    // AwesomeNotifications().cancel(timerId);
-    WearOngoingActivity.stop();
+  static Future<void> cancelTimerNotification() async {
+    await WearOngoingActivity.stop();
+    await updateOngoingActivity(timeToStart:Duration.zero);
   }
 }
 
@@ -63,10 +64,14 @@ class OngoingTimerActivityStatus extends OngoingActivityStatus {
   OngoingTimerActivityStatus({required Duration timeToStart})
       : super(
           templates: [
-            "Starts in: #time#",
+            "#text#"
+                "#time#",
           ],
           parts: [
-            TextPart(name: "time", text: "${-timeToStart.inMinutes}:${-timeToStart.inSeconds % 60}"),
+            TextPart(name: "text", text: timeToStart == Duration.zero ? "" : "Starts in: "),
+            TextPart(
+                name: "time",
+                text: timeToStart == Duration.zero ? "" : "${-timeToStart.inMinutes}:${(-timeToStart.inSeconds % 60).toString().padLeft(2, '0')}"),
           ],
         );
 }
