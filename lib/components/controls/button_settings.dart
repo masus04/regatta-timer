@@ -28,14 +28,8 @@ class WatchSettingsButton extends HookConsumerWidget {
       icon: Icons.settings_outlined,
       backgroundColor: Theme.of(context).colorScheme.background,
       iconColor: Theme.of(context).colorScheme.onBackground,
-      onPressed: onSettingsPressed(context, ref),
+      onPressed: () => ref.read(appViewController.notifier).enterSettingsState(context),
     );
-  }
-
-  void Function() onSettingsPressed(BuildContext context, WidgetRef ref) {
-    return () {
-      AppViewController.enterSettingsState(context, ref);
-    };
   }
 }
 
@@ -45,7 +39,7 @@ class MobileSettingsButton extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return ElevatedButton(
-      onPressed: onSettingsPressed(context, ref),
+      onPressed: () => ref.read(appViewController.notifier).enterPreStartState(context),
       style: ElevatedButton.styleFrom(
         backgroundColor: Theme.of(context).primaryColor,
         foregroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -66,11 +60,5 @@ class MobileSettingsButton extends HookConsumerWidget {
         ),
       ),
     );
-  }
-
-  void Function() onSettingsPressed(BuildContext context, WidgetRef ref) {
-    return () {
-      AppViewController.enterSettingsState(context, ref);
-    };
   }
 }

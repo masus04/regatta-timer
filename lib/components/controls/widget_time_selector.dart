@@ -24,7 +24,7 @@ class TimeSelector extends HookConsumerWidget {
           // debugPrint("Rotary scroll detected clockwise with magnitude ${event.magnitude}");
           final seconds = ((timer.inSeconds % 60) + rotaryUpdateSeconds) % 60;
 
-          ref.read(timerControllerProvider.notifier).setTimer(
+          ref.read(timerController.notifier).setTimer(
             Duration(
               minutes: seconds == 0 ? timer.inMinutes + 1 : timer.inMinutes,
               seconds: seconds,
@@ -34,7 +34,7 @@ class TimeSelector extends HookConsumerWidget {
           // debugPrint("Rotary scroll detected counter-clockwise with magnitude ${event.magnitude}");
           final seconds = ((timer.inSeconds % 60) - rotaryUpdateSeconds) % 60;
 
-          ref.read(timerControllerProvider.notifier).setTimer(
+          ref.read(timerController.notifier).setTimer(
             Duration(
               minutes: seconds == 60 - rotaryUpdateSeconds ? timer.inMinutes - 1 : timer.inMinutes,
               seconds: seconds,
@@ -62,7 +62,7 @@ class TimeSelector extends HookConsumerWidget {
             value: timer.inMinutes,
             onChanged: (newMinutes) {
               if (newMinutes != minutes) {
-                ref.read(timerControllerProvider.notifier).setTimer(Duration(minutes: newMinutes, seconds: seconds));
+                ref.read(timerController.notifier).setTimer(Duration(minutes: newMinutes, seconds: seconds));
               }
             },
             textStyle: Theme
@@ -96,7 +96,7 @@ class TimeSelector extends HookConsumerWidget {
             value: seconds,
             onChanged: (newSeconds) {
               if (newSeconds != seconds) {
-                ref.read(timerControllerProvider.notifier).setTimer(Duration(minutes: minutes, seconds: newSeconds));
+                ref.read(timerController.notifier).setTimer(Duration(minutes: minutes, seconds: newSeconds));
               }
             },
             textStyle: Theme

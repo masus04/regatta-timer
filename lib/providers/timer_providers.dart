@@ -111,4 +111,4 @@ class TimerController extends Notifier<void> {
   }
 }
 
-final timerControllerProvider = NotifierProvider<TimerController, void>(TimerController.new);
+final timerController = NotifierProvider<TimerController, void>(TimerController.new);

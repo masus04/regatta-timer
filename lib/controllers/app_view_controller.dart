@@ -20,12 +20,15 @@ enum AppView {
   });
 }
 
-class AppViewController {
+class AppViewController extends Notifier<void> {
+  @override
+  void build() {}
+
   static Future<void> enterSetTimeState(BuildContext context, WidgetRef ref) async {
     // state = AppView.setTimeView;
 
     Navigator.pop(context);
-    await ref.read(timerControllerProvider.notifier).stopTimer();
+    await ref.read(timerController.notifier).stopTimer();
 
     if (ref.watch(settingsProvider).timerSelectionWakelockEnabled) {
       WakelockPlus.enable();
@@ -36,15 +39,15 @@ class AppViewController {
     }
   }
 
-  static Future<void> enterPreStartState(BuildContext context, WidgetRef ref) async {
+  Future<void> enterPreStartState(BuildContext context) async {
     // state = AppView.preStartView;
 
     final settings = ref.watch(settingsProvider);
     final appLock = ref.read(appLockedProvider);
 
-    ref.read(timerControllerProvider.notifier).resetTimer();
+    ref.read(timerController.notifier).resetTimer();
     Navigator.pushNamed(context, AppView.preStartView.route);
-    await ref.read(timerControllerProvider.notifier).startTimer();
+    await ref.read(timerController.notifier).startTimer();
 
     if (settings.preStartWakelockEnabled && !appLock) {
       WakelockPlus.enable();
@@ -55,7 +58,8 @@ class AppViewController {
     }
   }
 
-  static void enterPostStartState(BuildContext context, WidgetRef ref) {
+  void enterPostStartState(BuildContext context) {
+    // TODO: call this appropriately
     // state = AppView.postStartView;
 
     final settings = ref.watch(settingsProvider);
@@ -70,21 +74,23 @@ class AppViewController {
     }
   }
 
-  static void enterSettingsState(BuildContext context, WidgetRef ref) {
+  void enterSettingsState(BuildContext context) {
     // state = AppView.settingsView;
 
     Navigator.pushNamed(context, AppView.settingsView.route);
   }
 
-  static void enterStartTimeSettingsState(BuildContext context) {
+  void enterStartTimeSettingsState(BuildContext context) {
     // state = AppView.startTimeSettingsView;
 
     Navigator.pushNamed(context, AppView.startTimeSettingsView.route);
   }
 
-  static void enterVibrationAlertSettingsState(BuildContext context) {
+  void enterVibrationAlertSettingsState(BuildContext context) {
     // state = AppView.vibrationAlertSettingsView;
 
     Navigator.pushNamed(context, AppView.vibrationSettingsView.route);
   }
 }
+
+final appViewController = NotifierProvider<AppViewController, void>(AppViewController.new);
