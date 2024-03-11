@@ -2,9 +2,7 @@ import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:regatta_timer/controllers/notification_controller.dart';
 
-class FallbackNotificationController {
-  static const timerId = 32;
-
+class FallbackNotificationController extends NotificationController {
   static Future<void> init() async {
     await AwesomeNotifications().initialize(
       "resource://drawable/splash",
@@ -31,21 +29,47 @@ class FallbackNotificationController {
       ],
       debug: false,
     );
-  }
 
-  static setListeners() {
-    AwesomeNotifications().setListeners(
-      onActionReceivedMethod: FallbackNotificationController.onActionReceivedMethod,
-      onNotificationCreatedMethod: FallbackNotificationController.onNotificationCreatedMethod,
-      onNotificationDisplayedMethod: FallbackNotificationController.onNotificationDisplayedMethod,
-      onDismissActionReceivedMethod: FallbackNotificationController.onDismissActionReceivedMethod,
-    );
+    await requestPermissions();
   }
 
   static requestPermissions() async {
     if (!await AwesomeNotifications().isNotificationAllowed()) {
       await AwesomeNotifications().requestPermissionToSendNotifications();
     }
+  }
+
+  @override
+  Future<void> startOngoingActivity({required Duration timeToStart}) async {
+    if (!state) {
+      await setListeners();
+      state = true;
+    }
+  }
+
+  @override
+  Future<void> updateOngoingActivity({required Duration timeToStart}) async {
+    await AwesomeNotifications().createNotification(
+      content: NotificationContent(
+        id: timerId,
+        channelKey: NotificationChannelIdentifier.channelKey.value,
+        actionType: ActionType.Default,
+        category: NotificationCategory.StopWatch,
+        autoDismissible: false,
+        title: "Regatta Timer",
+        body: "Race starts in ${-timeToStart.inMinutes}:${-timeToStart.inSeconds % 60}",
+        locked: true,
+      ),
+    );
+  }
+
+  static Future<void> setListeners() async {
+    await AwesomeNotifications().setListeners(
+      onActionReceivedMethod: FallbackNotificationController.onActionReceivedMethod,
+      onNotificationCreatedMethod: FallbackNotificationController.onNotificationCreatedMethod,
+      onNotificationDisplayedMethod: FallbackNotificationController.onNotificationDisplayedMethod,
+      onDismissActionReceivedMethod: FallbackNotificationController.onDismissActionReceivedMethod,
+    );
   }
 
   @pragma("vm:entry-point")
@@ -60,22 +84,8 @@ class FallbackNotificationController {
   @pragma("vm:entry-point")
   static Future<void> onDismissActionReceivedMethod(ReceivedAction receivedAction) async {}
 
-  static showTimerNotification({required Duration timeToStart}) {
-    AwesomeNotifications().createNotification(
-      content: NotificationContent(
-        id: timerId,
-        channelKey: NotificationChannelIdentifier.channelKey.value,
-        actionType: ActionType.Default,
-        category: NotificationCategory.StopWatch,
-        autoDismissible: false,
-        title: "Regatta Timer",
-        body: "Race starts in ${-timeToStart.inMinutes}:${-timeToStart.inSeconds % 60}",
-        locked: true,
-      ),
-    );
-  }
-
-  static cancelTimerNotification() {
-    AwesomeNotifications().cancel(timerId);
+  @override
+  Future<void> cancelTimerNotification() async {
+    await AwesomeNotifications().cancel(timerId);
   }
 }

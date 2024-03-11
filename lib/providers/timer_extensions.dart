@@ -60,7 +60,7 @@ class NotificationExtension extends Notifier<void> {
   void build() {}
 
   Future<void> ticker({required Duration timeToStart}) async {
-    ref.read(notificationController.notifier).updateOngoingActivity(timeToStart: timeToStart);
+    await ref.read(notificationController.notifier).updateOngoingActivity(timeToStart: timeToStart);
   }
 }
 

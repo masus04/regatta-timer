@@ -15,35 +15,19 @@ enum NotificationChannelIdentifier {
   final String value;
 }
 
-class NotificationController extends Notifier<bool> {
-  static const timerId = 32;
+abstract class NotificationController extends Notifier<bool> {
+  final timerId = 32;
 
   @override
-  bool build() {
-    return false;
-  }
+  bool build() => false;
 
-  static Future<void> init() async {
-    await OngoingNotificationController.requestPermissions();
-  }
+  static Future<void> init() => throw UnimplementedError();
 
-  Future<void> startOngoingActivity({required Duration timeToStart}) async {
-    if (!state) {
-      await OngoingNotificationController.startOngoingActivity(timeToStart: timeToStart, notificationId: timerId);
-      state = true;
-    }
-  }
+  Future<void> startOngoingActivity({required Duration timeToStart});
 
-  Future<void> updateOngoingActivity({required Duration timeToStart}) async {
-    await OngoingNotificationController.updateOngoingActivity(timeToStart: timeToStart);
-  }
+  Future<void> updateOngoingActivity({required Duration timeToStart});
 
-  Future<void> cancelTimerNotification() async {
-    if (state) {
-      await OngoingNotificationController.cancelTimerNotification();
-      state = false;
-    }
-  }
+  Future<void> cancelTimerNotification();
 }
 
-final notificationController = NotifierProvider<NotificationController, bool>(NotificationController.new);
+final notificationController = NotifierProvider<OngoingNotificationController, bool>(OngoingNotificationController.new);

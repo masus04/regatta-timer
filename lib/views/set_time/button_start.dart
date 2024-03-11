@@ -14,17 +14,11 @@ class StartButton extends HookConsumerWidget {
       hint: "Press to start timer",
       child: LayoutButton(
         text: "Start",
-        onPressed: onStartPressed(context, ref),
+        onPressed: () async => await AppViewController.enterPreStartState(context, ref),
         longPressRequired: ref.watch(settingsProvider).longPressToStart,
         buttonColor: Theme.of(context).colorScheme.secondary,
         watchLayoutButtonType: WatchLayoutButtonType.bottomButton,
       ),
     );
-  }
-
-  void Function() onStartPressed(BuildContext context, WidgetRef ref) {
-    return () {
-      AppViewController.enterPreStartState(context, ref);
-    };
   }
 }

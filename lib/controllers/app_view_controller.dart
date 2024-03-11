@@ -21,11 +21,11 @@ enum AppView {
 }
 
 class AppViewController {
-  static void enterSetTimeState(BuildContext context, WidgetRef ref) {
+  static Future<void> enterSetTimeState(BuildContext context, WidgetRef ref) async {
     // state = AppView.setTimeView;
 
     Navigator.pop(context);
-    TimerController.stopTimer(ref);
+    await ref.read(timerControllerProvider.notifier).stopTimer();
 
     if (ref.watch(settingsProvider).timerSelectionWakelockEnabled) {
       WakelockPlus.enable();
@@ -36,15 +36,15 @@ class AppViewController {
     }
   }
 
-  static void enterPreStartState(BuildContext context, WidgetRef ref) {
+  static Future<void> enterPreStartState(BuildContext context, WidgetRef ref) async {
     // state = AppView.preStartView;
 
     final settings = ref.watch(settingsProvider);
     final appLock = ref.read(appLockedProvider);
 
-    TimerController.resetTimer(ref);
-    TimerController.startTimer(ref);
+    ref.read(timerControllerProvider.notifier).resetTimer();
     Navigator.pushNamed(context, AppView.preStartView.route);
+    await ref.read(timerControllerProvider.notifier).startTimer();
 
     if (settings.preStartWakelockEnabled && !appLock) {
       WakelockPlus.enable();

@@ -14,17 +14,11 @@ class EndRaceButton extends HookConsumerWidget {
       hint: "End the race and return to the pre race view",
       child: LayoutButton(
         text: "End Race",
-        onPressed: onEndRacePressed(context, ref),
+        onPressed: () async => await AppViewController.enterSetTimeState(context, ref),
         buttonColor: Theme.of(context).colorScheme.secondary,
         longPressRequired: ref.watch(settingsProvider).longPressToResetPostStart,
         watchLayoutButtonType: WatchLayoutButtonType.topButton,
       ),
     );
-  }
-
-  void Function() onEndRacePressed(BuildContext context, WidgetRef ref) {
-    return () {
-      AppViewController.enterSetTimeState(context, ref);
-    };
   }
 }

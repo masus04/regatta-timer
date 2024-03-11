@@ -24,7 +24,7 @@ class SyncButton extends HookConsumerWidget {
 
   void Function() onSyncPressed(BuildContext context, WidgetRef ref) {
     return () {
-      TimerController.syncTimer(ref);
+      ref.read(timerControllerProvider.notifier).syncTimer();
     };
   }
 }

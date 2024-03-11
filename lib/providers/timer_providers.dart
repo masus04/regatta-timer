@@ -70,30 +70,29 @@ class TimerController extends Notifier<void> {
   @override
   void build() {}
 
-  static void setTimer(WidgetRef ref, Duration timer) {
+  void setTimer(Duration timer) {
     // debugPrint("Setting timer to $timer");
     ref.read(startOffsetProvider.notifier).state = timer;
   }
 
-  static void startTimer(WidgetRef ref) {
+  Future<void> startTimer() async {
     // debugPrint("Starting Timer");
-    ref.read(notificationController.notifier).startOngoingActivity(timeToStart: Duration.zero);
+    await ref.read(notificationController.notifier).startOngoingActivity(timeToStart: Duration.zero);
     ref.read(_timerRunningProvider.notifier).state = true;
-
   }
 
-  static void stopTimer(WidgetRef ref) {
+  Future<void> stopTimer() async {
     // debugPrint("Stopping Timer");
     ref.read(_timerRunningProvider.notifier).state = false;
-    ref.read(notificationController.notifier).cancelTimerNotification();
+    await ref.read(notificationController.notifier).cancelTimerNotification();
   }
 
-  static void resetTimer(WidgetRef ref) {
+  void resetTimer() {
     // debugPrint("Resetting Timer");
     final _ = ref.refresh(startDateProvider); // Use refresh in order to instantly trigger update
   }
 
-  static void syncTimer(WidgetRef ref) {
+  void syncTimer() {
     final timeToStart = ref.read(timeToStartProvider).value;
 
     if (timeToStart == null) {

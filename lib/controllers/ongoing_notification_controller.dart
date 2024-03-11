@@ -1,41 +1,61 @@
+import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:regatta_timer/controllers/notification_controller.dart';
 import 'package:wear_ongoing_activity/wear_ongoing_activity.dart';
 
-class OngoingNotificationController {
+class OngoingNotificationController extends NotificationController {
+  static Future<void> init() async {
+    await OngoingNotificationController.requestPermissions();
+  }
+
   static Future<void> requestPermissions() async {
     // // TODO: Show permission dialog
     await Permission.notification.request();
   }
 
-  static Future<void> startOngoingActivity({required Duration timeToStart, required int notificationId}) async {
-    await WearOngoingActivity.start(
-      channelId: NotificationChannelIdentifier.channelKey.value,
-      channelName: NotificationChannelIdentifier.channelName.value,
-      notificationId: notificationId,
-      category: NotificationCategory.alarm,
-      foregroundServiceTypes: {
-        // Currently not required
-        // ForegroundServiceType.location,
-      },
-      smallIcon: 'splash',
-      staticIcon: 'splash',
-      status: OngoingTimerActivityStatus(
-        timeToStart: timeToStart,
-      ),
-    );
+  @override
+  Future<void> startOngoingActivity({required Duration timeToStart}) async {
+    if (!state) {
+      await WearOngoingActivity.start(
+        channelId: NotificationChannelIdentifier.channelKey.value,
+        channelName: NotificationChannelIdentifier.channelName.value,
+        notificationId: timerId,
+        category: NotificationCategory.alarm,
+        foregroundServiceTypes: {
+          // Currently not required
+          // ForegroundServiceType.location,
+        },
+        smallIcon: 'splash',
+        staticIcon: 'splash',
+        status: OngoingTimerActivityStatus(
+          timeToStart: timeToStart,
+        ),
+      );
+
+      state = true;
+    }
   }
 
-  static Future<void> updateOngoingActivity({required Duration timeToStart}) async {
-    await WearOngoingActivity.update(
-      OngoingTimerActivityStatus(
-        timeToStart: timeToStart,
-      ),
-    );
+  @override
+  Future<void> updateOngoingActivity({required Duration timeToStart}) async {
+    if (state) {
+      await WearOngoingActivity.update(
+        OngoingTimerActivityStatus(
+          timeToStart: timeToStart,
+        ),
+      );
+    } else {
+      debugPrint("Cannot update Ongoing Activity, none are currently running.");
+    }
   }
 
-  static Future<void> cancelTimerNotification() async {
-    await WearOngoingActivity.stop();
+  @override
+  Future<void> cancelTimerNotification() async {
+    if (state) {
+      await WearOngoingActivity.stop();
+
+      state = false;
+    }
   }
 }
 
