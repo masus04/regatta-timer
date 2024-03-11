@@ -1,6 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:wear_ongoing_activity/wear_ongoing_activity.dart';
+import 'package:regatta_timer/controllers/ongoing_notification_controller.dart';
 
 enum NotificationChannelIdentifier {
   channelKey(value: "base_channel"),
@@ -25,67 +24,26 @@ class NotificationController extends Notifier<bool> {
   }
 
   static Future<void> init() async {
-    await requestPermissions();
-  }
-
-  static Future<void> requestPermissions() async {
-    // // TODO: Show permission dialog
-    await Permission.notification.request();
+    await OngoingNotificationController.requestPermissions();
   }
 
   Future<void> startOngoingActivity({required Duration timeToStart}) async {
     if (!state) {
-      await WearOngoingActivity.start(
-        channelId: NotificationChannelIdentifier.channelKey.value,
-        channelName: NotificationChannelIdentifier.channelName.value,
-        notificationId: timerId,
-        category: NotificationCategory.alarm,
-        foregroundServiceTypes: {
-          // Currently not required
-          // ForegroundServiceType.location,
-        },
-        smallIcon: 'splash',
-        staticIcon: 'splash',
-        status: OngoingTimerActivityStatus(
-          timeToStart: timeToStart,
-        ),
-      );
-
+      await OngoingNotificationController.startOngoingActivity(timeToStart: timeToStart, notificationId: timerId);
       state = true;
     }
   }
 
   Future<void> updateOngoingActivity({required Duration timeToStart}) async {
-    await WearOngoingActivity.update(
-      OngoingTimerActivityStatus(
-        timeToStart: timeToStart,
-      ),
-    );
+    await OngoingNotificationController.updateOngoingActivity(timeToStart: timeToStart);
   }
 
   Future<void> cancelTimerNotification() async {
     if (state) {
-      await WearOngoingActivity.stop();
+      await OngoingNotificationController.cancelTimerNotification();
       state = false;
     }
-    // await updateOngoingActivity(timeToStart: Duration.zero);
   }
-}
-
-class OngoingTimerActivityStatus extends OngoingActivityStatus {
-  OngoingTimerActivityStatus({required Duration timeToStart})
-      : super(
-          templates: [
-            "#text#"
-                "#time#",
-          ],
-          parts: [
-            TextPart(name: "text", text: timeToStart == Duration.zero ? "" : "Starts in: "),
-            TextPart(
-                name: "time",
-                text: timeToStart == Duration.zero ? "" : "${-timeToStart.inMinutes}:${(-timeToStart.inSeconds % 60).toString().padLeft(2, '0')}"),
-          ],
-        );
 }
 
 final notificationController = NotifierProvider<NotificationController, bool>(NotificationController.new);

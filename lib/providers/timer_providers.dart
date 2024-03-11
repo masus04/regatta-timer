@@ -77,8 +77,9 @@ class TimerController extends Notifier<void> {
 
   static void startTimer(WidgetRef ref) {
     // debugPrint("Starting Timer");
-    ref.read(_timerRunningProvider.notifier).state = true;
     ref.read(notificationController.notifier).startOngoingActivity(timeToStart: Duration.zero);
+    ref.read(_timerRunningProvider.notifier).state = true;
+
   }
 
   static void stopTimer(WidgetRef ref) {
