@@ -42,8 +42,8 @@ class AppViewController {
     final settings = ref.watch(settingsProvider);
     final appLock = ref.read(appLockedProvider);
 
-    TimerController.startTimer(ref);
     TimerController.resetTimer(ref);
+    TimerController.startTimer(ref);
     Navigator.pushNamed(context, AppView.preStartView.route);
 
     if (settings.preStartWakelockEnabled && !appLock) {

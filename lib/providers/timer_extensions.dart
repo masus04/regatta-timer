@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:regatta_timer/controllers/notification_controller.dart';
 import 'package:regatta_timer/types/sound_events.dart';
@@ -54,8 +55,13 @@ class SoundExtension {
   }
 }
 
-class NotificationExtension {
-  static Future<void> ticker({required Duration timeToStart}) async {
-    NotificationController.updateOngoingActivity(timeToStart: timeToStart);
+class NotificationExtension extends Notifier<void> {
+  @override
+  void build() {}
+
+  Future<void> ticker({required Duration timeToStart}) async {
+    ref.read(notificationController.notifier).updateOngoingActivity(timeToStart: timeToStart);
   }
 }
+
+final notificationExtension = NotifierProvider<NotificationExtension, void>(NotificationExtension.new);

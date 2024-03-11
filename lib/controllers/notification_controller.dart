@@ -1,3 +1,4 @@
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:wear_ongoing_activity/wear_ongoing_activity.dart';
 
@@ -15,12 +16,16 @@ enum NotificationChannelIdentifier {
   final String value;
 }
 
-class NotificationController {
+class NotificationController extends Notifier<bool> {
   static const timerId = 32;
+
+  @override
+  bool build() {
+    return false;
+  }
 
   static Future<void> init() async {
     await requestPermissions();
-    await startOngoingActivity(timeToStart: Duration.zero);
   }
 
   static Future<void> requestPermissions() async {
@@ -28,25 +33,29 @@ class NotificationController {
     await Permission.notification.request();
   }
 
-  static Future<void> startOngoingActivity({required Duration timeToStart}) async {
-    await WearOngoingActivity.start(
-      channelId: NotificationChannelIdentifier.channelKey.value,
-      channelName: NotificationChannelIdentifier.channelName.value,
-      notificationId: timerId,
-      category: NotificationCategory.alarm,
-      foregroundServiceTypes: {
-        // Currently not required
-        // ForegroundServiceType.location,
-      },
-      smallIcon: 'splash',
-      staticIcon: 'splash',
-      status: OngoingTimerActivityStatus(
-        timeToStart: timeToStart,
-      ),
-    );
+  Future<void> startOngoingActivity({required Duration timeToStart}) async {
+    if (!state) {
+      await WearOngoingActivity.start(
+        channelId: NotificationChannelIdentifier.channelKey.value,
+        channelName: NotificationChannelIdentifier.channelName.value,
+        notificationId: timerId,
+        category: NotificationCategory.alarm,
+        foregroundServiceTypes: {
+          // Currently not required
+          // ForegroundServiceType.location,
+        },
+        smallIcon: 'splash',
+        staticIcon: 'splash',
+        status: OngoingTimerActivityStatus(
+          timeToStart: timeToStart,
+        ),
+      );
+
+      state = true;
+    }
   }
 
-  static Future<void> updateOngoingActivity({required Duration timeToStart}) async {
+  Future<void> updateOngoingActivity({required Duration timeToStart}) async {
     await WearOngoingActivity.update(
       OngoingTimerActivityStatus(
         timeToStart: timeToStart,
@@ -54,9 +63,12 @@ class NotificationController {
     );
   }
 
-  static Future<void> cancelTimerNotification() async {
-    await WearOngoingActivity.stop();
-    await updateOngoingActivity(timeToStart:Duration.zero);
+  Future<void> cancelTimerNotification() async {
+    if (state) {
+      await WearOngoingActivity.stop();
+      state = false;
+    }
+    // await updateOngoingActivity(timeToStart: Duration.zero);
   }
 }
 
@@ -75,3 +87,5 @@ class OngoingTimerActivityStatus extends OngoingActivityStatus {
           ],
         );
 }
+
+final notificationController = NotifierProvider<NotificationController, bool>(NotificationController.new);

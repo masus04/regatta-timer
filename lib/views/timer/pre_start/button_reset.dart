@@ -13,17 +13,14 @@ class ResetButton extends HookConsumerWidget {
       label: "Reset the timer and return to pre race view",
       child: LayoutButton(
         text: "Reset",
-        onPressed: onResetPressed(context, ref),
+        onPressed: () {
+
+          AppViewController.enterSetTimeState(context, ref);
+        },
         longPressRequired: ref.watch(settingsProvider).longPressToResetPreStart,
         buttonColor: Theme.of(context).colorScheme.tertiary,
         watchLayoutButtonType: WatchLayoutButtonType.topButton,
       ),
     );
-  }
-
-  void Function() onResetPressed(BuildContext context, WidgetRef ref) {
-    return () {
-      AppViewController.enterSetTimeState(context, ref);
-    };
   }
 }

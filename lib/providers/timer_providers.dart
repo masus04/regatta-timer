@@ -60,7 +60,7 @@ final timeToStartProvider = StreamProvider<Duration>((ref) async* {
     }
 
     // Update Notification
-    NotificationExtension.ticker(timeToStart: timeToStart);
+    ref.read(notificationExtension.notifier).ticker(timeToStart: timeToStart);
 
     yield timeToStart;
   }
@@ -78,17 +78,18 @@ class TimerController extends Notifier<void> {
   static void startTimer(WidgetRef ref) {
     // debugPrint("Starting Timer");
     ref.read(_timerRunningProvider.notifier).state = true;
+    ref.read(notificationController.notifier).startOngoingActivity(timeToStart: Duration.zero);
   }
 
   static void stopTimer(WidgetRef ref) {
     // debugPrint("Stopping Timer");
     ref.read(_timerRunningProvider.notifier).state = false;
-    NotificationController.cancelTimerNotification();
+    ref.read(notificationController.notifier).cancelTimerNotification();
   }
 
   static void resetTimer(WidgetRef ref) {
     // debugPrint("Resetting Timer");
-    ref.invalidate(startDateProvider);
+    final _ = ref.refresh(startDateProvider); // Use refresh in order to instantly trigger update
   }
 
   static void syncTimer(WidgetRef ref) {
