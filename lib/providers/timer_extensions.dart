@@ -41,15 +41,17 @@ class VibrationsExtension {
 }
 
 class SoundExtension {
-  final AudioPlayer audioPlayer = AudioPlayer();
-
   Future<void> ticker({required Duration timeToStart, List<SoundEvent> soundEvents = SoundEvent.values}) async {
     final selectIndex = SoundEvent.values.indexWhere((soundEvent) => soundEvent.activationTimeStep == timeToStart);
+    final AudioPlayer audioPlayer = AudioPlayer();
 
     if (selectIndex >= 0) {
-      debugPrint("Playing audio: ${SoundEvent.values[selectIndex].assetName}");
-      await audioPlayer.setUrl("asset:assets/${SoundEvent.values[selectIndex].assetName}");
+      await audioPlayer.setUrl(
+        "asset:assets/${SoundEvent.values[selectIndex].assetName}",
+        preload: true,
+      );
       await audioPlayer.play();
+      await audioPlayer.dispose();
       debugPrint("Playing sound: ${SoundEvent.values[selectIndex].assetName} with index: $selectIndex");
     }
   }

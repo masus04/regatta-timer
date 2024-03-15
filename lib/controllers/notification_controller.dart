@@ -1,6 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/controllers/fallback_notification_controller.dart';
-import 'package:regatta_timer/controllers/ongoing_notification_controller.dart';
 
 enum NotificationChannelIdentifier {
   channelKey(value: "base_channel"),

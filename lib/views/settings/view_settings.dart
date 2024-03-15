@@ -191,6 +191,7 @@ class SettingsTitle extends StatelessWidget {
             titlePadding: const EdgeInsets.all(8),
             title: Text(
               title,
+              textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.displayLarge?.copyWith(color: Theme.of(context).colorScheme.onBackground),
             ),
             children: [

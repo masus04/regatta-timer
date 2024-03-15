@@ -21,7 +21,6 @@ class TimeSelector extends HookConsumerWidget {
         final timer = ref.read(startOffsetProvider);
 
         if (event.direction == RotaryDirection.clockwise) {
-          // debugPrint("Rotary scroll detected clockwise with magnitude ${event.magnitude}");
           final seconds = ((timer.inSeconds % 60) + rotaryUpdateSeconds) % 60;
 
           ref.read(timerController.notifier).setTimer(
@@ -31,7 +30,6 @@ class TimeSelector extends HookConsumerWidget {
             ),
           );
         } else if (event.direction == RotaryDirection.counterClockwise) {
-          // debugPrint("Rotary scroll detected counter-clockwise with magnitude ${event.magnitude}");
           final seconds = ((timer.inSeconds % 60) - rotaryUpdateSeconds) % 60;
 
           ref.read(timerController.notifier).setTimer(
