@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/providers/app_lock_provider.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
@@ -10,6 +9,7 @@ enum AppView {
   setTimeView(route: "/setTime"),
   preStartView(route: "/timer"),
   postStartView(route: "/timer"),
+  endOfRaceView(route: "/endOfRace"),
   settingsView(route: "/settings"),
   startTimeSettingsView(route: "/startTimeSettings"),
   vibrationSettingsView(route: "/vibrationAlertSettings");
@@ -32,10 +32,8 @@ class AppViewController extends Notifier<void> {
 
     if (ref.watch(settingsProvider).timerSelectionWakelockEnabled) {
       WakelockPlus.enable();
-      debugPrint("WakeLock: enabled");
     } else {
       WakelockPlus.disable();
-      debugPrint("WakeLock: disabled");
     }
   }
 
@@ -50,10 +48,8 @@ class AppViewController extends Notifier<void> {
 
     if (settings.preStartWakelockEnabled && !appLock) {
       WakelockPlus.enable();
-      debugPrint("WakeLock: enabled");
     } else {
       WakelockPlus.disable();
-      debugPrint("WakeLock: disabled");
     }
   }
 
@@ -65,11 +61,14 @@ class AppViewController extends Notifier<void> {
 
     if (settings.postStartWakelockEnabled && !appLock) {
       WakelockPlus.enable();
-      debugPrint("WakeLock: enabled");
     } else {
       WakelockPlus.disable();
-      debugPrint("WakeLock: disabled");
     }
+  }
+
+  void enterEndOfRaceState() {
+    ref.read(timerController.notifier).stop();
+    WakelockPlus.disable();
   }
 
   void enterSettingsState() {

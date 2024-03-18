@@ -70,7 +70,6 @@ class TimerController extends Notifier<Duration> {
           timerStartedDate: ref.read(_timerStartedProvider),
           startOffset: ref.read(startOffsetProvider),
         );
-        debugPrint("TimeToStart: ${state.toString()}");
 
         onTick();
       },

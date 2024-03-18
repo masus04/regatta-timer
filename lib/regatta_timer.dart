@@ -7,6 +7,7 @@ import 'package:regatta_timer/providers/settings_provider.dart';
 import 'package:regatta_timer/views/set_time/view_set_time.dart';
 import 'package:regatta_timer/views/settings/view_settings.dart';
 import 'package:regatta_timer/views/settings/view_vibration_pattern_settings.dart';
+import 'package:regatta_timer/views/timer/end_of_race/view_end_of_race.dart';
 import 'package:regatta_timer/views/timer/view_timer.dart';
 
 class RegattaTimer extends HookConsumerWidget {
@@ -56,6 +57,7 @@ class RegattaTimer extends HookConsumerWidget {
         routes: {
           AppView.setTimeView.route: (context) => const SetTimeView(),
           AppView.preStartView.route: (context) => const TimerView(),
+          AppView.endOfRaceView.route: (context) => const EndOfRaceView(),
           AppView.settingsView.route: (context) => const SettingsView(),
           AppView.vibrationSettingsView.route: (context) => const VibrationSettingsView(),
         },

@@ -16,7 +16,7 @@ class RaceInfoWidget extends HookConsumerWidget {
         // Prevent Button from accepting presses
         ignoring: true,
         child: LayoutButton(
-          onPressed: onInfoPressed(context, ref),
+          onPressed: () {},
           buttonColor: Theme.of(context).colorScheme.primary,
           longPressRequired: false,
           watchLayoutButtonType: WatchLayoutButtonType.bottomButton,
@@ -48,10 +48,6 @@ class RaceInfoWidget extends HookConsumerWidget {
         ),
       ),
     );
-  }
-
-  void Function() onInfoPressed(BuildContext context, WidgetRef ref) {
-    return () {};
   }
 }
 
