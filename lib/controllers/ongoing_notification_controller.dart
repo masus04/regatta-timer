@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:regatta_timer/controllers/notification_controller.dart';
+import 'package:regatta_timer/providers/timers_v3.dart';
 import 'package:wear_ongoing_activity/wear_ongoing_activity.dart';
 
 class OngoingNotificationController extends NotificationController {
@@ -68,9 +69,7 @@ class OngoingTimerActivityStatus extends OngoingActivityStatus {
           ],
           parts: [
             TextPart(name: "text", text: timeToStart == Duration.zero ? "" : "Starts in: "),
-            TextPart(
-                name: "time",
-                text: timeToStart == Duration.zero ? "" : "${-timeToStart.inMinutes}:${(-timeToStart.inSeconds % 60).toString().padLeft(2, '0')}"),
+            TextPart(name: "time", text: timeToStart == Duration.zero ? "" : timeToStart.format()),
           ],
         );
 }

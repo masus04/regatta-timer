@@ -1,6 +1,7 @@
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:regatta_timer/controllers/notification_controller.dart';
+import 'package:regatta_timer/providers/timers_v3.dart';
 
 class FallbackNotificationController extends NotificationController {
   static Future<void> init() async {
@@ -57,7 +58,7 @@ class FallbackNotificationController extends NotificationController {
         category: NotificationCategory.StopWatch,
         autoDismissible: false,
         title: "Regatta Timer",
-        body: "Race starts in ${-timeToStart.inMinutes}:${-timeToStart.inSeconds % 60}",
+        body: timeToStart.isNegative ? "Race timer: ${timeToStart.format()}": "Race starts in ${timeToStart.format()}",
         locked: true,
       ),
     );

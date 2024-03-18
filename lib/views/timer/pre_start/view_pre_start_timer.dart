@@ -8,7 +8,7 @@ import 'package:regatta_timer/components/widget_charly_mode.dart';
 import 'package:regatta_timer/components/widget_timer.dart';
 import 'package:regatta_timer/controllers/ui_utils.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
-import 'package:regatta_timer/providers/timer_providers.dart';
+import 'package:regatta_timer/providers/timers_v3.dart';
 import 'package:regatta_timer/views/timer/button_race_info.dart';
 import 'package:regatta_timer/views/timer/pre_start/button_reset.dart';
 import 'package:regatta_timer/views/timer/pre_start/button_sync.dart';
@@ -40,28 +40,24 @@ class PreStartViewMobile extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(timeToStartProvider).when(
-          data: (timeToStart) => MobileLayout(
-            title: const RaceInfoWidget(),
-            subtitle: const Column(
-              children: [
-                FlagPole(),
-                CharlyModeToggleWidgetMobile(),
-              ],
-            ),
-            primaryButton: const Expanded(
-              flex: 10,
-              child: ResetButton(),
-            ),
-            secondaryButton: const Expanded(
-              flex: 10,
-              child: SyncButton(),
-            ),
-            centerWidget: TimerWidget(timeToStart), // ref.watch(timerProvider).timeToStart),
-          ),
-          error: (error, stackTrace) => throw (error),
-          loading: () => const CircularProgressIndicator(),
-        );
+    return MobileLayout(
+      title: const RaceInfoWidget(),
+      subtitle: const Column(
+        children: [
+          FlagPole(),
+          CharlyModeToggleWidgetMobile(),
+        ],
+      ),
+      primaryButton: const Expanded(
+        flex: 10,
+        child: ResetButton(),
+      ),
+      secondaryButton: const Expanded(
+        flex: 10,
+        child: SyncButton(),
+      ),
+      centerWidget: TimerWidget(ref.watch(timerController)), // ref.watch(timerProvider).timeToStart),
+    );
   }
 }
 
@@ -70,31 +66,27 @@ class PreStartViewWatch extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return ref.watch(timeToStartProvider).when(
-          data: (tts) => WatchLayout(
-            topButton: const ResetButton(),
-            bottomButton: const SyncButton(),
-            centerWidget: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(
-                  flex: 2,
-                  child: TimerWidget(tts),
-                ),
-                const FlagPole(expanded: true),
-              ],
-            ),
-            leftCircularButton: Visibility(
-              visible: ref.watch(settingsProvider).charlyModeToggleEnabled,
-              child: const AccidentalInteractionPreventer(
-                size: Size(50, 60),
-                child: CharlyModeToggleWidgetWatch(),
-              ),
-            ),
+    return WatchLayout(
+      topButton: const ResetButton(),
+      bottomButton: const SyncButton(),
+      centerWidget: Column(
+        mainAxisSize: MainAxisSize.max,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            flex: 2,
+            child: TimerWidget(ref.watch(timerController)),
           ),
-          error: (error, stackTrace) => throw error,
-          loading: () => const CircularProgressIndicator(),
-        );
+          const FlagPole(expanded: true),
+        ],
+      ),
+      leftCircularButton: Visibility(
+        visible: ref.watch(settingsProvider).charlyModeToggleEnabled,
+        child: const AccidentalInteractionPreventer(
+          size: Size(50, 60),
+          child: CharlyModeToggleWidgetWatch(),
+        ),
+      ),
+    );
   }
 }

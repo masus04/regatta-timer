@@ -1,5 +1,5 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:regatta_timer/providers/timer_providers.dart';
+import 'package:regatta_timer/providers/timers_v3.dart';
 import 'package:regatta_timer/types/flag.dart';
 import 'package:regatta_timer/types/start_procedure.dart';
 
@@ -22,6 +22,7 @@ class StartProcedureNotifier extends StateNotifier<StartProcedureState> {
 
     // Display last triggered event
     for (final event in startProcedure.events) {
+      // TODO: Verify this
       if (event.timeStep.inMinutes >= (time.abs() + const Duration(seconds: 59)).inMinutes) {
         candidateEvent = event;
       }
@@ -33,7 +34,7 @@ class StartProcedureNotifier extends StateNotifier<StartProcedureState> {
 
 final startProcedureProvider = StateNotifierProvider<StartProcedureNotifier, StartProcedureState>((ref) {
   return StartProcedureNotifier(
-    time: ref.watch(timeToStartProvider).value!,
+    time: ref.watch(timerController),
     startProcedure: StartProcedure.orc, // TODO: Make configurable in settings
   );
 });

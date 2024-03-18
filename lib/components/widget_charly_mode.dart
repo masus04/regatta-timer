@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/components/button_circular_icon.dart';
 import 'package:regatta_timer/controllers/ui_utils.dart';
-import 'package:regatta_timer/providers/timer_providers.dart';
+import 'package:regatta_timer/providers/charly_mode_provider.dart';
+import 'package:regatta_timer/providers/timer_extensions.dart';
 
 class CharlyModeToggleWidgetMobile extends HookConsumerWidget {
   const CharlyModeToggleWidgetMobile({super.key});
@@ -14,13 +15,13 @@ class CharlyModeToggleWidgetMobile extends HookConsumerWidget {
       trailing: Transform.scale(
         scale: UiUtils(context).switchScaleFactor,
         child: Switch(
-          value: ref.watch(charlyModeEnabledProvider),
+          value: ref.watch(charlyModeExtension.select((state) => state.enabled)),
           thumbColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onPrimary),
           activeTrackColor: Theme.of(context).colorScheme.primary,
           inactiveTrackColor: Theme.of(context).colorScheme.primary.withOpacity(.5),
           trackOutlineColor: MaterialStateProperty.all(Colors.transparent),
           thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
-                (Set<MaterialState> states) {
+            (Set<MaterialState> states) {
               if (states.contains(MaterialState.selected)) {
                 return Icon(
                   Icons.check,
@@ -30,7 +31,7 @@ class CharlyModeToggleWidgetMobile extends HookConsumerWidget {
               return null;
             },
           ),
-          onChanged: (newValue) => ref.read(charlyModeEnabledProvider.notifier).state = newValue,
+          onChanged: (newValue) => ref.read(charlyModeExtension.notifier).charlyModeEnabled = newValue,
         ),
       ),
     );
@@ -46,9 +47,9 @@ class CharlyModeToggleWidgetWatch extends HookConsumerWidget {
       borderRadius: 20,
       backgroundColor: Theme.of(context).colorScheme.background,
       iconColor: Theme.of(context).colorScheme.onBackground,
-      onPressed: () => ref.read(charlyModeEnabledProvider.notifier).state = !ref.read(charlyModeEnabledProvider),
+      onPressed: () => ref.read(charlyModeExtension.notifier).charlyModeEnabled = !ref.watch(charlyModeExtension.select((state) => state.enabled)),
       child: CharlyModeIconWatch(
-        enabled: ref.watch(charlyModeEnabledProvider),
+        enabled: ref.watch(charlyModeExtension).enabled,
       ),
     );
   }

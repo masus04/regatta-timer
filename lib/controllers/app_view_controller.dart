@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/providers/app_lock_provider.dart';
+import 'package:regatta_timer/providers/charly_mode_provider.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
-import 'package:regatta_timer/providers/timer_providers.dart';
+import 'package:regatta_timer/providers/timer_extensions.dart';
+import 'package:regatta_timer/providers/timers_v3.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 enum AppView {
@@ -28,7 +30,7 @@ class AppViewController extends Notifier<void> {
     // state = AppView.setTimeView;
 
     Navigator.pop(context);
-    await ref.read(timerController.notifier).stopTimer();
+    await ref.read(timerController.notifier).stop();
 
     if (ref.watch(settingsProvider).timerSelectionWakelockEnabled) {
       WakelockPlus.enable();
@@ -45,9 +47,9 @@ class AppViewController extends Notifier<void> {
     final settings = ref.watch(settingsProvider);
     final appLock = ref.read(appLockedProvider);
 
-    ref.read(timerController.notifier).resetTimer();
     Navigator.pushNamed(context, AppView.preStartView.route);
-    await ref.read(timerController.notifier).startTimer();
+    ref.read(charlyModeExtension.notifier).reset();
+    await ref.read(timerController.notifier).start();
 
     if (settings.preStartWakelockEnabled && !appLock) {
       WakelockPlus.enable();
