@@ -24,7 +24,7 @@ class AppViewController extends Notifier<void> {
   @override
   void build() {}
 
-  static Future<void> enterSetTimeState(BuildContext context, WidgetRef ref) async {
+  Future<void> enterSetTimeState(BuildContext context) async {
     // state = AppView.setTimeView;
 
     Navigator.pop(context);
