@@ -23,18 +23,22 @@ class TimeSelector extends HookConsumerWidget {
 
         if (event.direction == RotaryDirection.clockwise) {
           final seconds = ((startOffset.inSeconds % 60) + rotaryUpdateSeconds) % 60;
+          debugPrint("seconds: $seconds}");
+
           ref.read(timerController.notifier).setTimer(
                 Duration(
-                  minutes: seconds == 0 ? startOffset.inMinutes + 1 : startOffset.inMinutes,
+                  minutes: seconds >= 0 && seconds < rotaryUpdateSeconds ? startOffset.inMinutes + 1 : startOffset.inMinutes,
                   seconds: seconds,
                 ),
               );
         } else if (event.direction == RotaryDirection.counterClockwise) {
           final seconds = ((startOffset.inSeconds % 60) - rotaryUpdateSeconds) % 60;
 
+          debugPrint("seconds: $seconds | 60 - seconds: ${60 - seconds}");
+
           ref.read(timerController.notifier).setTimer(
                 Duration(
-                  minutes: seconds == 60 - rotaryUpdateSeconds ? startOffset.inMinutes - 1 : startOffset.inMinutes,
+                  minutes: (60 - seconds) >= 0 && (60 - seconds) < rotaryUpdateSeconds ? startOffset.inMinutes - 1 : startOffset.inMinutes,
                   seconds: seconds,
                 ),
               );
@@ -80,7 +84,18 @@ class TimeSelector extends HookConsumerWidget {
             value: seconds,
             onChanged: (newSeconds) {
               if (newSeconds != seconds) {
-                ref.read(timerController.notifier).setTimer(Duration(minutes: minutes, seconds: newSeconds));
+                // Scrolling up a minute
+                if (seconds == 59 && newSeconds == 0) {
+                  ref.read(timerController.notifier).setTimer(Duration(minutes: minutes + 1, seconds: newSeconds));
+
+                  // Scrolling down a minute
+                } else if (seconds == 0 && newSeconds == 59 && minutes > 0) {
+                  ref.read(timerController.notifier).setTimer(Duration(minutes: minutes - 1, seconds: newSeconds));
+
+                  // Scrolling within a minute
+                } else {
+                  ref.read(timerController.notifier).setTimer(Duration(minutes: minutes, seconds: newSeconds));
+                }
               }
             },
             textStyle: Theme.of(context).textTheme.displaySmall?.copyWith(color: Theme.of(context).colorScheme.onBackground.withOpacity(.75)),
