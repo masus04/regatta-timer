@@ -23,6 +23,7 @@ dependencies:
   just_audio: ^0.9.36
   numberpicker: ^2.1.2
   permission_handler: ^11.3.0
+  quiver: ^3.2.1
   shared_preferences: ^2.2.2
   vibration: ^1.8.4
   wakelock_plus: ^1.1.6
