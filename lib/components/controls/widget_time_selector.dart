@@ -3,7 +3,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:numberpicker/numberpicker.dart';
 import 'package:regatta_timer/controllers/ui_utils.dart';
-import 'package:regatta_timer/providers/timers_v3.dart';
+import 'package:regatta_timer/providers/timer_providers.dart';
 import 'package:wearable_rotary/wearable_rotary.dart';
 
 class TimeSelector extends HookConsumerWidget {

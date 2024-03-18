@@ -4,7 +4,7 @@ import 'package:regatta_timer/components/layouts/layout_mobile.dart';
 import 'package:regatta_timer/components/layouts/layout_watch.dart';
 import 'package:regatta_timer/components/widget_timer.dart';
 import 'package:regatta_timer/controllers/ui_utils.dart';
-import 'package:regatta_timer/providers/timers_v3.dart';
+import 'package:regatta_timer/providers/timer_providers.dart';
 import 'package:regatta_timer/views/timer/button_race_info.dart';
 import 'package:regatta_timer/views/timer/post_start/button_end_race.dart';
 

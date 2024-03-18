@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:regatta_timer/controllers/notification_controller.dart';
-import 'package:regatta_timer/providers/timers_v3.dart';
+import 'package:regatta_timer/providers/timer_providers.dart';
 import 'package:wear_ongoing_activity/wear_ongoing_activity.dart';
 
 class OngoingNotificationController extends NotificationController {

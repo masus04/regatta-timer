@@ -4,7 +4,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:regatta_timer/controllers/notification_controller.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
-import 'package:regatta_timer/providers/timers_v3.dart';
+import 'package:regatta_timer/providers/timer_providers.dart';
 import 'package:regatta_timer/types/sound_events.dart';
 
 part 'timer_extensions.g.dart';

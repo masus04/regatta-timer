@@ -8,7 +8,7 @@ import 'package:regatta_timer/components/widget_charly_mode.dart';
 import 'package:regatta_timer/components/widget_timer.dart';
 import 'package:regatta_timer/controllers/ui_utils.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
-import 'package:regatta_timer/providers/timers_v3.dart';
+import 'package:regatta_timer/providers/timer_providers.dart';
 import 'package:regatta_timer/views/timer/button_race_info.dart';
 import 'package:regatta_timer/views/timer/pre_start/button_reset.dart';
 import 'package:regatta_timer/views/timer/pre_start/button_sync.dart';

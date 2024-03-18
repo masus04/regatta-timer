@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:regatta_timer/providers/timers_v3.dart';
+import 'package:regatta_timer/providers/timer_providers.dart';
 
 class TimerWidget extends StatelessWidget {
   final Duration time;

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/components/layouts/layout_buttons.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
-import 'package:regatta_timer/providers/timers_v3.dart';
+import 'package:regatta_timer/providers/timer_providers.dart';
 
 class SyncButton extends HookConsumerWidget {
   const SyncButton({super.key});
