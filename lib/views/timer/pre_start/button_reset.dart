@@ -14,7 +14,8 @@ class ResetButton extends HookConsumerWidget {
       child: LayoutButton(
         text: "Reset",
         onPressed: () {
-          ref.read(appViewController.notifier).enterSetTimeState(context);
+          Navigator.pop(context);
+          ref.read(appViewController.notifier).enterSetTimeState();
         },
         longPressRequired: ref.watch(settingsProvider).longPressToResetPreStart,
         buttonColor: Theme.of(context).colorScheme.tertiary,

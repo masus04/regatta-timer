@@ -2,6 +2,7 @@ import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:regatta_timer/controllers/app_view_controller.dart';
 import 'package:regatta_timer/controllers/notification_controller.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
 import 'package:regatta_timer/providers/timer_providers.dart';
@@ -106,3 +107,17 @@ class CharlyModeExtension extends Notifier<CharlyModeState> {
 }
 
 final charlyModeExtension = NotifierProvider<CharlyModeExtension, CharlyModeState>(CharlyModeExtension.new);
+
+/// Calls AppViewController.enterPostStartState after starting.
+class PostStartExtension extends Notifier<void> {
+  @override
+  void build() {}
+
+  Future<void> tick(Duration timeToStart) async {
+    if (timeToStart.inSeconds == -1) {
+      ref.read(appViewController.notifier).enterPostStartState();
+    }
+  }
+}
+
+final postStartExtension = NotifierProvider<PostStartExtension, void>(PostStartExtension.new);

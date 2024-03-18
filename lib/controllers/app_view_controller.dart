@@ -25,10 +25,9 @@ class AppViewController extends Notifier<void> {
   @override
   void build() {}
 
-  Future<void> enterSetTimeState(BuildContext context) async {
+  Future<void> enterSetTimeState() async {
     // state = AppView.setTimeView;
 
-    Navigator.pop(context);
     await ref.read(timerController.notifier).stop();
 
     if (ref.watch(settingsProvider).timerSelectionWakelockEnabled) {
@@ -40,13 +39,12 @@ class AppViewController extends Notifier<void> {
     }
   }
 
-  Future<void> enterPreStartState(BuildContext context) async {
+  Future<void> enterPreStartState() async {
     // state = AppView.preStartView;
 
     final settings = ref.watch(settingsProvider);
     final appLock = ref.read(appLockedProvider);
 
-    Navigator.pushNamed(context, AppView.preStartView.route);
     ref.read(charlyModeExtension.notifier).reset();
     await ref.read(timerController.notifier).start();
 
@@ -59,8 +57,7 @@ class AppViewController extends Notifier<void> {
     }
   }
 
-  void enterPostStartState(BuildContext context) {
-    // TODO: call this appropriately
+  void enterPostStartState() {
     // state = AppView.postStartView;
 
     final settings = ref.watch(settingsProvider);
@@ -75,22 +72,16 @@ class AppViewController extends Notifier<void> {
     }
   }
 
-  void enterSettingsState(BuildContext context) {
+  void enterSettingsState() {
     // state = AppView.settingsView;
-
-    Navigator.pushNamed(context, AppView.settingsView.route);
   }
 
-  void enterStartTimeSettingsState(BuildContext context) {
+  void enterStartTimeSettingsState() {
     // state = AppView.startTimeSettingsView;
-
-    Navigator.pushNamed(context, AppView.startTimeSettingsView.route);
   }
 
-  void enterVibrationAlertSettingsState(BuildContext context) {
+  void enterVibrationAlertSettingsState() {
     // state = AppView.vibrationAlertSettingsView;
-
-    Navigator.pushNamed(context, AppView.vibrationSettingsView.route);
   }
 }
 

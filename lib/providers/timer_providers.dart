@@ -103,8 +103,11 @@ class TimerController extends Notifier<Duration> {
     ref.read(soundExtension.notifier).tick(state);
     ref.read(notificationExtension.notifier).tick(state);
 
-    // Call charlyMode last, as it will restart the timer
+    // Call charlyMode after anything that should react to the start, as it will restart the timer
     ref.read(charlyModeExtension.notifier).tick(state);
+
+    // Call PostStartExtension after charlyMode, for if charlyMode triggers, postStart should not
+    ref.read(postStartExtension.notifier).tick(state);
   }
 }
 
