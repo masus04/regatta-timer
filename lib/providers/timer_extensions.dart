@@ -1,7 +1,7 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:copy_with_extension/copy_with_extension.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:regatta_timer/controllers/app_view_controller.dart';
 import 'package:regatta_timer/controllers/notification_controller.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
@@ -40,17 +40,21 @@ class SoundExtension extends Notifier<void> {
 
   Future<void> tick(Duration timeToStart) async {
     final selectIndex = SoundEvent.values.indexWhere((soundEvent) => soundEvent.activationTimeStep == timeToStart);
-    final AudioPlayer audioPlayer = AudioPlayer();
 
     if (selectIndex >= 0) {
-      await audioPlayer.setUrl(
-        "asset:assets/${SoundEvent.values[selectIndex].assetName}",
-        preload: true,
-      );
-      await audioPlayer.play();
-      await audioPlayer.dispose();
-      debugPrint("Playing sound: ${SoundEvent.values[selectIndex].assetName} with index: $selectIndex");
+      await playAudio(audioFileName: SoundEvent.values[selectIndex].assetName);
     }
+  }
+
+  Future<void> playAudio({required String audioFileName}) async {
+    debugPrint("Playing sound: $audioFileName");
+
+    final player = AudioPlayer(playerId: audioFileName);
+
+    await player.play(AssetSource(audioFileName));
+    await player.onPlayerComplete.first;
+
+    await player.dispose();
   }
 }
 
