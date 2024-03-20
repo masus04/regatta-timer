@@ -57,6 +57,8 @@ class TimerController extends Notifier<Duration> {
     // Instantly trigger first update
     state = ref.read(startOffsetProvider);
 
+    await ref.read(notificationController.notifier).startOngoingActivity(timeToStart: Duration.zero);
+
     // final metronome = Metronome.epoch(const Duration(seconds: 1));
     final metronome = Metronome.periodic(
       const Duration(seconds: 1),
@@ -73,8 +75,6 @@ class TimerController extends Notifier<Duration> {
         onTick();
       },
     );
-
-    await ref.read(notificationController.notifier).startOngoingActivity(timeToStart: Duration.zero);
   }
 
   Future<void> stop() async {
