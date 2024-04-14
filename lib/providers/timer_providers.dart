@@ -85,6 +85,8 @@ class TimerController extends Notifier<Duration> {
   }
 
   void sync() {
+    stop();
+
     if ((state.inSeconds % 60) >= 30) {
       // Round up
       ref.read(startOffsetProvider.notifier).state = Duration(minutes: state.inMinutes + 1);

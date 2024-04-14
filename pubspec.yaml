@@ -7,7 +7,7 @@ version: 1.0.7+52
 
 environment:
   sdk: ^3.3.0
-  flutter: ^3.19.2
+  flutter: ^3.19.5
 
 dependencies:
   audioplayers: ^6.0.0
@@ -22,12 +22,12 @@ dependencies:
   google_fonts: ^6.2.1
   hooks_riverpod: ^2.5.1
   numberpicker: ^2.1.2
-  permission_handler: ^11.3.0
+  permission_handler: ^11.3.1
   quiver: ^3.2.1
-  shared_preferences: ^2.2.2
+  shared_preferences: ^2.2.3
   vibration: ^1.8.4
-  wakelock_plus: ^1.1.6
-  wear_ongoing_activity: ^0.1.4
+  wakelock_plus: ^1.2.4
+  wear_ongoing_activity: ^0.1.4+1
   wearable_rotary: ^2.0.2
 
 dev_dependencies:
@@ -35,8 +35,8 @@ dev_dependencies:
     sdk: flutter
   integration_test:
     sdk: flutter
-  flutter_lints: ^3.0.1
-  build_runner: ^2.4.8
+  flutter_lints: ^3.0.2
+  build_runner: ^2.4.9
   flutter_launcher_icons: ^0.13.1
   flutter_native_splash: ^2.4.0
 
