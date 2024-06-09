@@ -39,8 +39,8 @@ class RegattaTimer extends HookConsumerWidget {
             onSecondary: Colors.white,
             tertiary: const Color(0xFFB00000),
             onTertiary: Colors.white,
-            background: background,
-            onBackground: onBackground,
+            surface: background,
+            onSurface: onBackground,
           ),
           textTheme: GoogleFonts.ubuntuTextTheme(
             TextTheme(

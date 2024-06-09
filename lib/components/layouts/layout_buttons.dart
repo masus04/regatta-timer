@@ -136,7 +136,7 @@ class WatchLayoutTopButton extends StatelessWidget {
       onLongPress: onPressed,
       onPressed: longPressRequired ? () {} : onPressed,
       style: TextButton.styleFrom(
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         elevation: 8,
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
       ),
@@ -183,7 +183,7 @@ class WatchLayoutBottomButton extends StatelessWidget {
       onLongPress: onPressed,
       onPressed: longPressRequired ? () {} : onPressed,
       style: TextButton.styleFrom(
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         elevation: 8,
         shape: const RoundedRectangleBorder(borderRadius: BorderRadius.zero),
       ),

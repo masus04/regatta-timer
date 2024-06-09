@@ -31,7 +31,7 @@ class MobileLayout extends HookConsumerWidget {
         if (constraints.maxHeight.abs() > constraints.maxWidth.abs()) {
           /// Vertical Layout
           return Material(
-            color: Theme.of(context).colorScheme.background,
+            color: Theme.of(context).colorScheme.surface,
             child: SafeArea(
               child: Stack(
                 alignment: Alignment.topRight,
@@ -53,7 +53,7 @@ class MobileLayout extends HookConsumerWidget {
                           const SizedBox(height: 8),
                           Material(
                             elevation: 8,
-                            color: Theme.of(context).colorScheme.background,
+                            color: Theme.of(context).colorScheme.surface,
                             // decoration: BoxDecoration(border: Border.all(color: Colors.indigo, width: 4)),
                             child: Column(
                               mainAxisSize: MainAxisSize.max,
@@ -92,7 +92,7 @@ class MobileLayout extends HookConsumerWidget {
         } else {
           /// Horizontal Layout
           return Material(
-            color: Theme.of(context).colorScheme.background,
+            color: Theme.of(context).colorScheme.surface,
             child: SafeArea(
               child: Stack(
                 alignment: Alignment.topRight,
@@ -121,7 +121,7 @@ class MobileLayout extends HookConsumerWidget {
                           flex: 3,
                           child: Material(
                             elevation: 8,
-                            color: Theme.of(context).colorScheme.background,
+                            color: Theme.of(context).colorScheme.surface,
                             child: Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 8),
                               child: Column(

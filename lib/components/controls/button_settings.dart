@@ -26,8 +26,8 @@ class WatchSettingsButton extends HookConsumerWidget {
     return CircularIconButton(
       borderRadius: 20,
       icon: Icons.settings_outlined,
-      backgroundColor: Theme.of(context).colorScheme.background,
-      iconColor: Theme.of(context).colorScheme.onBackground,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      iconColor: Theme.of(context).colorScheme.onSurface,
       onPressed: () {
         Navigator.pushNamed(context, AppView.settingsView.route);
         ref.read(appViewController.notifier).enterSettingsState();

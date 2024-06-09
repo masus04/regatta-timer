@@ -19,8 +19,8 @@ class LockScreenButton extends HookConsumerWidget {
           child: CircularIconButton(
             borderRadius: 20,
             icon: isScreenLocked ? Icons.lock : Icons.lock_open,
-            backgroundColor: Theme.of(context).colorScheme.background,
-            iconColor: Theme.of(context).colorScheme.onBackground,
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            iconColor: Theme.of(context).colorScheme.onSurface,
             onPressed: onLockScreenPressed(context, ref),
           ),
         );
@@ -31,8 +31,8 @@ class LockScreenButton extends HookConsumerWidget {
           child: CircularIconButton(
             borderRadius: 30,
             icon: isScreenLocked ? Icons.lock : Icons.lock_open,
-            backgroundColor: Theme.of(context).colorScheme.background,
-            iconColor: Theme.of(context).colorScheme.onBackground,
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            iconColor: Theme.of(context).colorScheme.onSurface,
             onPressed: onLockScreenPressed(context, ref),
           ),
         );

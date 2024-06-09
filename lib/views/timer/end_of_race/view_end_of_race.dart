@@ -41,7 +41,7 @@ class EndOfRaceViewWatch extends HookConsumerWidget {
         "Race Time: ${ref.read(timerController).format()}",
         textAlign: TextAlign.center,
         style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              color: Theme.of(context).colorScheme.onBackground,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
       ),
       bottomButton: LayoutButton(

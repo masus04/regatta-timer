@@ -9,14 +9,14 @@ class SettingsView extends HookConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final divider = Divider(color: Theme.of(context).colorScheme.onBackground, thickness: 2);
+    final divider = Divider(color: Theme.of(context).colorScheme.onSurface, thickness: 2);
 
     return SafeArea(
       child: Semantics(
         label: "App Settings",
         hint: "Configure App settings such as controls, screen saver and available times",
         child: Scaffold(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).colorScheme.surface,
           body: Scrollbar(
             child: ListView(
               padding: const EdgeInsets.only(top: 15),
@@ -143,7 +143,7 @@ class SettingsView extends HookConsumerWidget {
                   onPressed: onReturnPressed(context),
                   icon: Icon(
                     Icons.check_circle_outline,
-                    color: Theme.of(context).colorScheme.onBackground,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
                 )
               ],
@@ -176,13 +176,13 @@ class SettingsTitle extends StatelessWidget {
         textAlign: TextAlign.left,
         style: Theme.of(context).textTheme.labelMedium?.copyWith(
               fontWeight: FontWeight.bold,
-              color: Theme.of(context).colorScheme.onBackground,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
       ),
       trailing: GestureDetector(
         child: Icon(
           Icons.info_outline,
-          color: Theme.of(context).colorScheme.onBackground,
+          color: Theme.of(context).colorScheme.onSurface,
         ),
         onTap: () => showDialog(
           context: context,
@@ -192,18 +192,18 @@ class SettingsTitle extends StatelessWidget {
             title: Text(
               title,
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.displayLarge?.copyWith(color: Theme.of(context).colorScheme.onBackground),
+              style: Theme.of(context).textTheme.displayLarge?.copyWith(color: Theme.of(context).colorScheme.onSurface),
             ),
             children: [
               Text(
                 helpText,
-                style: TextStyle(color: Theme.of(context).colorScheme.onBackground),
+                style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
               ),
               IconButton(
                 onPressed: () => Navigator.of(context).pop(),
                 icon: Icon(
                   Icons.check_circle_outline,
-                  color: Theme.of(context).colorScheme.onBackground,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
             ],

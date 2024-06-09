@@ -67,7 +67,7 @@ class TimeSelector extends HookConsumerWidget {
                 ref.read(timerController.notifier).setTimer(Duration(minutes: newMinutes, seconds: seconds));
               }
             },
-            textStyle: Theme.of(context).textTheme.displaySmall?.copyWith(color: Theme.of(context).colorScheme.onBackground.withOpacity(.75)),
+            textStyle: Theme.of(context).textTheme.displaySmall?.copyWith(color: Theme.of(context).colorScheme.onSurface.withOpacity(.75)),
             selectedTextStyle: Theme.of(context).textTheme.displayLarge,
             itemCount: 3,
             itemHeight: fontSize * 1.2,
@@ -98,7 +98,7 @@ class TimeSelector extends HookConsumerWidget {
                 }
               }
             },
-            textStyle: Theme.of(context).textTheme.displaySmall?.copyWith(color: Theme.of(context).colorScheme.onBackground.withOpacity(.75)),
+            textStyle: Theme.of(context).textTheme.displaySmall?.copyWith(color: Theme.of(context).colorScheme.onSurface.withOpacity(.75)),
             selectedTextStyle: Theme.of(context).textTheme.displayLarge,
             textMapper: (numberText) => numberText.length == 1 ? "0$numberText" : numberText,
             itemCount: 3,

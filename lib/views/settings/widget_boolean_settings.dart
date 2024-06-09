@@ -25,21 +25,21 @@ class BooleanSetting extends HookConsumerWidget {
       title: Text(
         text,
         textAlign: TextAlign.left,
-        style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Theme.of(context).colorScheme.onBackground),
+        style: Theme.of(context).textTheme.labelMedium?.copyWith(color: Theme.of(context).colorScheme.onSurface),
       ),
       trailing: Transform.scale(
         scale: UiUtils(context).switchScaleFactor,
         child: Switch(
           value: value,
           onChanged: onChanged,
-          activeColor: Theme.of(context).colorScheme.onBackground,
-          inactiveTrackColor: Theme.of(context).colorScheme.onBackground.withAlpha(100),
-          activeTrackColor: Theme.of(context).colorScheme.onBackground.withAlpha(200),
-          thumbColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onPrimary),
-          trackOutlineColor: MaterialStateProperty.all(Colors.transparent),
-          thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
-            (Set<MaterialState> states) {
-              if (states.contains(MaterialState.selected)) {
+          activeColor: Theme.of(context).colorScheme.onSurface,
+          inactiveTrackColor: Theme.of(context).colorScheme.onSurface.withAlpha(100),
+          activeTrackColor: Theme.of(context).colorScheme.onSurface.withAlpha(200),
+          thumbColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onPrimary),
+          trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
+          thumbIcon: WidgetStateProperty.resolveWith<Icon?>(
+            (Set<WidgetState> states) {
+              if (states.contains(WidgetState.selected)) {
                 return const Icon(
                   Icons.check,
                 );

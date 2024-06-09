@@ -15,13 +15,13 @@ class CharlyModeToggleWidgetMobile extends HookConsumerWidget {
         scale: UiUtils(context).switchScaleFactor,
         child: Switch(
           value: ref.watch(charlyModeExtension.select((state) => state.enabled)),
-          thumbColor: MaterialStateProperty.all(Theme.of(context).colorScheme.onPrimary),
+          thumbColor: WidgetStateProperty.all(Theme.of(context).colorScheme.onPrimary),
           activeTrackColor: Theme.of(context).colorScheme.primary,
           inactiveTrackColor: Theme.of(context).colorScheme.primary.withOpacity(.5),
-          trackOutlineColor: MaterialStateProperty.all(Colors.transparent),
-          thumbIcon: MaterialStateProperty.resolveWith<Icon?>(
-            (Set<MaterialState> states) {
-              if (states.contains(MaterialState.selected)) {
+          trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
+          thumbIcon: WidgetStateProperty.resolveWith<Icon?>(
+            (Set<WidgetState> states) {
+              if (states.contains(WidgetState.selected)) {
                 return Icon(
                   Icons.check,
                   color: Theme.of(context).colorScheme.primary,
@@ -44,8 +44,8 @@ class CharlyModeToggleWidgetWatch extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return CircularIconButton(
       borderRadius: 20,
-      backgroundColor: Theme.of(context).colorScheme.background,
-      iconColor: Theme.of(context).colorScheme.onBackground,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      iconColor: Theme.of(context).colorScheme.onSurface,
       onPressed: () => ref.read(charlyModeExtension.notifier).charlyModeEnabled = !ref.watch(charlyModeExtension.select((state) => state.enabled)),
       child: CharlyModeIconWatch(
         enabled: ref.watch(charlyModeExtension).enabled,
@@ -72,16 +72,16 @@ class CharlyModeIconWatch extends StatelessWidget {
                 "Charly",
                 style: TextStyle(
                   fontWeight: FontWeight.w900,
-                  color: Theme.of(context).colorScheme.onBackground,
+                  color: Theme.of(context).colorScheme.onSurface,
                 ),
               ),
             ),
             Switch(
               value: enabled,
               onChanged: null,
-              activeColor: Theme.of(context).colorScheme.onBackground,
-              activeTrackColor: Theme.of(context).colorScheme.onBackground.withOpacity(.5),
-              inactiveTrackColor: Theme.of(context).colorScheme.onBackground.withOpacity(.2),
+              activeColor: Theme.of(context).colorScheme.onSurface,
+              activeTrackColor: Theme.of(context).colorScheme.onSurface.withOpacity(.5),
+              inactiveTrackColor: Theme.of(context).colorScheme.onSurface.withOpacity(.2),
             ),
           ],
         ),

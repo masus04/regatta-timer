@@ -23,61 +23,65 @@ class WatchLayout extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final screenLocked = ref.watch(appLockedProvider);
 
-    return Stack(
-      fit: StackFit.expand,
-      // Stack center widget on top of both buttons
-      children: [
-        /// Top & Bottom Buttons
-        IgnorePointer(
-          ignoring: screenLocked,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Expanded(child: topButton),
-              SizedBox.fromSize(size: const Size.fromHeight(5)),
-              Expanded(child: bottomButton),
-            ],
-          ),
-        ),
-
-        /// Center elements
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            IgnorePointer(
-              ignoring: screenLocked,
-              child: SizedBox(
-                width: 45,
-                height: 60,
-                child: leftCircularButton,
-              ),
+    return Material(
+      /// Background
+      color: Theme.of(context).colorScheme.surface,
+      child: Stack(
+        fit: StackFit.expand,
+        // Stack center widget on top of both buttons
+        children: [
+          /// Top & Bottom Buttons
+          IgnorePointer(
+            ignoring: screenLocked,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(child: topButton),
+                SizedBox.fromSize(size: const Size.fromHeight(5)),
+                Expanded(child: bottomButton),
+              ],
             ),
-            const Spacer(),
-            // Take up space vertically
-            Expanded(
-              flex: 15,
-              // Take up space horizontally
-              child: SizedBox(
-                height: 75,
-                child: IgnorePointer(
-                  ignoring: screenLocked,
-                  child: Material(
-                    elevation: 8,
-                    color: Theme.of(context).colorScheme.background,
-                    child: centerWidget,
+          ),
+
+          /// Center elements
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              IgnorePointer(
+                ignoring: screenLocked,
+                child: SizedBox(
+                  width: 45,
+                  height: 60,
+                  child: leftCircularButton,
+                ),
+              ),
+              const Spacer(),
+              // Take up space vertically
+              Expanded(
+                flex: 15,
+                // Take up space horizontally
+                child: SizedBox(
+                  height: 75,
+                  child: IgnorePointer(
+                    ignoring: screenLocked,
+                    child: Material(
+                      elevation: 8,
+                      color: Theme.of(context).colorScheme.surface,
+                      child: centerWidget,
+                    ),
                   ),
                 ),
               ),
-            ),
-            const Spacer(),
-            const AccidentalInteractionPreventer(
-              size: Size(45, 60),
-              alignment: AlignmentDirectional.centerEnd,
-              child: LockScreenButton(),
-            ),
-          ],
-        ),
-      ],
+              const Spacer(),
+              const AccidentalInteractionPreventer(
+                size: Size(45, 60),
+                alignment: AlignmentDirectional.centerEnd,
+                child: LockScreenButton(),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

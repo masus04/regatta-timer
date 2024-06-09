@@ -52,7 +52,7 @@ class TimerController extends Notifier<Duration> {
 
   /// Starts the timer with [startOffset] time to the start of the race
   Future<void> start() async {
-    ref.refresh(_timerStartedProvider);
+    final _ = ref.refresh(_timerStartedProvider);
 
     // Instantly trigger first update
     state = ref.read(startOffsetProvider);
