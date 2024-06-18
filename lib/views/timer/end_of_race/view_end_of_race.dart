@@ -33,7 +33,7 @@ class EndOfRaceViewWatch extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return WatchLayout(
       topButton: LayoutButton(
-        text: "Race Results",
+        text: "Results",
         watchLayoutButtonType: WatchLayoutButtonType.topButton,
         buttonColor: Theme.of(context).primaryColor,
       ),
