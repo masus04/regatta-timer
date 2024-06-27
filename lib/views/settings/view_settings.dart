@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:regatta_timer/controllers/ui_utils.dart';
 import 'package:regatta_timer/providers/settings_provider.dart';
+import 'package:regatta_timer/providers/timer_extensions.dart';
 import 'package:regatta_timer/views/settings/widget_boolean_settings.dart';
 
 class SettingsView extends HookConsumerWidget {
@@ -125,7 +126,13 @@ class SettingsView extends HookConsumerWidget {
                 BooleanSetting(
                   text: "Enable Charly Mode toggle",
                   value: ref.read(settingsProvider).charlyModeToggleEnabled,
-                  onChanged: (newValue) => ref.read(settingsProvider.notifier).setCharlyModeToggleEnabled(newValue),
+                  onChanged: (newValue) {
+                    ref.read(settingsProvider.notifier).setCharlyModeToggleEnabled(newValue);
+                    if (!newValue) {
+                      // If charly mode is being disabled in the settings, also disable it in the timer view
+                      ref.read(charlyModeExtension.notifier).charlyModeEnabled = newValue;
+                    }
+                  },
                 ),
 
                 // TODO: Add BoatSpeedUnit selector setting
